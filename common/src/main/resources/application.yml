@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: local
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10
+          order_inserts: true
+          order_updates: true
+        default_batch_fetch_size: 1000
+
+pebble:
+  suffix: .html
+  cache: false
+  exposeSessionAttributes: true
+  exposeRequestAttributes: true
+  split-view: false
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    include-exception: true
+    include-message: always
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
