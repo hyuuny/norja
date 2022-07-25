@@ -1,12 +1,13 @@
 package com.hyuuny.norja.domain
 
 import com.hyuuny.norja.address.domain.Address
-import com.hyuuny.norja.domain.command.LodgingCompanyUpdateCommand
 import com.hyuuny.norja.jpa.domain.BaseEntity
-import net.bytebuddy.implementation.bind.annotation.Default
-import javax.persistence.*
-import javax.persistence.CascadeType.*
-import javax.persistence.FetchType.*
+import javax.persistence.CascadeType.ALL
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.FetchType.LAZY
+import javax.persistence.OneToMany
 
 @Entity
 class LodgingCompany private constructor(

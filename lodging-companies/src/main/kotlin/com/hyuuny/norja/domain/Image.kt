@@ -21,6 +21,7 @@ class Image private constructor(
     var lodgingCompany = lodgingCompany
         private set
 
+    val lodgingCompanyId: Long? = this.lodgingCompany?.id
 
     fun assignLodgingCompany(lodgingCompany: LodgingCompany) {
         if (!isEmpty(this.lodgingCompany)) {
@@ -29,5 +30,6 @@ class Image private constructor(
         this.lodgingCompany = lodgingCompany
         this.lodgingCompany?.images?.toMutableList()?.add(this)
     }
+
 
 }
