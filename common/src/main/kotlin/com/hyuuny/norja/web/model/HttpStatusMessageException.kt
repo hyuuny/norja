@@ -15,7 +15,7 @@ class HttpStatusMessageException : RuntimeException {
     ) : super(code) {
         this.status = status
         this.code = code
-        this.args = args as Array<Any>
+        this.args = arrayOf(args as Array<*>)
     }
 
     constructor(
@@ -26,6 +26,6 @@ class HttpStatusMessageException : RuntimeException {
     ) : super(code, t) {
         this.status = status
         this.code = code
-        this.args = args as Array<Any>
+        this.args = arrayOf(args as Array<*>)
     }
 }

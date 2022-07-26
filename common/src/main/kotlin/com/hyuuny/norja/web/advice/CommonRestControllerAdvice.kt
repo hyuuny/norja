@@ -46,7 +46,7 @@ class CommonRestControllerAdvice(
             ex,
             status,
             code,
-            messageSourceAccessor!!.getMessage(code),
+            messageSourceAccessor.getMessage(code),
             fieldErrors
         )
     }
@@ -64,7 +64,7 @@ class CommonRestControllerAdvice(
             ex,
             status,
             code,
-            messageSourceAccessor!!.getMessage(code),
+            messageSourceAccessor.getMessage(code),
             fieldErrors
         )
     }
@@ -159,7 +159,7 @@ class CommonRestControllerAdvice(
     }
 
     private fun getFieldErrors(bindingResult: BindingResult): List<FieldError> {
-        return modelMapper!!.map(
+        return modelMapper.map(
             bindingResult.fieldErrors,
             object : TypeToken<List<FieldError?>?>() {}.type
         )

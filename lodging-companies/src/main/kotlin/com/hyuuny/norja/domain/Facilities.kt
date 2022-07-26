@@ -1,15 +1,18 @@
 package com.hyuuny.norja.domain
 
+import com.hyuuny.norja.jpa.domain.BaseEntity
 import org.springframework.util.ObjectUtils.isEmpty
+import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
 import javax.persistence.ManyToOne
 
+@Entity
 class Facilities private constructor(
     lodgingCompany: LodgingCompany? = null,
     val name: String,
     val iconImageUrl: String? = null,
     val priority: Long?,
-) {
+) : BaseEntity() {
 
     companion object {
         fun create(name: String, iconImageUrl: String?, priority: Long? = 100) = Facilities(
@@ -23,14 +26,12 @@ class Facilities private constructor(
     var lodgingCompany = lodgingCompany
         private set
 
-    val lodgingCompanyId: Long? = this.lodgingCompany?.id
-
     fun assignLodgingCompany(lodgingCompany: LodgingCompany) {
         if (!isEmpty(this.lodgingCompany)) {
-            this.lodgingCompany?.facilities?.toMutableList()?.remove(this)
+            this.lodgingCompany?.facilities?.remove(this)
         }
         this.lodgingCompany = lodgingCompany
-        this.lodgingCompany?.facilities?.toMutableList()?.add(this)
+        this.lodgingCompany?.facilities?.add(this)
     }
 
 

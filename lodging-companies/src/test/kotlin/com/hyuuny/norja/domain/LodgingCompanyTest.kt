@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test
 class LodgingCompanyTest {
 
     @Test
-    fun `숙소 등록`() {
+    fun `업체 등록`() {
         val expectedType = Type.HOTEL
+        val expectedStatus = Status.OPEN
         val expectedName = "스테이 호텔"
         val expectedThumbnail = "thumbnail-url"
         val expectedBusinessNumber = "1231212345"
@@ -32,6 +33,7 @@ class LodgingCompanyTest {
         val newLodgingCompany = aLodgingCompany()
 
         newLodgingCompany.type shouldBe expectedType
+        newLodgingCompany.status shouldBe expectedStatus
         newLodgingCompany.name shouldBe expectedName
         newLodgingCompany.thumbnail shouldBe expectedThumbnail
         newLodgingCompany.businessNumber shouldBe expectedBusinessNumber
@@ -113,6 +115,22 @@ class LodgingCompanyTest {
         newLodgingCompany.searchTag shouldBe expectedSearchTag
     }
 
+    @Test
+    fun `업체 휴무 처리`() {
+        val expectedStatus = Status.CLOSED
+        val newLodgingCompany = aLodgingCompany()
+        newLodgingCompany.closed()
+        newLodgingCompany.status shouldBe expectedStatus
+    }
+
+    @Test
+    fun `업체 삭제 처리`() {
+        val expectedStatus = Status.DELETED
+        val newLodgingCompany = aLodgingCompany()
+        newLodgingCompany.delete()
+        newLodgingCompany.status shouldBe expectedStatus
+    }
+
 }
 
 class FixtureLodgingCompany {
@@ -125,11 +143,11 @@ class FixtureLodgingCompany {
             tellNumber: String = "07012341234",
             address: Address = Address("01234", "서울특별시 강남구 테헤란로 123", "3층"),
             searchTag: String = "스테이, 강남",
-            images: List<Image> = listOf(
+            images: MutableList<Image> = mutableListOf(
                 Image.create(1L, "image-url"),
                 Image.create(2L, "image-url")
             ),
-            facilities: List<Facilities> = listOf(
+            facilities: MutableList<Facilities> = mutableListOf(
                 Facilities.create("주차가능", "parking-url", 100L),
                 Facilities.create("와이파이", "wifi-url", 200L),
                 Facilities.create("VOD", "vod-url", 300L)
