@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  mysql:
+    container_name: kotlin_norja
+    image: mysql/mysql-server:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: 'norja'
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: 'norja'
+    ports:
+      - "3309:3306"
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+    volumes:
+      - ~/docker-volumes/norja/mysql:/data
