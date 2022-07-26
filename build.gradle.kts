@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") version "2.7.2"
+    id("org.springframework.boot") version "2.6.6"
     id("io.spring.dependency-management") version "1.0.12.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
@@ -32,18 +32,15 @@ subprojects {
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-        implementation("org.springframework.boot:spring-boot-starter-security")
         implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
         runtimeOnly("com.h2database:h2")
         runtimeOnly("mysql:mysql-connector-java")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("org.springframework.security:spring-security-test")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
         implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
 
@@ -55,9 +52,9 @@ subprojects {
         implementation("org.modelmapper:modelmapper:2.3.7")
 
         // Open API
-        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
+//        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+//        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+//        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
 
         // RestAssured
         testImplementation("io.rest-assured:rest-assured")
@@ -65,6 +62,13 @@ subprojects {
         // kotest
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
         testImplementation("io.kotest:kotest-runner-junit5:5.0.3")
+
+        // security
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        testImplementation("org.springframework.security:spring-security-test")
+
+        // jwt
+        implementation("io.jsonwebtoken:jjwt:0.9.1")
     }
 
     dependencyManagement {
@@ -105,6 +109,13 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+project(":apis") {
+    dependencies {
+        implementation(project(":common"))
+        implementation(project(":lodging-companies"))
+    }
 }
 
 project(":lodging-companies") {
