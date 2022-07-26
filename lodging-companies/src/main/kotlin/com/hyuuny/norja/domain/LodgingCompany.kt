@@ -12,14 +12,15 @@ import javax.persistence.OneToMany
 @Entity
 class LodgingCompany private constructor(
     type: Type,
+    status: Status = Status.OPEN,
     name: String,
     thumbnail: String,
     businessNumber: String,
     tellNumber: String,
     address: Address,
-    searchTag: String?,
-    images: List<Image>?,
-    facilities: List<Facilities>?,
+    searchTag: String? = null,
+    images: MutableList<Image>? = mutableListOf(),
+    facilities: MutableList<Facilities>? = mutableListOf(),
 ) : BaseEntity() {
 
     companion object {
@@ -31,11 +32,12 @@ class LodgingCompany private constructor(
             tellNumber: String,
             address: Address,
             searchTag: String? = null,
-            images: List<Image>? = listOf(),
-            facilities: List<Facilities>? = listOf(),
+            images: MutableList<Image>? = mutableListOf(),
+            facilities: MutableList<Facilities>? = mutableListOf(),
         ) = LodgingCompany(
             type = type,
             name = name,
+            status = Status.OPEN,
             thumbnail = thumbnail,
             businessNumber = businessNumber,
             tellNumber = tellNumber,
@@ -48,6 +50,10 @@ class LodgingCompany private constructor(
 
     @Enumerated(EnumType.STRING)
     var type = type
+        private set
+
+    @Enumerated(EnumType.STRING)
+    var status = status
         private set
 
     var name = name
@@ -107,5 +113,21 @@ class LodgingCompany private constructor(
     fun addImages(image: Image) = image.assignLodgingCompany(this)
 
     fun addFacilities(facilities: Facilities) = facilities.assignLodgingCompany(this)
+
+    fun imagesClear() {
+        this.images?.toMutableList()?.clear()
+    }
+
+    fun facilitiesClear() {
+        this.facilities?.toMutableList()?.clear()
+    }
+
+    fun closed() {
+        this.status = Status.CLOSED
+    }
+
+    fun delete() {
+        this.status = Status.DELETED
+    }
 
 }
