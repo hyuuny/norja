@@ -22,8 +22,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .and()
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, "/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/users/signup").permitAll()
-            .antMatchers("/payments/**", "/test/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/**").permitAll()
             .anyRequest().authenticated()
     }
 

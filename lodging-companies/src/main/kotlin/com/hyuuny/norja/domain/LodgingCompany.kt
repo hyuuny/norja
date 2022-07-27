@@ -122,8 +122,8 @@ class LodgingCompany private constructor(
         this.facilities?.toMutableList()?.clear()
     }
 
-    fun closed() {
-        this.status = Status.CLOSED
+    fun vacation() {
+        this.status = Status.VACATION
     }
 
     fun delete() {

@@ -34,6 +34,12 @@ class LodgingCompanyService(
     }
 
     @Transactional
+    fun vacation(id: Long) {
+        val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
+        loadedLodgingCompany.vacation()
+    }
+
+    @Transactional
     fun deleteLodgingCompany(id: Long) {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
         loadedLodgingCompany.delete()

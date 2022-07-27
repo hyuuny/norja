@@ -1,4 +1,4 @@
-package com.hyuuny.norja.lodgingcompanies.interfaces
+package com.hyuuny.norja.lodgingcompanies.interfaces.req
 
 import com.hyuuny.norja.domain.command.FacilitiesCreateCommand
 

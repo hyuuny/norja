@@ -111,6 +111,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+project(":admin-apis") {
+    dependencies {
+        implementation(project(":common"))
+        implementation(project(":lodging-companies"))
+    }
+}
+
 project(":apis") {
     dependencies {
         implementation(project(":common"))

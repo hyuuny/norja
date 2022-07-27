@@ -116,10 +116,10 @@ class LodgingCompanyTest {
     }
 
     @Test
-    fun `업체 휴무 처리`() {
-        val expectedStatus = Status.CLOSED
+    fun `업체 휴가 처리`() {
+        val expectedStatus = Status.VACATION
         val newLodgingCompany = aLodgingCompany()
-        newLodgingCompany.closed()
+        newLodgingCompany.vacation()
         newLodgingCompany.status shouldBe expectedStatus
     }
 

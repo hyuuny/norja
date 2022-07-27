@@ -12,8 +12,8 @@ data class LodgingCompanyUpdateCommand(
     val tellNumber: String,
     val address: Address,
     val searchTag: String?,
-    val images: List<ImageCreateCommand>? = listOf(),
-    val facilities: List<FacilitiesCreateCommand>? = listOf(),
+    val images: List<ImageCreateCommand> = listOf(),
+    val facilities: List<FacilitiesCreateCommand> = listOf(),
 ) {
 
     fun update(entity: LodgingCompany) {
@@ -26,14 +26,14 @@ data class LodgingCompanyUpdateCommand(
         entity.changeSearchTag(this.searchTag)
 
         entity.imagesClear()
-        images?.stream()
-            ?.map(ImageCreateCommand::toEntity)
-            ?.forEach(entity::addImages)
+        images.stream()
+            .map(ImageCreateCommand::toEntity)
+            .forEach(entity::addImages)
 
         entity.facilitiesClear()
-        facilities?.stream()
-            ?.map(FacilitiesCreateCommand::toEntity)
-            ?.forEach(entity::addFacilities)
+        facilities.stream()
+            .map(FacilitiesCreateCommand::toEntity)
+            .forEach(entity::addFacilities)
     }
 
 }
