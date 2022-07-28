@@ -8,7 +8,7 @@ import com.hyuuny.norja.domain.info.LodgingCompanyInfo
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 class LodgingCompanyService(
     private val lodgingCompanyStore: LodgingCompanyStore,

@@ -115,11 +115,11 @@ class LodgingCompany private constructor(
     fun addFacilities(facilities: Facilities) = facilities.assignLodgingCompany(this)
 
     fun imagesClear() {
-        this.images?.toMutableList()?.clear()
+        this.images!!.clear()
     }
 
     fun facilitiesClear() {
-        this.facilities?.toMutableList()?.clear()
+        this.facilities!!.clear()
     }
 
     fun vacation() {

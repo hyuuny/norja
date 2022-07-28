@@ -5,7 +5,7 @@ import com.hyuuny.norja.domain.command.FacilitiesCreateCommand
 data class FacilitiesCreateDto(
     val name: String,
     val iconImageUrl: String,
-    val priority: Long?,
+    val priority: Long? = 100L,
 ) {
     val toCommand = FacilitiesCreateCommand(
         name = this.name,
