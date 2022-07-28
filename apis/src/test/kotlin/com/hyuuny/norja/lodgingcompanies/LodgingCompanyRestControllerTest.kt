@@ -83,4 +83,16 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("facilities[2].name", equalTo(command.facilities[1].name))
     }
 
+    @Test
+    fun `숙박 업체 상세 조회 - 잘못된 아이디 예외`() {
+        given()
+            .contentType(ContentType.JSON)
+            .`when`()
+            .log().all()
+            .get("$LODGING_COMPANY_REQUEST_URL/{id}", 999999)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+    }
+
 }
