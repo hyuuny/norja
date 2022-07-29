@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 @Entity
 class Image private constructor(
     lodgingCompany: LodgingCompany? = null,
-    val priority: Long? = 100,
+    val priority: Long?,
     val imageUrl: String,
 ) : BaseEntity() {
 

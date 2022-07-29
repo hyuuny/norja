@@ -28,10 +28,10 @@ class Facilities private constructor(
 
     fun assignRoom(room: Room) {
         if (!isEmpty(this.room)) {
-            this.room?.facilities?.toMutableList()?.remove(this)
+            this.room?.facilities?.remove(this)
         }
         this.room = room
-        this.room?.facilities?.toMutableList()?.add(this)
+        this.room?.facilities?.add(this)
     }
 
 }

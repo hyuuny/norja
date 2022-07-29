@@ -26,10 +26,10 @@ class Image private constructor(
 
     fun assignRoom(room: Room) {
         if (!isEmpty(this.room)) {
-            this.room?.images?.toMutableList()?.remove(this)
+            this.room?.images?.remove(this)
         }
         this.room = room
-        this.room?.images?.toMutableList()?.add(this)
+        this.room?.images?.add(this)
     }
 
 }

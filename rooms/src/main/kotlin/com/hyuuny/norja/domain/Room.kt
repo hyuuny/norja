@@ -7,16 +7,16 @@ import javax.persistence.FetchType.LAZY
 import javax.persistence.OneToMany
 
 @Entity
-class Room(
-    val lodgingCompanyId: Long,
+class Room private constructor(
+    lodgingCompanyId: Long,
     type: Type,
     name: String,
     standardPersonnel: Int = 2,
     maximumPersonnel: Int = 2,
-    images: List<Image>,
-    facilities: List<Facilities>,
     price: Long,
     content: String? = null,
+    images: MutableList<Image>? = mutableListOf(),
+    facilities: MutableList<Facilities>? = mutableListOf(),
 ) : BaseEntity() {
 
     companion object {
@@ -26,8 +26,8 @@ class Room(
             name: String,
             standardPersonnel: Int,
             maximumPersonnel: Int,
-            facilities: List<Facilities>,
-            images: List<Image>,
+            facilities: MutableList<Facilities>? = mutableListOf(),
+            images: MutableList<Image>? = mutableListOf(),
             price: Long,
             content: String?,
         ) = Room(
@@ -42,6 +42,9 @@ class Room(
             content = content,
         )
     }
+
+    var lodgingCompanyId = lodgingCompanyId
+        private set
 
     var type = type
         private set
@@ -73,6 +76,10 @@ class Room(
         this.type = type
     }
 
+    fun changeLodgingCompanyId(lodgingCompanyId: Long) {
+        this.lodgingCompanyId = lodgingCompanyId
+    }
+
     fun changeName(name: String) {
         this.name = name
     }
@@ -83,14 +90,6 @@ class Room(
 
     fun changeMaximumPersonnel(maximumPersonnel: Int) {
         this.maximumPersonnel = maximumPersonnel
-    }
-
-    fun changeFacilities(facilities: List<Facilities>) {
-        this.facilities = facilities
-    }
-
-    fun changeImages(images: List<Image>) {
-        this.images = images
     }
 
     fun changePrice(price: Long) {
@@ -104,5 +103,13 @@ class Room(
     fun addFacilities(facilities: Facilities) = facilities.assignRoom(this)
 
     fun addImages(image: Image) = image.assignRoom(this)
+
+    fun imagesClear() {
+        this.images!!.clear()
+    }
+
+    fun facilitiesClear() {
+        this.facilities!!.clear()
+    }
 
 }
