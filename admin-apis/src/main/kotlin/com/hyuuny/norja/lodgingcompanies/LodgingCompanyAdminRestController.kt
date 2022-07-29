@@ -1,9 +1,9 @@
 package com.hyuuny.norja.lodgingcompanies
 
-import com.hyuuny.norja.application.LodgingCompanyService
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.LodgingCompanyCreateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.LodgingCompanyUpdateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.res.LodgingCompanyResponse
+import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
+import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyResponse
+import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.server.RepresentationModelAssembler
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder

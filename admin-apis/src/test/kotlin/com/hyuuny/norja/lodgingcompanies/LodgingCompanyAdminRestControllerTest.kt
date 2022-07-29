@@ -1,15 +1,14 @@
 package com.hyuuny.norja.lodgingcompanies
 
+import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyDto
 import com.hyuuny.norja.address.domain.Address
-import com.hyuuny.norja.application.LodgingCompanyService
 import com.hyuuny.norja.common.BaseIntegrationTest
-import com.hyuuny.norja.domain.LodgingCompanyRepository
-import com.hyuuny.norja.domain.Status
-import com.hyuuny.norja.domain.Type
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.FacilitiesCreateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.ImageCreateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.LodgingCompanyCreateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.req.LodgingCompanyUpdateDto
+import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyRepository
+import com.hyuuny.norja.lodgingcompanies.domain.Status
+import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
+import com.hyuuny.norja.lodgingcompanies.interfaces.ImageCreateDto
+import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
@@ -45,7 +44,7 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `숙박 업체 등록`() {
-        val dto = createDto()
+        val dto = aLodgingCompanyDto()
 
         given()
             .body(dto)
@@ -58,29 +57,9 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
             .statusCode(HttpStatus.OK.value())
     }
 
-    private fun createDto() = LodgingCompanyCreateDto(
-        type = Type.HOTEL,
-        name = "스테이 호텔",
-        thumbnail = "thumbnail-url",
-        businessNumber = "1231212345",
-        tellNumber = "07012341234",
-        address = Address("01234", "서울특별시 강남구 테헤란로 123", "3층"),
-        searchTag = "스테이, 강남",
-        images = mutableListOf(
-            ImageCreateDto(1L, "image1-url"),
-            ImageCreateDto(7L, "image7-url"),
-            ImageCreateDto(5L, "image5-url")
-        ),
-        facilities = mutableListOf(
-            FacilitiesCreateDto("주차가능", "parking-url", 100L),
-            FacilitiesCreateDto("PC 2대", "parking-url", 300L),
-            FacilitiesCreateDto("넷플릭스 이용 가능", "parking-url", 200L)
-        ),
-    )
-
     @Test
     fun `숙박 업체 상세 조회`() {
-        val dto = createDto()
+        val dto = aLodgingCompanyDto()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()
@@ -110,11 +89,11 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `숙박 업체 수정`() {
-        val dto = createDto()
+        val dto = aLodgingCompanyDto()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         val updateDto = LodgingCompanyUpdateDto(
-            type = Type.MOTEL,
+            type = HOTEL,
             name = "바닷가 모텔",
             thumbnail = "thumthum-url",
             businessNumber = "2548654932",
@@ -152,7 +131,7 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `휴가 처리`() {
-        val dto = createDto()
+        val dto = aLodgingCompanyDto()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()
@@ -167,7 +146,7 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `숙박 업체 삭제`() {
-        val dto = createDto()
+        val dto = aLodgingCompanyDto()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()

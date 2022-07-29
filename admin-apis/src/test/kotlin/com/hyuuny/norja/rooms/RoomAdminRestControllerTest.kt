@@ -104,6 +104,18 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
     }
 
     @Test
+    fun `객실 상세 조회 - 잘못된 아이디 예외`() {
+        given()
+            .contentType(ContentType.JSON)
+            .`when`()
+            .log().all()
+            .get("$ROOM_REQUEST_URL/{id}", 999999)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+    }
+
+    @Test
     fun `객실 수정`() {
         val dto = FixtureRoom.aRoom(savedLodgingCompanyId)
         val savedRoomId = roomService.createRoom(dto.toCommand())
