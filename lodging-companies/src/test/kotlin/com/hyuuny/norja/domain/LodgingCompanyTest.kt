@@ -2,6 +2,7 @@ package com.hyuuny.norja.domain
 
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.domain.FixtureLodgingCompany.Companion.aLodgingCompany
+import com.hyuuny.norja.lodgingcompanies.domain.*
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

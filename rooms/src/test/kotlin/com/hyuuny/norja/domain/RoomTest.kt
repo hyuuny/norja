@@ -1,5 +1,9 @@
 package com.hyuuny.norja.domain
 
+import com.hyuuny.norja.rooms.domain.Room
+import com.hyuuny.norja.rooms.domain.RoomFacilities
+import com.hyuuny.norja.rooms.domain.RoomImage
+import com.hyuuny.norja.rooms.domain.Type
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -13,14 +17,14 @@ class RoomTest {
         val expectedStandardPersonnel = 2
         val expectedMaximumPersonnel = 2
         val expectedFacilities = listOf(
-            Facilities.create("전용 화장실", "toilet-url", 1L),
-            Facilities.create("전용 욕실", "bathroom-url", 2L),
-            Facilities.create("TV", "tv-url"),
+            RoomFacilities.create("전용 화장실", "toilet-url", 1L),
+            RoomFacilities.create("전용 욕실", "bathroom-url", 2L),
+            RoomFacilities.create("TV", "tv-url"),
         )
-        val expectedImages = listOf(
-            Image.create(1L, "imageUrl-1"),
-            Image.create(2L, "imageUrl-2"),
-            Image.create(3L, "imageUrl-2"),
+        val expectedRoomImages = listOf(
+            RoomImage.create(1L, "imageUrl-1"),
+            RoomImage.create(2L, "imageUrl-2"),
+            RoomImage.create(3L, "imageUrl-2"),
         )
         val expectedPrice = 150_000L
         val expectedContent = "넷플릭스 시청가능"
@@ -32,14 +36,14 @@ class RoomTest {
         newRoom.name shouldBe expectedName
         newRoom.standardPersonnel shouldBe expectedStandardPersonnel
         newRoom.maximumPersonnel shouldBe expectedMaximumPersonnel
-        newRoom.facilities.size shouldBe 3
-        newRoom.facilities[0].name shouldBe expectedFacilities[0].name
-        newRoom.facilities[1].name shouldBe expectedFacilities[1].name
-        newRoom.facilities[2].name shouldBe expectedFacilities[2].name
-        newRoom.images.size shouldBe 3
-        newRoom.images[0].imageUrl shouldBe expectedImages[0].imageUrl
-        newRoom.images[1].imageUrl shouldBe expectedImages[1].imageUrl
-        newRoom.images[2].imageUrl shouldBe expectedImages[2].imageUrl
+        newRoom.roomFacilities?.size shouldBe 3
+        newRoom.roomFacilities?.get(0)?.name shouldBe expectedFacilities[0].name
+        newRoom.roomFacilities?.get(1)?.name shouldBe expectedFacilities[1].name
+        newRoom.roomFacilities?.get(2)?.name shouldBe expectedFacilities[2].name
+        newRoom.roomImages?.size shouldBe 3
+        newRoom.roomImages?.get(0)?.imageUrl shouldBe expectedRoomImages[0].imageUrl
+        newRoom.roomImages?.get(1)?.imageUrl shouldBe expectedRoomImages[1].imageUrl
+        newRoom.roomImages?.get(2)?.imageUrl shouldBe expectedRoomImages[2].imageUrl
         newRoom.price shouldBe expectedPrice
         newRoom.content shouldBe expectedContent
     }
@@ -77,36 +81,6 @@ class RoomTest {
     }
 
     @Test
-    fun `편의시실 변경`() {
-        val expectedFacilities = listOf(
-            Facilities.create("에어컨", "airConditioner-url"),
-            Facilities.create("테이블", "table-url"),
-        )
-        val newRoom = FixtureRoom.aRoom()
-        newRoom.changeFacilities(expectedFacilities)
-        newRoom.facilities.size shouldBe expectedFacilities.size
-        newRoom.facilities[0].name shouldBe expectedFacilities[0].name
-        newRoom.facilities[0].iconImageUrl shouldBe expectedFacilities[0].iconImageUrl
-        newRoom.facilities[1].name shouldBe expectedFacilities[1].name
-        newRoom.facilities[1].iconImageUrl shouldBe expectedFacilities[1].iconImageUrl
-    }
-
-    @Test
-    fun `이미지 변경`() {
-        val expectedImages = listOf(
-            Image.create(1L, "imageUrl-4"),
-            Image.create(2L, "imageUrl-5"),
-        )
-        val newRoom = FixtureRoom.aRoom()
-        newRoom.changeImages(expectedImages)
-        newRoom.images.size shouldBe expectedImages.size
-        newRoom.images[0].priority shouldBe expectedImages[0].priority
-        newRoom.images[0].imageUrl shouldBe expectedImages[0].imageUrl
-        newRoom.images[1].priority shouldBe expectedImages[1].priority
-        newRoom.images[1].imageUrl shouldBe expectedImages[1].imageUrl
-    }
-
-    @Test
     fun `금액 변경`() {
         val expectedPrice = 320_000L
         val newRoom = FixtureRoom.aRoom()
@@ -132,15 +106,15 @@ class FixtureRoom {
             name: String = "일반실",
             standardPersonnel: Int = 2,
             maximumPersonnel: Int = 2,
-            facilities: List<Facilities> = listOf(
-                Facilities.create("전용 화장실", "toilet-url"),
-                Facilities.create("전용 욕실", "bathroom-url"),
-                Facilities.create("TV", "tv-url"),
+            roomFacilities: MutableList<RoomFacilities> = mutableListOf(
+                RoomFacilities.create("전용 화장실", "toilet-url"),
+                RoomFacilities.create("전용 욕실", "bathroom-url"),
+                RoomFacilities.create("TV", "tv-url"),
             ),
-            images: List<Image> = listOf(
-                Image.create(1L, "imageUrl-1"),
-                Image.create(2L, "imageUrl-2"),
-                Image.create(3L, "imageUrl-2"),
+            roomImages: MutableList<RoomImage> = mutableListOf(
+                RoomImage.create(1L, "imageUrl-1"),
+                RoomImage.create(2L, "imageUrl-2"),
+                RoomImage.create(3L, "imageUrl-2"),
             ),
             price: Long = 150_000L,
             content: String? = null,
@@ -150,8 +124,8 @@ class FixtureRoom {
             name,
             standardPersonnel,
             maximumPersonnel,
-            facilities,
-            images,
+            roomFacilities,
+            roomImages,
             price,
             content,
         )

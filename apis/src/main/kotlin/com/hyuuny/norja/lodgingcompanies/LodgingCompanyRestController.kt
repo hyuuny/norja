@@ -1,6 +1,6 @@
 package com.hyuuny.norja.lodgingcompanies
 
-import com.hyuuny.norja.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyResponse
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.server.RepresentationModelAssembler

@@ -115,6 +115,7 @@ project(":admin-apis") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
+        implementation(project(":rooms"))
     }
 }
 
@@ -122,6 +123,7 @@ project(":apis") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
+        implementation(project(":rooms"))
     }
 }
 

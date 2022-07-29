@@ -3,11 +3,7 @@ package com.hyuuny.norja.lodgingcompanies.interfaces
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
-import com.hyuuny.norja.lodgingcompanies.domain.FacilitiesInfo
-import com.hyuuny.norja.lodgingcompanies.domain.ImageInfo
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyInfo
-import com.hyuuny.norja.lodgingcompanies.domain.Status
-import com.hyuuny.norja.rooms.domain.Type
+import com.hyuuny.norja.lodgingcompanies.domain.*
 
 @JsonInclude(Include.NON_NULL)
 data class LodgingCompanyResponse(

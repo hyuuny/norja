@@ -1,13 +1,13 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.address.domain.Address
-import com.hyuuny.norja.application.LodgingCompanyService
 import com.hyuuny.norja.common.BaseIntegrationTest
-import com.hyuuny.norja.domain.Status
-import com.hyuuny.norja.domain.Type
-import com.hyuuny.norja.domain.command.FacilitiesCreateCommand
-import com.hyuuny.norja.domain.command.ImageCreateCommand
-import com.hyuuny.norja.domain.command.LodgingCompanyCreateCommand
+import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.domain.FacilitiesCreateCommand
+import com.hyuuny.norja.lodgingcompanies.domain.ImageCreateCommand
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyCreateCommand
+import com.hyuuny.norja.lodgingcompanies.domain.Status
+import com.hyuuny.norja.rooms.domain.Type
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
