@@ -2,6 +2,7 @@ package com.hyuuny.norja.lodgingcompanies.interfaces
 
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.lodgingcompanies.domain.*
+import kotlin.streams.toList
 
 class LodgingCompanyDto
 

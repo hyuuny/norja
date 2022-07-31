@@ -5,6 +5,7 @@ import com.hyuuny.norja.rooms.domain.RoomFacilitiesInfo
 import com.hyuuny.norja.rooms.domain.RoomImageInfo
 import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.Type
+import kotlin.streams.toList
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class RoomResponse(

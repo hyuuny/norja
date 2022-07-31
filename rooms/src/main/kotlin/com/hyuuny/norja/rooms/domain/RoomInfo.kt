@@ -1,5 +1,7 @@
 package com.hyuuny.norja.rooms.domain
 
+import kotlin.streams.toList
+
 data class RoomInfo(
     val id: Long,
     val lodgingCompanyId: Long,

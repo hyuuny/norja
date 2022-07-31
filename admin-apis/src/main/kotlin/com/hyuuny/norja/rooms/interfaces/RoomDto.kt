@@ -1,6 +1,7 @@
 package com.hyuuny.norja.rooms.interfaces
 
 import com.hyuuny.norja.rooms.domain.*
+import kotlin.streams.toList
 
 class RoomDto
 

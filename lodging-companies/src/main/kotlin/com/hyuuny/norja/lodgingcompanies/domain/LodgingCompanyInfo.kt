@@ -1,6 +1,7 @@
 package com.hyuuny.norja.lodgingcompanies.domain
 
 import com.hyuuny.norja.address.domain.Address
+import kotlin.streams.toList
 
 data class LodgingCompanyInfo(
     val id: Long,

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.lodgingcompanies.domain.*
+import kotlin.streams.toList
 
 @JsonInclude(Include.NON_NULL)
 data class LodgingCompanyResponse(
