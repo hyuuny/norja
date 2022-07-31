@@ -4,7 +4,7 @@ import com.hyuuny.norja.FixtureLodgingCompany
 import com.hyuuny.norja.FixtureRoom
 import com.hyuuny.norja.common.BaseIntegrationTest
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyRepository
+import com.hyuuny.norja.lodgingcompanies.infrastructure.LodgingCompanyRepository
 import com.hyuuny.norja.rooms.application.RoomService
 import com.hyuuny.norja.rooms.domain.RoomRepository
 import com.hyuuny.norja.rooms.domain.Type

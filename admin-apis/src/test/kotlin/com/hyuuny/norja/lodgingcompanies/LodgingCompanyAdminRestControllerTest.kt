@@ -4,9 +4,9 @@ import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyDto
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.common.BaseIntegrationTest
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyRepository
 import com.hyuuny.norja.lodgingcompanies.domain.Status
 import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
+import com.hyuuny.norja.lodgingcompanies.infrastructure.LodgingCompanyRepository
 import com.hyuuny.norja.lodgingcompanies.interfaces.ImageCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
 import io.restassured.RestAssured
