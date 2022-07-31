@@ -2,8 +2,11 @@ package com.hyuuny.norja.lodgingcompanies.infrastructure
 
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompany
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyReader
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyRepository
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
+import com.hyuuny.norja.lodgingcompanies.domain.SearchedLodgingCompanyListing
 import com.hyuuny.norja.web.model.HttpStatusMessageException
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -19,5 +22,11 @@ class LodgingCompanyReaderImpl(
             "lodgingCompany.id.notFound",
             id
         )
+
+    override fun retrieveLodgingCompany(
+        searchQuery: LodgingCompanySearchQuery,
+        pageable: Pageable,
+    ): PageImpl<SearchedLodgingCompanyListing> =
+        lodgingCompanyRepository.retrieveLodgingCompanies(searchQuery, pageable)
 
 }

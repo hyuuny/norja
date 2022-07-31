@@ -1,13 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.springframework.boot") version "2.6.6"
     id("io.spring.dependency-management") version "1.0.12.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.6.10"
-    kotlin("kapt") version "1.3.61"
+    kotlin("plugin.jpa") version "1.6.21"
+    kotlin("kapt") version "1.6.21"
 }
 
 allprojects {
@@ -20,6 +19,8 @@ allprojects {
 }
 
 subprojects {
+    val querydslVersion = "5.0.0"
+
     apply(plugin = "java")
 
     apply(plugin = "io.spring.dependency-management")
@@ -29,6 +30,7 @@ subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "kotlin-jpa")
+    apply(plugin = "kotlin-kapt")
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -69,6 +71,12 @@ subprojects {
 
         // jwt
         implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+        // querydsl
+        implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+        kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+        kapt("org.springframework.boot:spring-boot-configuration-processor")
+
     }
 
     dependencyManagement {
@@ -97,6 +105,10 @@ subprojects {
             extendsFrom(configurations.annotationProcessor.get())
         }
     }
+}
+
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }
 
 
@@ -130,6 +142,7 @@ project(":apis") {
 project(":lodging-companies") {
     dependencies {
         implementation(project(":common"))
+        implementation(project(":rooms"))
     }
 }
 
@@ -145,10 +158,10 @@ project(":reservation") {
     }
 }
 
-project(":common") {
-    val jar: Jar by tasks
-    val bootJar: BootJar by tasks
+tasks.named("bootJar") {
+    enabled = false
+}
 
-    bootJar.enabled = false
-    jar.enabled = true
+tasks.named("jar") {
+    enabled = true
 }

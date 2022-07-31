@@ -1,6 +1,9 @@
 package com.hyuuny.norja.lodgingcompanies.application
 
 import com.hyuuny.norja.lodgingcompanies.domain.*
+import com.hyuuny.norja.lodgingcompanies.domain.collections.SearchedLodgingCompanies
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,6 +18,15 @@ class LodgingCompanyService(
     fun createLodgingCompany(command: LodgingCompanyCreateCommand): Long {
         val newLodgingCompany = command.toEntity
         return lodgingCompanyStore.store(newLodgingCompany).id!!
+    }
+
+    fun retrieveLodgingCompany(
+        searchQuery: LodgingCompanySearchQuery,
+        pageable: Pageable,
+    ): PageImpl<LodgingCompanyListingInfo> {
+        val searched = lodgingCompanyReader.retrieveLodgingCompany(searchQuery, pageable)
+        val searchedLodgingCompanies = SearchedLodgingCompanies(searched.content)
+        return PageImpl(searchedLodgingCompanies.toPage(), pageable, searched.totalElements)
     }
 
     fun getLodgingCompany(id: Long): LodgingCompanyInfo {

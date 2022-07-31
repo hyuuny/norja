@@ -1,6 +1,7 @@
 package com.hyuuny.norja.lodgingcompanies.domain
 
 import com.hyuuny.norja.address.domain.Address
+import java.time.LocalDateTime
 import kotlin.streams.toList
 
 data class LodgingCompanyInfo(
@@ -15,6 +16,7 @@ data class LodgingCompanyInfo(
     val searchTag: String? = null,
     val images: List<ImageInfo> = listOf(),
     val facilities: List<FacilitiesInfo> = listOf(),
+    val createdAt: LocalDateTime,
 ) {
 
     constructor(entity: LodgingCompany) : this(
@@ -32,7 +34,8 @@ data class LodgingCompanyInfo(
             .toList(),
         facilities = entity.facilities!!.stream()
             .map(::FacilitiesInfo)
-            .toList()
+            .toList(),
+        createdAt = entity.createdAt,
     )
 
 }

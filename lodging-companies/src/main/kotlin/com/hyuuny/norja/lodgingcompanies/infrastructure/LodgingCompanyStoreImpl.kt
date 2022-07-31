@@ -1,7 +1,6 @@
 package com.hyuuny.norja.lodgingcompanies.infrastructure
 
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompany
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyRepository
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyStore
 import org.springframework.stereotype.Component
 

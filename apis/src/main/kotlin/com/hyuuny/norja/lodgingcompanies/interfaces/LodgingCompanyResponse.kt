@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.lodgingcompanies.domain.*
+import java.time.LocalDateTime
 import kotlin.streams.toList
 
 @JsonInclude(Include.NON_NULL)
@@ -19,6 +20,7 @@ data class LodgingCompanyResponse(
     val searchTag: String? = null,
     val images: List<ImageResponse>? = listOf(),
     val facilities: List<FacilitiesResponse>? = listOf(),
+    val createdAt: LocalDateTime,
 ) {
 
     constructor(info: LodgingCompanyInfo) : this(
@@ -38,7 +40,8 @@ data class LodgingCompanyResponse(
         facilities = info.facilities.stream()
             .map(::FacilitiesResponse)
             .sorted((Comparator.comparing(FacilitiesResponse::priority)))
-            .toList()
+            .toList(),
+        createdAt = info.createdAt,
     )
 
 }
