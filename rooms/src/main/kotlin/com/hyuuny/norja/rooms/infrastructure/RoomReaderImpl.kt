@@ -1,8 +1,8 @@
 package com.hyuuny.norja.rooms.infrastructure
 
 import com.hyuuny.norja.rooms.domain.Room
+import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.RoomReader
-import com.hyuuny.norja.rooms.domain.RoomRepository
 import com.hyuuny.norja.web.model.HttpStatusMessageException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -19,5 +19,15 @@ class RoomReaderImpl(
             "room.id.notFound",
             id
         )
+
+    override fun getRoomsByLodgingCompanyId(lodgingCompanyId: Long): List<RoomInfo> {
+        val loadedRoom = roomRepository.loadRoomsByLodgingCompanyId(lodgingCompanyId)
+        return loadedRoom.stream()
+            .map(::RoomInfo)
+            .toList()
+    }
+
+    override fun getCountByType(room: Room) =
+        roomRepository.countByLodgingCompanyIdAndType(room.lodgingCompanyId, room.type)
 
 }
