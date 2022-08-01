@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import kotlin.streams.toList
 
 @RequestMapping(path = ["/api/v1/lodging-companies"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
@@ -52,8 +51,8 @@ class LodgingCompanyRestController(
 
     @GetMapping("/{id}")
     fun getLodgingCompany(@PathVariable id: Long): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
-        val loadedLodgingCompany = lodgingCompanyService.getLodgingCompany(id)
-        val resource = LodgingCompanyResponse(loadedLodgingCompany)
+        val loadedLodgingCompanyAndRooms = lodgingCompanyService.getLodgingCompanyAndRooms(id)
+        val resource = LodgingCompanyResponse(loadedLodgingCompanyAndRooms)
         return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(resource))
     }
 

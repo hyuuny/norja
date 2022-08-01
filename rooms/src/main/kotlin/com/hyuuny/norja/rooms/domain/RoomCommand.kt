@@ -6,6 +6,7 @@ data class RoomCreateCommand(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int = 10,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -19,6 +20,7 @@ data class RoomCreateCommand(
                 lodgingCompanyId = this.lodgingCompanyId,
                 type = this.type,
                 name = this.name,
+                roomCount = this.roomCount,
                 standardPersonnel = this.standardPersonnel,
                 maximumPersonnel = this.maximumPersonnel,
                 price = this.price,
@@ -57,6 +59,7 @@ data class RoomUpdateCommand(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int = 10,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -68,6 +71,7 @@ data class RoomUpdateCommand(
         entity.changeLodgingCompanyId(this.lodgingCompanyId)
         entity.changeType(this.type)
         entity.changeName(this.name)
+        entity.changeRoomCount(this.roomCount)
         entity.changeStandardPersonnel(this.standardPersonnel)
         entity.changeMaximumPersonnel(this.maximumPersonnel)
         entity.changePrice(this.price)

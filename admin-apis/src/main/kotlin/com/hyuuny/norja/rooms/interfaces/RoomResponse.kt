@@ -5,7 +5,6 @@ import com.hyuuny.norja.rooms.domain.RoomFacilitiesInfo
 import com.hyuuny.norja.rooms.domain.RoomImageInfo
 import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.Type
-import kotlin.streams.toList
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class RoomResponse(
@@ -13,6 +12,7 @@ data class RoomResponse(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -25,6 +25,7 @@ data class RoomResponse(
         lodgingCompanyId = info.lodgingCompanyId,
         type = info.type,
         name = info.name,
+        roomCount = info.roomCount,
         standardPersonnel = info.standardPersonnel,
         maximumPersonnel = info.maximumPersonnel,
         price = info.price,

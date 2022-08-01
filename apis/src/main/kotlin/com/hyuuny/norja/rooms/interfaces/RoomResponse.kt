@@ -2,6 +2,7 @@ package com.hyuuny.norja.rooms.interfaces
 
 import com.hyuuny.norja.rooms.domain.RoomFacilitiesInfo
 import com.hyuuny.norja.rooms.domain.RoomImageInfo
+import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.Type
 
 data class RoomResponse(
@@ -9,13 +10,32 @@ data class RoomResponse(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int = 10,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
     val content: String? = null,
-    val images: List<RoomImageResponse>? = listOf(),
-    val facilities: List<RoomFacilitiesResponse>? = listOf(),
-)
+    val roomImages: List<RoomImageResponse>? = listOf(),
+    val roomFacilities: List<RoomFacilitiesResponse>? = listOf(),
+) {
+    constructor(info: RoomInfo) : this(
+        id = info.id,
+        lodgingCompanyId = info.lodgingCompanyId,
+        type = info.type,
+        name = info.name,
+        roomCount = info.roomCount,
+        standardPersonnel = info.standardPersonnel,
+        maximumPersonnel = info.maximumPersonnel,
+        price = info.price,
+        content = info.content,
+        roomImages = info.roomImages.stream()
+            .map(::RoomImageResponse)
+            .toList(),
+        roomFacilities = info.roomFacilities.stream()
+            .map(::RoomFacilitiesResponse)
+            .toList(),
+    )
+}
 
 data class RoomImageResponse(
     val roomId: Long,

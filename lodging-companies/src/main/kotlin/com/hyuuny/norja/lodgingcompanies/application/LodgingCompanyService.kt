@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 class LodgingCompanyService(
     private val lodgingCompanyStore: LodgingCompanyStore,
     private val lodgingCompanyReader: LodgingCompanyReader,
+    private val lodgingCompanyDomainService: LodgingCompanyDomainService,
 ) {
 
     @Transactional
@@ -32,6 +33,10 @@ class LodgingCompanyService(
     fun getLodgingCompany(id: Long): LodgingCompanyInfo {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
         return LodgingCompanyInfo(loadedLodgingCompany)
+    }
+
+    fun getLodgingCompanyAndRooms(id: Long): LodgingCompanyAndRoomInfo {
+        return lodgingCompanyDomainService.getLodgingCompanyAndRoom(id)
     }
 
     @Transactional

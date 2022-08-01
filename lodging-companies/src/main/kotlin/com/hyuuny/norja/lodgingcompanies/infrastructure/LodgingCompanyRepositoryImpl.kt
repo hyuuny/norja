@@ -5,6 +5,7 @@ import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompany
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import com.hyuuny.norja.lodgingcompanies.domain.QLodgingCompany.lodgingCompany
 import com.hyuuny.norja.lodgingcompanies.domain.SearchedLodgingCompanyListing
+import com.hyuuny.norja.lodgingcompanies.domain.Status
 import com.hyuuny.norja.rooms.domain.QRoom.room
 import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections.fields
@@ -17,6 +18,14 @@ import org.springframework.util.ObjectUtils.isEmpty
 class LodgingCompanyRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : CustomQueryDslRepository(LodgingCompany::class.java), LodgingCompanyRepositoryCustom {
+    override fun loadLodgingCompany(id: Long) = queryFactory
+        .selectFrom(lodgingCompany)
+        .from(lodgingCompany)
+        .where(
+            lodgingCompany.id.eq(id),
+            lodgingCompany.status.eq(Status.OPEN)
+        )
+        .fetchOne()
 
     override fun retrieveLodgingCompanies(
         searchQuery: LodgingCompanySearchQuery,

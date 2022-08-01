@@ -1,7 +1,6 @@
 package com.hyuuny.norja.rooms.infrastructure
 
 import com.hyuuny.norja.rooms.domain.Room
-import com.hyuuny.norja.rooms.domain.RoomRepository
 import com.hyuuny.norja.rooms.domain.RoomStore
 import org.springframework.stereotype.Component
 

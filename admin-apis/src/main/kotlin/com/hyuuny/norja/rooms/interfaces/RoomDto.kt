@@ -1,7 +1,6 @@
 package com.hyuuny.norja.rooms.interfaces
 
 import com.hyuuny.norja.rooms.domain.*
-import kotlin.streams.toList
 
 class RoomDto
 
@@ -9,6 +8,7 @@ data class RoomCreateDto(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int = 10,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -20,6 +20,7 @@ data class RoomCreateDto(
         lodgingCompanyId = this.lodgingCompanyId,
         type = this.type,
         name = this.name,
+        roomCount = this.roomCount,
         standardPersonnel = this.standardPersonnel,
         maximumPersonnel = this.maximumPersonnel,
         price = this.price,
@@ -56,6 +57,7 @@ data class RoomUpdateDto(
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int = 10,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -67,6 +69,7 @@ data class RoomUpdateDto(
         lodgingCompanyId = this.lodgingCompanyId,
         type = this.type,
         name = this.name,
+        roomCount = this.roomCount,
         standardPersonnel = this.standardPersonnel,
         maximumPersonnel = this.maximumPersonnel,
         price = this.price,

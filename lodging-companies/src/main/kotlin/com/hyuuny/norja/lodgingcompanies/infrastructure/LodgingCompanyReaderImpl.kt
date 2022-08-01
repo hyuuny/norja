@@ -23,6 +23,13 @@ class LodgingCompanyReaderImpl(
             id
         )
 
+    override fun loadLodgingCompany(id: Long): LodgingCompany =
+        lodgingCompanyRepository.loadLodgingCompany(id) ?: throw HttpStatusMessageException(
+            HttpStatus.BAD_REQUEST,
+            "lodgingCompany.id.notFound",
+            id
+        )
+
     override fun retrieveLodgingCompany(
         searchQuery: LodgingCompanySearchQuery,
         pageable: Pageable,

@@ -1,12 +1,11 @@
 package com.hyuuny.norja.rooms.domain
 
-import kotlin.streams.toList
-
 data class RoomInfo(
     val id: Long,
     val lodgingCompanyId: Long,
     val type: Type,
     val name: String,
+    val roomCount: Int,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -19,6 +18,7 @@ data class RoomInfo(
         lodgingCompanyId = entity.lodgingCompanyId,
         type = entity.type,
         name = entity.name,
+        roomCount = entity.roomCount,
         standardPersonnel = entity.standardPersonnel,
         maximumPersonnel = entity.maximumPersonnel,
         price = entity.price,
