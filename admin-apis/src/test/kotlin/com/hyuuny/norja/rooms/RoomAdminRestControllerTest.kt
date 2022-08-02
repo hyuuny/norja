@@ -6,8 +6,9 @@ import com.hyuuny.norja.common.BaseIntegrationTest
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
 import com.hyuuny.norja.lodgingcompanies.infrastructure.LodgingCompanyRepository
 import com.hyuuny.norja.rooms.application.RoomService
-import com.hyuuny.norja.rooms.domain.RoomRepository
 import com.hyuuny.norja.rooms.domain.Type
+import com.hyuuny.norja.rooms.infrastructure.RoomRepository
+import com.hyuuny.norja.rooms.interfaces.RoomCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomFacilitiesCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomImageCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomUpdateDto
@@ -68,10 +69,39 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
-            .post("$ROOM_REQUEST_URL")
+            .post(ROOM_REQUEST_URL)
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())
+    }
+
+    @Test
+    fun `객실 등록 - 타입 중복되면 예외`() {
+        val dto = FixtureRoom.aRoom(savedLodgingCompanyId)
+        val savedRoomId = roomService.createRoom(dto.toCommand())
+
+        val duplicateTypeDto = RoomCreateDto(
+            lodgingCompanyId = savedLodgingCompanyId,
+            type = Type.DOUBLE_ROOM,
+            name = "일반실",
+            roomCount = 20,
+            standardPersonnel = 2,
+            maximumPersonnel = 2,
+            price = 80_000,
+            content = "코로나 19로 인한 조식 중단",
+            images = mutableListOf(),
+            facilities = mutableListOf()
+        )
+
+        given()
+            .body(duplicateTypeDto)
+            .contentType(ContentType.JSON)
+            .`when`()
+            .log().all()
+            .post(ROOM_REQUEST_URL)
+            .then()
+            .log().all()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
     }
 
     @Test
@@ -91,6 +121,7 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("lodgingCompanyId", IsEqual.equalTo(dto.lodgingCompanyId.toInt()))
             .assertThat().body("type", IsEqual.equalTo(dto.type.toString()))
             .assertThat().body("name", IsEqual.equalTo(dto.name))
+            .assertThat().body("roomCount", IsEqual.equalTo(dto.roomCount))
             .assertThat().body("standardPersonnel", IsEqual.equalTo(dto.standardPersonnel))
             .assertThat().body("maximumPersonnel", IsEqual.equalTo(dto.maximumPersonnel))
             .assertThat().body("price", IsEqual.equalTo(dto.price.toInt()))
@@ -124,6 +155,7 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
             lodgingCompanyId = savedLodgingCompanyId,
             type = Type.FAMILY_ROOM,
             name = "패밀리룸",
+            roomCount = 28,
             standardPersonnel = 6,
             maximumPersonnel = 6,
             price = 250_000,
@@ -154,6 +186,7 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
             .body("lodgingCompanyId", IsEqual.equalTo(updateDto.lodgingCompanyId.toInt()))
             .assertThat().body("type", IsEqual.equalTo(updateDto.type.toString()))
             .assertThat().body("name", IsEqual.equalTo(updateDto.name))
+            .assertThat().body("roomCount", IsEqual.equalTo(updateDto.roomCount))
             .assertThat().body("standardPersonnel", IsEqual.equalTo(updateDto.standardPersonnel))
             .assertThat().body("maximumPersonnel", IsEqual.equalTo(updateDto.maximumPersonnel))
             .assertThat().body("price", IsEqual.equalTo(updateDto.price.toInt()))

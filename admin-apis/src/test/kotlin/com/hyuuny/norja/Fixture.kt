@@ -42,6 +42,7 @@ class FixtureRoom {
             lodgingCompanyId = lodgingCompanyId,
             type = Type.DOUBLE_ROOM,
             name = "일반실",
+            roomCount = 10,
             standardPersonnel = 2,
             maximumPersonnel = 2,
             price = 130_000,
