@@ -41,6 +41,7 @@ class FixtureRoom {
             lodgingCompanyId = lodgingCompanyId,
             type = com.hyuuny.norja.rooms.domain.Type.DOUBLE_ROOM,
             name = "일반실",
+            roomCount = 25,
             standardPersonnel = 2,
             maximumPersonnel = 2,
             price = 130_000,

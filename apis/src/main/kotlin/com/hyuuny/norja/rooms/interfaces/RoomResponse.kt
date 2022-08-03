@@ -30,21 +30,23 @@ data class RoomResponse(
         content = info.content,
         roomImages = info.roomImages.stream()
             .map(::RoomImageResponse)
+            .sorted((Comparator.comparing(RoomImageResponse::priority)))
             .toList(),
         roomFacilities = info.roomFacilities.stream()
             .map(::RoomFacilitiesResponse)
+            .sorted((Comparator.comparing(RoomFacilitiesResponse::priority)))
             .toList(),
     )
 }
 
 data class RoomImageResponse(
     val roomId: Long,
-    val priority: Long?,
+    val priority: Long,
     val imageUrl: String,
 ) {
     constructor(info: RoomImageInfo) : this(
         roomId = info.roomId,
-        priority = info.priority,
+        priority = info.priority!!,
         imageUrl = info.imageUrl
     )
 }
@@ -52,13 +54,13 @@ data class RoomImageResponse(
 data class RoomFacilitiesResponse(
     val roomId: Long,
     val name: String,
-    val priority: Long?,
+    val priority: Long,
     val iconImageUrl: String,
 ) {
     constructor(info: RoomFacilitiesInfo) : this(
         roomId = info.roomId,
         name = info.name,
-        priority = info.priority,
+        priority = info.priority!!,
         iconImageUrl = info.iconImageUrl,
     )
 }
