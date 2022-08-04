@@ -1,12 +1,11 @@
 package com.hyuuny.norja.utlis
 
-import com.fasterxml.uuid.Generators
 import java.time.LocalDateTime.now
 import java.time.format.DateTimeFormatter.ofPattern
 import java.util.concurrent.atomic.AtomicLong
 
 object CodeGenerator {
-    private val lastTime = AtomicLong(0);
+    private val lastTime = AtomicLong(0)
 
     fun createCode() = this.nextId("R")
 

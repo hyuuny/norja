@@ -14,7 +14,7 @@ class RoomTest {
         val expectedLodgingCompanyId = 1L
         val expectedType = Type.SINGLE_ROOM
         val expectedName = "일반실"
-        val expectedRoomCount = 5L
+        val expectedRoomCount = 5
         val expectedStandardPersonnel = 2
         val expectedMaximumPersonnel = 2
         val expectedFacilities = listOf(
@@ -30,7 +30,7 @@ class RoomTest {
         val expectedPrice = 150_000L
         val expectedContent = "넷플릭스 시청가능"
 
-        val newRoom = FixtureRoom.aRoom(roomCount = 5L, content = expectedContent)
+        val newRoom = FixtureRoom.aRoom(roomCount = 5, content = expectedContent)
 
         newRoom.lodgingCompanyId shouldBe expectedLodgingCompanyId
         newRoom.type shouldBe expectedType
@@ -68,7 +68,7 @@ class RoomTest {
 
     @Test
     fun `객실 수 변경`() {
-        val expectedRoomCount = 20L
+        val expectedRoomCount = 20
         val newRoom = FixtureRoom.aRoom()
         newRoom.changeRoomCount(expectedRoomCount)
         newRoom.roomCount shouldBe expectedRoomCount
@@ -114,7 +114,7 @@ class FixtureRoom {
             lodgingCompanyId: Long = 1L,
             type: Type = Type.SINGLE_ROOM,
             name: String = "일반실",
-            roomCount: Long = 1L,
+            roomCount: Int = 1,
             standardPersonnel: Int = 2,
             maximumPersonnel: Int = 2,
             roomFacilities: MutableList<RoomFacilities> = mutableListOf(
