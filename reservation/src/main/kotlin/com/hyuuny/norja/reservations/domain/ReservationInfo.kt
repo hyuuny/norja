@@ -1,4 +1,4 @@
-package com.hyuuny.norja.reservation.domain
+package com.hyuuny.norja.reservations.domain
 
 import java.time.LocalDate
 import java.time.LocalDateTime

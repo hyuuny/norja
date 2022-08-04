@@ -1,4 +1,4 @@
-package com.hyuuny.norja.reservation.domain
+package com.hyuuny.norja.reservations.domain
 
 import java.time.LocalDate
 
@@ -18,3 +18,9 @@ data class ReservationCreateCommand(
             checkOut = this.checkOut,
         )
 }
+
+data class ReservationCountCommand(
+    val roomId: Long,
+    val checkIn: LocalDate,
+    val checkOut: LocalDate,
+)

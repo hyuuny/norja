@@ -1,4 +1,4 @@
-package com.hyuuny.norja.reservation.domain
+package com.hyuuny.norja.reservations.domain
 
 interface ReservationStore {
 

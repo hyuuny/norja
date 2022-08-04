@@ -1,4 +1,4 @@
-package com.hyuuny.norja.reservation.domain
+package com.hyuuny.norja.reservations.domain
 
 import com.hyuuny.norja.jpa.domain.BaseEntity
 import com.hyuuny.norja.utlis.CodeGenerator
