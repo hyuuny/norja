@@ -158,7 +158,6 @@ project(":rooms") {
 project(":reservation") {
     dependencies {
         implementation(project(":common"))
-        implementation(project(":rooms"))
     }
 }
 

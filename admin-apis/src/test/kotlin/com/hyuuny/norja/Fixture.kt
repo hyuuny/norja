@@ -5,10 +5,12 @@ import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
 import com.hyuuny.norja.lodgingcompanies.interfaces.FacilitiesCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.ImageCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
+import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
 import com.hyuuny.norja.rooms.domain.Type
 import com.hyuuny.norja.rooms.interfaces.RoomCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomFacilitiesCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomImageCreateDto
+import java.time.LocalDate
 
 class Fixture
 
@@ -58,5 +60,19 @@ class FixtureRoom {
                 RoomFacilitiesCreateDto("정수기 비치", "icon3-url", 200L),
             )
         )
+    }
+}
+
+class FixtureReservation {
+    companion object {
+        fun aReservation(roomId: Long, roomCount: Int = 25, price: Long = 130_000) =
+            ReservationCreateCommand(
+                userId = 1,
+                roomId = roomId,
+                roomCount = roomCount,
+                price = price,
+                checkIn = LocalDate.now(),
+                checkOut = LocalDate.now().plusDays(5),
+            )
     }
 }

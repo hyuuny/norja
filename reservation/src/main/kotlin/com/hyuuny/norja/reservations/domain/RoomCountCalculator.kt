@@ -1,6 +1,6 @@
 package com.hyuuny.norja.reservations.domain
 
-data class SearchedReservationRoomCount(
+data class RoomCountCalculator(
     val roomCount: Int = 0,
     val reservationCount: Long = 0,
 ) {

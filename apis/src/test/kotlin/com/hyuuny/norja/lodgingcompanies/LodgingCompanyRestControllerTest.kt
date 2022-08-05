@@ -9,6 +9,10 @@ import com.hyuuny.norja.lodgingcompanies.domain.ImageCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.Status.OPEN
 import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
+import com.hyuuny.norja.lodgingcompanies.interfaces.SearchQuery
+import com.hyuuny.norja.reservations.application.ReservationService
+import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
+import com.hyuuny.norja.reservations.infrastructure.ReservationRepository
 import com.hyuuny.norja.rooms.application.RoomService
 import com.hyuuny.norja.rooms.domain.RoomCreateCommand
 import com.hyuuny.norja.rooms.domain.RoomFacilitiesCreateCommand
@@ -27,7 +31,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
+import java.time.LocalDate
 import java.util.stream.IntStream
+import java.util.stream.LongStream
 
 const val LODGING_COMPANY_REQUEST_URL = "/api/v1/lodging-companies"
 
@@ -43,6 +49,7 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
+        reservationRepository.deleteAll()
         roomRepository.deleteAll()
         lodgingCompanyRepository.deleteAll()
     }
@@ -59,6 +66,11 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     @Autowired
     lateinit var roomService: RoomService
 
+    @Autowired
+    lateinit var reservationRepository: ReservationRepository
+
+    @Autowired
+    lateinit var reservationService: ReservationService
 
     @Test
     @Disabled
@@ -118,7 +130,22 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
                             RoomFacilitiesCreateCommand("정수기 비치", "icon3-url", 200L),
                         )
                     )
-                    roomService.createRoom(roomCommand)
+                    val savedRoomId = roomService.createRoom(roomCommand)
+                    LongStream.range(0, 2).forEach { i ->
+                        run {
+                            reservationService.createReservation(
+                                ReservationCreateCommand(
+                                    userId = i,
+                                    roomId = savedRoomId,
+                                    roomCount = roomCommand.roomCount,
+                                    price = roomCommand.price,
+                                    checkIn = LocalDate.now(),
+                                    checkOut = LocalDate.now().plusDays(5)
+                                )
+                            )
+                        }
+                    }
+
                 }
 
                 if (value == 2) {
@@ -143,7 +170,21 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
                         )
                     )
 
-                    roomService.createRoom(roomCommand)
+                    val savedRoomId = roomService.createRoom(roomCommand)
+                    LongStream.range(0, 5).forEach { i ->
+                        run {
+                            reservationService.createReservation(
+                                ReservationCreateCommand(
+                                    userId = i,
+                                    roomId = savedRoomId,
+                                    roomCount = roomCommand.roomCount,
+                                    price = roomCommand.price,
+                                    checkIn = LocalDate.now(),
+                                    checkOut = LocalDate.now().plusDays(5)
+                                )
+                            )
+                        }
+                    }
                 }
 
                 if (value == 3) {
@@ -167,7 +208,22 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
                             RoomFacilitiesCreateCommand("넷플릭스 시청 가능", "icon3-url", 200L),
                         )
                     )
-                    roomService.createRoom(roomCommand)
+                    val savedRoomId = roomService.createRoom(roomCommand)
+                    LongStream.range(0, 3).forEach { i ->
+                        run {
+                            reservationService.createReservation(
+                                ReservationCreateCommand(
+                                    userId = i,
+                                    roomId = savedRoomId,
+                                    roomCount = roomCommand.roomCount,
+                                    price = roomCommand.price,
+                                    checkIn = LocalDate.now(),
+                                    checkOut = LocalDate.now().plusDays(5)
+                                )
+                            )
+                        }
+                    }
+
                 }
 
                 if (value == 4) {
@@ -190,13 +246,29 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
                             RoomFacilitiesCreateCommand("풀장 비치", "icon3-url", 200L),
                         )
                     )
-                    roomService.createRoom(roomCommand)
+                    val savedRoomId = roomService.createRoom(roomCommand)
+                    LongStream.range(0, 2).forEach { i ->
+                        run {
+                            reservationService.createReservation(
+                                ReservationCreateCommand(
+                                    userId = i,
+                                    roomId = savedRoomId,
+                                    roomCount = roomCommand.roomCount,
+                                    price = roomCommand.price,
+                                    checkIn = LocalDate.now(),
+                                    checkOut = LocalDate.now().plusDays(5)
+                                )
+                            )
+                        }
+                    }
+
                 }
             }
         }
 
         given()
             .contentType(ContentType.JSON)
+            .body(SearchQuery(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2)))
             .`when`()
             .log().all()
             .get("$LODGING_COMPANY_REQUEST_URL/{id}", savedLodgingCompanyId)
@@ -209,6 +281,8 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("thumbnail", equalTo(command.thumbnail))
             .assertThat().body("businessNumber", equalTo(command.businessNumber))
             .assertThat().body("tellNumber", equalTo(command.tellNumber))
+            .assertThat().body("checkIn", equalTo(LocalDate.now().plusDays(1).toString()))
+            .assertThat().body("checkOut", equalTo(LocalDate.now().plusDays(2).toString()))
             .assertThat().body("address.zipcode", equalTo(command.address.zipcode))
             .assertThat().body("address.address", equalTo(command.address.address))
             .assertThat().body("address.detailAddress", equalTo(command.address.detailAddress))
@@ -234,6 +308,11 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("rooms[1].roomCount", equalTo(20))
             .assertThat().body("rooms[2].roomCount", equalTo(10))
             .assertThat().body("rooms[3].roomCount", equalTo(10))
+            .assertThat().body("rooms[0].remainingRoomCount", equalTo(27))
+            .assertThat().body("rooms[1].remainingRoomCount", equalTo(17))
+            .assertThat().body("rooms[2].remainingRoomCount", equalTo(8))
+            .assertThat().body("rooms[3].remainingRoomCount", equalTo(8))
+
     }
 
     @Test
@@ -299,6 +378,8 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
         given()
             .contentType(ContentType.JSON)
+            .queryParam("checkIn", LocalDate.now().toString())
+            .queryParam("checkOut", LocalDate.now().plusDays(5).toString())
             .`when`()
             .log().all()
             .get(LODGING_COMPANY_REQUEST_URL)

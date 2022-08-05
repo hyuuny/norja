@@ -12,18 +12,29 @@ class Reservation private constructor(
     val code: String,
     val userId: Long,
     val roomId: Long,
+    val roomCount: Int,
     status: Status,
+    val price: Long,
     val checkIn: LocalDate,
     val checkOut: LocalDate,
 ) : BaseEntity() {
 
     companion object {
-        fun create(userId: Long, roomId: Long, checkIn: LocalDate, checkOut: LocalDate) =
+        fun create(
+            userId: Long,
+            roomId: Long,
+            roomCount: Int,
+            price: Long,
+            checkIn: LocalDate,
+            checkOut: LocalDate
+        ) =
             Reservation(
                 code = CodeGenerator.createCode(),
                 status = Status.COMPLETION,
                 userId = userId,
                 roomId = roomId,
+                roomCount = roomCount,
+                price = price,
                 checkIn = checkIn,
                 checkOut = checkOut,
             )

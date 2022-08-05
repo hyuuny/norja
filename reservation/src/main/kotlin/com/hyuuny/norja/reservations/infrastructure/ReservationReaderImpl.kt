@@ -1,7 +1,11 @@
 package com.hyuuny.norja.reservations.infrastructure
 
 import com.hyuuny.norja.reservations.domain.ReservationReader
+import com.hyuuny.norja.reservations.domain.ReservationSearchQuery
+import com.hyuuny.norja.reservations.domain.SearchedReservationListing
 import com.hyuuny.norja.web.model.HttpStatusMessageException
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -24,5 +28,11 @@ class ReservationReaderImpl(
             "reservation.id.notFound",
             id
         )
+
+    override fun retrieveReservation(
+        searchQuery: ReservationSearchQuery,
+        pageable: Pageable
+    ): PageImpl<SearchedReservationListing> =
+        reservationRepository.retrieveReservation(searchQuery, pageable)
 
 }

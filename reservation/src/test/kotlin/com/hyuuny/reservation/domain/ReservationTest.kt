@@ -1,7 +1,7 @@
 package com.hyuuny.reservation.domain
 
-import com.hyuuny.norja.reservation.domain.Reservation
-import com.hyuuny.norja.reservation.domain.Status
+import com.hyuuny.norja.reservations.domain.Reservation
+import com.hyuuny.norja.reservations.domain.Status
 import com.hyuuny.norja.web.model.HttpStatusMessageException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
@@ -15,15 +15,19 @@ class ReservationTest {
     fun `예약`() {
         val expectedUserId = 1L
         val expectedRoomId = 5L
+        val expectedRoomCount = 2
         val expectedStatus = Status.COMPLETION
-        val expectedCheckIn = LocalDate.of(2022, 8, 4)
-        val expectedCheckOut = LocalDate.of(2022, 8, 10)
+        val expectedPrice = 80_000
+        val expectedCheckIn = LocalDate.now()
+        val expectedCheckOut = LocalDate.now().plusDays(5)
 
         val newReservation = FixtureReservation.aReservation()
 
         newReservation.userId shouldBe expectedUserId
         newReservation.roomId shouldBe expectedRoomId
+        newReservation.roomCount shouldBe expectedRoomCount
         newReservation.status shouldBe expectedStatus
+        newReservation.price shouldBe expectedPrice
         newReservation.checkIn shouldBe expectedCheckIn
         newReservation.checkOut shouldBe expectedCheckOut
     }
@@ -40,7 +44,8 @@ class ReservationTest {
     @Test
     fun `퇴실일이 입실일보다 이전이면 예외`() {
         val expectedErrorMsg = "reservation.checkOut.notValid"
-        val newReservation = FixtureReservation.aReservation(checkOut = LocalDate.now().minusDays(1))
+        val newReservation =
+            FixtureReservation.aReservation(checkOut = LocalDate.now().minusDays(1))
         shouldThrow<HttpStatusMessageException> {
             newReservation.validate()
         }.shouldHaveMessage(expectedErrorMsg)
@@ -60,9 +65,11 @@ class FixtureReservation {
         fun aReservation(
             userId: Long = 1L,
             roomId: Long = 5L,
-            checkIn: LocalDate = LocalDate.of(2022, 8, 4),
-            checkOut: LocalDate = LocalDate.of(2022, 8, 10),
+            roomCount: Int = 2,
+            price: Long = 80_000,
+            checkIn: LocalDate = LocalDate.now(),
+            checkOut: LocalDate = LocalDate.now().plusDays(5),
         ) =
-            Reservation.create(userId, roomId, checkIn, checkOut)
+            Reservation.create(userId, roomId, roomCount, price, checkIn, checkOut)
     }
 }

@@ -8,19 +8,23 @@ data class ReservationInfo(
     val code: String,
     val userId: Long,
     val roomId: Long,
+    val roomCount: Int,
     val status: Status,
+    val price: Long,
     val checkIn: LocalDate,
     val checkOut: LocalDate,
-    val createAt: LocalDateTime,
+    val createdAt: LocalDateTime,
 ) {
     constructor(entity: Reservation) : this(
         id = entity.id!!,
         code = entity.code,
         userId = entity.userId,
         roomId = entity.roomId,
+        roomCount = entity.roomCount,
         status = entity.status,
+        price = entity.price,
         checkIn = entity.checkIn,
         checkOut = entity.checkOut,
-        createAt = entity.createdAt,
+        createdAt = entity.createdAt,
     )
 }

@@ -1,12 +1,16 @@
 package com.hyuuny.norja.reservations.interfaces
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.reservations.domain.ReservationInfo
 import com.hyuuny.norja.reservations.domain.Status
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@JsonInclude(Include.NON_NULL)
 data class ReservationResponse(
     val id: Long,
+    val code: String,
     val userId: Long,
     val roomId: Long,
     val roomCount: Int,
@@ -18,6 +22,7 @@ data class ReservationResponse(
 ) {
     constructor(info: ReservationInfo) : this(
         id = info.id,
+        code = info.code,
         userId = info.userId,
         roomId = info.roomId,
         roomCount = info.roomCount,

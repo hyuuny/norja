@@ -1,17 +1,15 @@
 package com.hyuuny.norja.reservations.infrastructure
 
 import com.hyuuny.norja.jpa.support.CustomQueryDslRepository
+import com.hyuuny.norja.reservations.domain.*
 import com.hyuuny.norja.reservations.domain.QReservation.reservation
-import com.hyuuny.norja.reservations.domain.Reservation
-import com.hyuuny.norja.reservations.domain.ReservationCountCommand
-import com.hyuuny.norja.reservations.domain.SearchedReservationRoomCount
-import com.hyuuny.norja.reservations.domain.Status
-import com.hyuuny.norja.rooms.domain.QRoom.room
-import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections.fields
-import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
+import org.springframework.util.ObjectUtils.isEmpty
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ReservationRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
@@ -27,18 +25,9 @@ class ReservationRepositoryImpl(
             .fetchOne()
     }
 
-    override fun countRoomReservation(command: ReservationCountCommand): SearchedReservationRoomCount {
-        return queryFactory.select(
-            fields(
-                SearchedReservationRoomCount::class.java,
-                ExpressionUtils.`as`(
-                    JPAExpressions.select(room.roomCount)
-                        .from(room)
-                        .where(roomIdEq(command.roomId)), "roomCount"
-                ),
-                reservation.id.count().`as`("reservationCount"),
-            )
-        )
+    override fun countRoomReservation(command: ReservationCountCommand): Long {
+        return queryFactory
+            .select(reservation.id.count())
             .from(reservation)
             .where(
                 reservationRoomIdEq(command.roomId),
@@ -49,11 +38,41 @@ class ReservationRepositoryImpl(
             .fetchFirst()
     }
 
+    override fun retrieveReservation(
+        searchQuery: ReservationSearchQuery,
+        pageable: Pageable
+    ): PageImpl<SearchedReservationListing> {
+        return applyPageImpl(
+            pageable, queryFactory
+                .select(
+                    fields(
+                        SearchedReservationListing::class.java,
+                        reservation.id,
+                        reservation.code,
+                        reservation.userId,
+                        reservation.roomId,
+                        reservation.roomCount,
+                        reservation.status,
+                        reservation.price,
+                        reservation.checkIn,
+                        reservation.checkOut,
+                        reservation.createdAt,
+                    )
+                )
+                .from(reservation)
+                .where(
+                    idEq(searchQuery.id),
+                    userIdEq(searchQuery.userId),
+                    checkInEq(searchQuery.checkIn),
+                    checkOutEq(searchQuery.checkOut),
+                    statusEq(searchQuery.status),
+                )
+        )
+    }
+
     private fun reservationIdEq(id: Long) = reservation.id.eq(id)
 
     private fun reservationRoomIdEq(roomId: Long) = reservation.roomId.eq(roomId)
-
-    private fun roomIdEq(roomId: Long) = room.id.eq(roomId)
 
     private fun fromCheckIn(checkOut: LocalDate) = reservation.checkIn.lt(checkOut)
 
@@ -61,5 +80,22 @@ class ReservationRepositoryImpl(
 
     private fun statusCompletion() = reservation.status.eq(Status.COMPLETION)
 
+    private fun idEq(id: Long?) = if (isEmpty(id)) null else reservation.id.eq(id)
+
+    private fun userIdEq(userId: Long?) =
+        if (isEmpty(userId)) null else reservation.userId.eq(userId)
+
+    private fun checkInEq(checkIn: String?) =
+        if (isEmpty(checkIn)) null else reservation.checkIn.eq(
+            LocalDate.parse(checkIn, DateTimeFormatter.ISO_DATE)
+        )
+
+    private fun checkOutEq(checkOut: String?) =
+        if (isEmpty(checkOut)) null else reservation.checkOut.eq(
+            LocalDate.parse(checkOut, DateTimeFormatter.ISO_DATE)
+        )
+
+    private fun statusEq(status: Status?) =
+        if (isEmpty(status)) null else reservation.status.eq(status)
 
 }

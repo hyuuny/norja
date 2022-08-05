@@ -1,6 +1,9 @@
 package com.hyuuny.norja.reservations.application
 
 import com.hyuuny.norja.reservations.domain.*
+import com.hyuuny.norja.reservations.domain.collections.SearchedReservations
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,10 +19,7 @@ class ReservationService(
     fun createReservation(command: ReservationCreateCommand): Long {
         val newReservation = command.toEntity
         newReservation.validate()
-
-        reservationDomainService.verifyReservation(
-            ReservationCountCommand(command.roomId, command.checkIn, command.checkOut)
-        )
+        reservationDomainService.verifyReservation(command.toCountCommand)
         return reservationStore.store(newReservation).id!!
     }
 
@@ -32,6 +32,15 @@ class ReservationService(
     fun requestCancel(id: Long) {
         val loadedReservation = reservationReader.getCompletionReservation(id)
         loadedReservation.cancel()
+    }
+
+    fun retrieveReservation(
+        searchQuery: ReservationSearchQuery,
+        pageable: Pageable
+    ): PageImpl<ReservationListingInfo> {
+        val searched = reservationReader.retrieveReservation(searchQuery, pageable)
+        val searchedReservations = SearchedReservations(searched.content)
+        return PageImpl(searchedReservations.toPage(), pageable, searched.totalElements)
     }
 
 }
