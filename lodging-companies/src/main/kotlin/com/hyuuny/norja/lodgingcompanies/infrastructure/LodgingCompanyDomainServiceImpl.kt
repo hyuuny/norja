@@ -1,5 +1,6 @@
 package com.hyuuny.norja.lodgingcompanies.infrastructure
 
+import com.hyuuny.norja.lodgingcompanies.domain.DateSearchQuery
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyAndRoomInfo
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyDomainService
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyReader
@@ -12,9 +13,21 @@ class LodgingCompanyDomainServiceImpl(
     private val roomReader: RoomReader,
 ) : LodgingCompanyDomainService {
 
-    override fun getLodgingCompanyAndRoom(id: Long): LodgingCompanyAndRoomInfo {
+    override fun getLodgingCompanyAndRoom(
+        id: Long,
+        searchQuery: DateSearchQuery
+    ): LodgingCompanyAndRoomInfo {
         val loadedLodgingCompany = lodgingCompanyReader.loadLodgingCompany(id)
-        val loadedRooms = roomReader.getRoomsByLodgingCompanyId(loadedLodgingCompany.id!!)
-        return LodgingCompanyAndRoomInfo(loadedLodgingCompany, loadedRooms)
+        val loadedRooms = roomReader.getRoomsByLodgingCompanyId(
+            loadedLodgingCompany.id!!,
+            searchQuery.checkIn,
+            searchQuery.checkOut
+        )
+        return LodgingCompanyAndRoomInfo(
+            loadedLodgingCompany,
+            loadedRooms,
+            searchQuery.checkIn,
+            searchQuery.checkOut
+        )
     }
 }

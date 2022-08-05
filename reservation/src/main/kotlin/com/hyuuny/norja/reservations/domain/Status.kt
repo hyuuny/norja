@@ -1,4 +1,4 @@
-package com.hyuuny.norja.reservation.domain
+package com.hyuuny.norja.reservations.domain
 
 enum class Status(val title: String) {
     COMPLETION("예약완료"),

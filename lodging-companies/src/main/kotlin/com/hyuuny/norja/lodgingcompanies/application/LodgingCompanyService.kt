@@ -35,9 +35,11 @@ class LodgingCompanyService(
         return LodgingCompanyInfo(loadedLodgingCompany)
     }
 
-    fun getLodgingCompanyAndRooms(id: Long): LodgingCompanyAndRoomInfo {
-        return lodgingCompanyDomainService.getLodgingCompanyAndRoom(id)
-    }
+    fun getLodgingCompanyAndRooms(
+        id: Long,
+        searchQuery: DateSearchQuery
+    ): LodgingCompanyAndRoomInfo =
+        lodgingCompanyDomainService.getLodgingCompanyAndRoom(id, searchQuery)
 
     @Transactional
     fun updateLodgingCompany(id: Long, command: LodgingCompanyUpdateCommand): LodgingCompanyInfo {

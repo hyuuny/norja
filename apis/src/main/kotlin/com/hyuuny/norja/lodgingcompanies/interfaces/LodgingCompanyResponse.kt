@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.lodgingcompanies.domain.*
 import com.hyuuny.norja.rooms.interfaces.RoomResponse
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @JsonInclude(Include.NON_NULL)
 data class LodgingCompanyResponse(
     val id: Long,
+    val checkIn: LocalDate,
+    val checkOut: LocalDate,
     val type: Type,
     val status: Status,
     val name: String,
@@ -34,6 +37,8 @@ data class LodgingCompanyResponse(
         tellNumber = info.tellNumber,
         address = info.address,
         searchTag = info.searchTag,
+        checkIn = info.checkIn,
+        checkOut = info.checkOut,
         rooms = info.rooms.stream()
             .map(::RoomResponse)
             .sorted(Comparator.comparing(RoomResponse::price))

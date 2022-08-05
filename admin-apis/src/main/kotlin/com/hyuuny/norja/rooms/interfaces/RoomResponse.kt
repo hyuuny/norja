@@ -1,12 +1,13 @@
 package com.hyuuny.norja.rooms.interfaces
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.rooms.domain.RoomFacilitiesInfo
 import com.hyuuny.norja.rooms.domain.RoomImageInfo
 import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.Type
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 data class RoomResponse(
     val id: Long,
     val lodgingCompanyId: Long,

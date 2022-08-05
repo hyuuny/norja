@@ -5,6 +5,7 @@ import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingInfo
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyListingResponse
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyResponse
+import com.hyuuny.norja.lodgingcompanies.interfaces.SearchQuery
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -17,10 +18,8 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 
 @RequestMapping(path = ["/api/v1/lodging-companies"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
@@ -50,8 +49,12 @@ class LodgingCompanyRestController(
         searched.stream().map(::LodgingCompanyListingResponse).toList()
 
     @GetMapping("/{id}")
-    fun getLodgingCompany(@PathVariable id: Long): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
-        val loadedLodgingCompanyAndRooms = lodgingCompanyService.getLodgingCompanyAndRooms(id)
+    fun getLodgingCompany(
+        @PathVariable id: Long,
+        @RequestBody searchQuery: SearchQuery
+    ): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
+        val loadedLodgingCompanyAndRooms =
+            lodgingCompanyService.getLodgingCompanyAndRooms(id, searchQuery.toDateSearchQuery())
         val resource = LodgingCompanyResponse(loadedLodgingCompanyAndRooms)
         return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(resource))
     }
@@ -65,7 +68,7 @@ class LodgingCompanyRestController(
                 entity,
                 WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
-                        .getLodgingCompany(entity.id)
+                        .getLodgingCompany(entity.id, SearchQuery(LocalDate.now(), LocalDate.now()))
                 )
                     .withSelfRel()
             )
@@ -81,7 +84,10 @@ class LodgingCompanyRestController(
                 entity,
                 WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
-                        .getLodgingCompany(entity.id)
+                        .getLodgingCompany(
+                            entity.id,
+                            SearchQuery(entity.checkIn, entity.checkOut)
+                        )
                 )
                     .withSelfRel()
             )

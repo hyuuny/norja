@@ -6,6 +6,7 @@ data class RoomInfo(
     val type: Type,
     val name: String,
     val roomCount: Int,
+    val remainingRoomCount: Long,
     val standardPersonnel: Int = 2,
     val maximumPersonnel: Int = 2,
     val price: Long,
@@ -13,12 +14,15 @@ data class RoomInfo(
     val roomImages: List<RoomImageInfo> = listOf(),
     val roomFacilities: List<RoomFacilitiesInfo> = listOf(),
 ) {
-    constructor(entity: Room) : this(
+    constructor(entity: Room) : this(entity, 0)
+
+    constructor(entity: Room, remainingRoomCount: Long) : this(
         id = entity.id!!,
         lodgingCompanyId = entity.lodgingCompanyId,
         type = entity.type,
         name = entity.name,
         roomCount = entity.roomCount,
+        remainingRoomCount = remainingRoomCount,
         standardPersonnel = entity.standardPersonnel,
         maximumPersonnel = entity.maximumPersonnel,
         price = entity.price,
