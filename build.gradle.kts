@@ -54,9 +54,9 @@ subprojects {
         implementation("org.modelmapper:modelmapper:2.3.7")
 
         // Open API
-//        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-//        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-//        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
 
         // RestAssured
         testImplementation("io.rest-assured:rest-assured")

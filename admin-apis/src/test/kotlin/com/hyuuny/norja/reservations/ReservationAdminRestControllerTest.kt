@@ -111,19 +111,19 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("page.number", equalTo(0))
             .assertThat()
             .body(
-                "_embedded.reservationListingResponseList[0].roomId",
+                "_embedded.reservations[0].roomId",
                 equalTo(savedRoomId.toInt())
             )
             .body(
-                "_embedded.reservationListingResponseList[0].roomCount",
+                "_embedded.reservations[0].roomCount",
                 equalTo(roomDto.roomCount)
             )
             .body(
-                "_embedded.reservationListingResponseList[0].status",
+                "_embedded.reservations[0].status",
                 equalTo(Status.COMPLETION.toString())
             )
             .body(
-                "_embedded.reservationListingResponseList[0].price",
+                "_embedded.reservations[0].price",
                 equalTo(roomDto.price.toInt())
             )
     }
@@ -179,7 +179,7 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("page.totalPages", equalTo(1))
             .assertThat().body("page.number", equalTo(0))
             .assertThat()
-            .body("_embedded.reservationListingResponseList[0].userId", equalTo(1))
+            .body("_embedded.reservations[0].userId", equalTo(1))
     }
 
     @Test
@@ -234,7 +234,7 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("page.number", equalTo(0))
             .assertThat()
             .body(
-                "_embedded.reservationListingResponseList[0].checkIn",
+                "_embedded.reservations[0].checkIn",
                 equalTo(LocalDate.now().plusDays(2).toString())
             )
     }
@@ -291,7 +291,7 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("page.number", equalTo(0))
             .assertThat()
             .body(
-                "_embedded.reservationListingResponseList[0].checkOut",
+                "_embedded.reservations[0].checkOut",
                 equalTo(LocalDate.now().plusDays(7).toString())
             )
     }

@@ -5,6 +5,8 @@ import com.hyuuny.norja.reservations.domain.ReservationListingInfo
 import com.hyuuny.norja.reservations.domain.ReservationSearchQuery
 import com.hyuuny.norja.reservations.interfaces.ReservationListingResponse
 import com.hyuuny.norja.reservations.interfaces.ReservationResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort.Direction.DESC
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "예약 API")
 @RequestMapping(path = ["/api/v1/reservations"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class ReservationAdminRestController(
@@ -30,6 +33,7 @@ class ReservationAdminRestController(
     private val reservationResourceAssembler: ReservationResourceAssembler,
 ) {
 
+    @Operation(summary = "예약 조회 및 검색")
     @GetMapping
     fun retrieveReservation(
         searchQuery: ReservationSearchQuery,
@@ -49,6 +53,7 @@ class ReservationAdminRestController(
     private fun toResponses(searched: List<ReservationListingInfo>) =
         searched.stream().map(::ReservationListingResponse).toList()
 
+    @Operation(summary = "예약 상세 조회")
     @GetMapping("/{id}")
     fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponse>> {
         val loadedReservation = reservationsService.getReservation(id)
