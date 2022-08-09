@@ -6,6 +6,7 @@ import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyDomainService
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyReader
 import com.hyuuny.norja.rooms.domain.RoomReader
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class LodgingCompanyDomainServiceImpl(
@@ -17,11 +18,14 @@ class LodgingCompanyDomainServiceImpl(
         id: Long,
         searchQuery: DateSearchQuery
     ): LodgingCompanyAndRoomInfo {
+        val parsedCheckIn = LocalDate.parse(searchQuery.checkIn)
+        val parsedCheckOut = LocalDate.parse(searchQuery.checkOut)
+
         val loadedLodgingCompany = lodgingCompanyReader.loadLodgingCompany(id)
         val loadedRooms = roomReader.getRoomsByLodgingCompanyId(
             loadedLodgingCompany.id!!,
-            searchQuery.checkIn,
-            searchQuery.checkOut
+            parsedCheckIn,
+            parsedCheckOut
         )
         return LodgingCompanyAndRoomInfo(
             loadedLodgingCompany,

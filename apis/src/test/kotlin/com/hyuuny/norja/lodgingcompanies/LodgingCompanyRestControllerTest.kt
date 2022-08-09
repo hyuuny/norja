@@ -9,7 +9,6 @@ import com.hyuuny.norja.lodgingcompanies.domain.ImageCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.Status.OPEN
 import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
-import com.hyuuny.norja.lodgingcompanies.interfaces.SearchQuery
 import com.hyuuny.norja.reservations.application.ReservationService
 import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
 import com.hyuuny.norja.reservations.infrastructure.ReservationRepository
@@ -80,6 +79,12 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
         given()
             .contentType(ContentType.JSON)
+            .params(
+                mutableMapOf(
+                    "checkIn" to LocalDate.now().toString(),
+                    "checkOut" to LocalDate.now().plusDays(5).toString()
+                )
+            )
             .`when`()
             .log().all()
             .get("$LODGING_COMPANY_REQUEST_URL/{id}", savedLodgingCompanyId)
@@ -268,7 +273,12 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
         given()
             .contentType(ContentType.JSON)
-            .body(SearchQuery(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2)))
+            .params(
+                mutableMapOf(
+                    "checkIn" to LocalDate.now().plusDays(1).toString(),
+                    "checkOut" to LocalDate.now().plusDays(2).toString()
+                )
+            )
             .`when`()
             .log().all()
             .get("$LODGING_COMPANY_REQUEST_URL/{id}", savedLodgingCompanyId)
@@ -319,6 +329,12 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     fun `숙박 업체 상세 조회 - 잘못된 아이디 예외`() {
         given()
             .contentType(ContentType.JSON)
+            .params(
+                mutableMapOf(
+                    "checkIn" to LocalDate.now().plusDays(1).toString(),
+                    "checkOut" to LocalDate.now().plusDays(2).toString()
+                )
+            )
             .`when`()
             .log().all()
             .get("$LODGING_COMPANY_REQUEST_URL/{id}", 999999)
@@ -378,8 +394,12 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
         given()
             .contentType(ContentType.JSON)
-            .queryParam("checkIn", LocalDate.now().toString())
-            .queryParam("checkOut", LocalDate.now().plusDays(5).toString())
+            .params(
+                mutableMapOf(
+                    "checkIn" to LocalDate.now().toString(),
+                    "checkOut" to LocalDate.now().plusDays(5).toString()
+                )
+            )
             .`when`()
             .log().all()
             .get(LODGING_COMPANY_REQUEST_URL)
@@ -390,14 +410,11 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("page.totalPages", equalTo(2))
             .assertThat().body("page.number", equalTo(0))
             .assertThat()
-            .body("_embedded.lodgingCompanyListingResponseList[0].type", equalTo(HOTEL.toString()))
+            .body("_embedded.lodgingCompanies[0].type", equalTo(HOTEL.toString()))
             .assertThat()
-            .body("_embedded.lodgingCompanyListingResponseList[0].status", equalTo(OPEN.toString()))
-            .assertThat().body(
-                "_embedded.lodgingCompanyListingResponseList[0].thumbnail",
-                equalTo("thumbnail-url")
-            )
+            .body("_embedded.lodgingCompanies[0].status", equalTo(OPEN.toString()))
+            .assertThat().body("_embedded.lodgingCompanies[0].thumbnail", equalTo("thumbnail-url"))
             .assertThat()
-            .body("_embedded.lodgingCompanyListingResponseList[0].price", equalTo(11000))
+            .body("_embedded.lodgingCompanies[0].price", equalTo(11000))
     }
 }

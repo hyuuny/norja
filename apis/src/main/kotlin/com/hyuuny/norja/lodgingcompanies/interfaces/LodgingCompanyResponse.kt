@@ -5,25 +5,57 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.lodgingcompanies.domain.*
 import com.hyuuny.norja.rooms.interfaces.RoomResponse
-import java.time.LocalDate
+import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.hateoas.server.core.Relation
 import java.time.LocalDateTime
 
+@Relation(collectionRelation = "lodgingCompanies")
 @JsonInclude(Include.NON_NULL)
 data class LodgingCompanyResponse(
+
+    @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,
-    val checkIn: LocalDate,
-    val checkOut: LocalDate,
+
+    @field:Schema(description = "체크인", example = "2022-08-08", required = true)
+    val checkIn: String,
+
+    @field:Schema(description = "체크아웃", example = "2022-08-10", required = true)
+    val checkOut: String,
+
+    @field:Schema(description = "타입", example = "HOTEL", required = true)
     val type: Type,
+
+    @field:Schema(description = "상태", example = "OPEN", required = true)
     val status: Status,
+
+    @field:Schema(description = "숙박업체명", example = "스테이 호텔", required = true)
     val name: String,
+
+    @field:Schema(description = "썸네일 URL", example = "thumbnail-url", required = true)
     val thumbnail: String,
+
+    @field:Schema(description = "사업자등록번호", example = "1233445678", required = true)
     val businessNumber: String,
+
+    @field:Schema(description = "전화번호", example = "070-1234-1234", required = true)
     val tellNumber: String,
+
+    @field:Schema(description = "주소", required = true)
     val address: Address,
+
+    @field:Schema(description = "검색태그", example = "스테이, 강남")
     val searchTag: String? = null,
+
+    @field:Schema(description = "객실")
     val rooms: List<RoomResponse>? = listOf(),
+
+    @field:Schema(description = "이미지")
     val images: List<ImageResponse>? = listOf(),
+
+    @field:Schema(description = "시설")
     val facilities: List<FacilitiesResponse>? = listOf(),
+
+    @field:Schema(description = "등록일", example = "2022-08-08T21:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
 

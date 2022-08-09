@@ -6,9 +6,12 @@ import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyListingResponse
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyResponse
 import com.hyuuny.norja.lodgingcompanies.interfaces.SearchQuery
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springdoc.api.annotations.ParameterObject
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Sort.Direction.DESC
 import org.springframework.data.web.PageableDefault
 import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.EntityModel
@@ -18,9 +21,13 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
+@Tag(name = "숙박업체 API")
 @RequestMapping(path = ["/api/v1/lodging-companies"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class LodgingCompanyRestController(
@@ -29,10 +36,14 @@ class LodgingCompanyRestController(
     private val lodgingCompanyResourceAssembler: LodgingCompanyResourceAssembler,
 ) {
 
+    @Operation(summary = "숙박업체 조회 및 검색")
     @GetMapping
     fun retrieveLodgingCompanies(
-        searchQuery: LodgingCompanySearchQuery,
-        @PageableDefault(sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
+        @ParameterObject searchQuery: LodgingCompanySearchQuery,
+        @ParameterObject @PageableDefault(
+            sort = ["createdAt"],
+            direction = DESC
+        ) pageable: Pageable,
         pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponse>,
     ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponse>>> {
         val searched = lodgingCompanyService.retrieveLodgingCompany(searchQuery, pageable)
@@ -48,10 +59,11 @@ class LodgingCompanyRestController(
     private fun toResponses(searched: List<LodgingCompanyListingInfo>) =
         searched.stream().map(::LodgingCompanyListingResponse).toList()
 
+    @Operation(summary = "숙박업체 상세 조회")
     @GetMapping("/{id}")
     fun getLodgingCompany(
         @PathVariable id: Long,
-        @RequestBody searchQuery: SearchQuery
+        @ParameterObject searchQuery: SearchQuery
     ): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
         val loadedLodgingCompanyAndRooms =
             lodgingCompanyService.getLodgingCompanyAndRooms(id, searchQuery.toDateSearchQuery())
@@ -68,7 +80,10 @@ class LodgingCompanyRestController(
                 entity,
                 WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
-                        .getLodgingCompany(entity.id, SearchQuery(LocalDate.now(), LocalDate.now()))
+                        .getLodgingCompany(
+                            entity.id,
+                            SearchQuery(LocalDate.now().toString(), LocalDate.now().toString())
+                        )
                 )
                     .withSelfRel()
             )
@@ -86,7 +101,7 @@ class LodgingCompanyRestController(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
                         .getLodgingCompany(
                             entity.id,
-                            SearchQuery(entity.checkIn, entity.checkOut)
+                            SearchQuery(entity.checkIn.toString(), entity.checkOut.toString())
                         )
                 )
                     .withSelfRel()

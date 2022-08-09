@@ -2,6 +2,8 @@ package com.hyuuny.norja.rooms
 
 import com.hyuuny.norja.rooms.application.RoomService
 import com.hyuuny.norja.rooms.interfaces.RoomResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.server.RepresentationModelAssembler
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "객실 API")
 @RequestMapping(path = ["/api/v1/rooms"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class RoomRestController(
@@ -20,7 +23,7 @@ class RoomRestController(
     private val roomResourceAssembler: RoomResourceAssembler,
 ) {
 
-
+    @Operation(summary = "객실 상세 조회")
     @GetMapping("/{id}")
     fun getRoom(@PathVariable id: Long): ResponseEntity<EntityModel<RoomResponse>> {
         val loadedRoom = roomService.getRoom(id)

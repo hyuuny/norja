@@ -2,6 +2,7 @@ package com.hyuuny.norja.rooms.infrastructure
 
 import com.hyuuny.norja.jpa.support.CustomQueryDslRepository
 import com.hyuuny.norja.reservations.domain.QReservation.reservation
+import com.hyuuny.norja.reservations.domain.Status
 import com.hyuuny.norja.rooms.domain.QRoom.room
 import com.hyuuny.norja.rooms.domain.Room
 import com.hyuuny.norja.rooms.domain.SearchedRoom
@@ -31,13 +32,15 @@ class RoomRepositoryImpl(
                         reservation.roomId.eq(room.id),
                         fromCheckIn(checkOut),
                         toCheckOut(checkIn),
+                        statusCompletion(),
                     ), "reservedRoomCount"
             ),
+            room.type,
         )
     )
         .from(room)
         .where(lodgingCompanyIdEq(lodgingCompanyId))
-        .groupBy(room.type)
+        .groupBy(room.type, room.id)
         .fetch().toList()
 
     override fun countByLodgingCompanyIdAndType(lodgingCompanyId: Long, type: Type) =
@@ -56,5 +59,7 @@ class RoomRepositoryImpl(
     private fun fromCheckIn(checkOut: LocalDate) = reservation.checkIn.lt(checkOut)
 
     private fun toCheckOut(checkIn: LocalDate) = reservation.checkOut.gt(checkIn)
+
+    private fun statusCompletion() = reservation.status.eq(Status.COMPLETION)
 
 }

@@ -2,7 +2,6 @@ package com.hyuuny.norja.lodgingcompanies.domain
 
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.rooms.domain.RoomInfo
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class LodgingCompanyInfo(
@@ -84,16 +83,16 @@ data class LodgingCompanyAndRoomInfo(
     val rooms: List<RoomInfo> = listOf(),
     val images: List<ImageInfo> = listOf(),
     val facilities: List<FacilitiesInfo> = listOf(),
-    val checkIn: LocalDate,
-    val checkOut: LocalDate,
+    val checkIn: String,
+    val checkOut: String,
     val createdAt: LocalDateTime,
 ) {
 
     constructor(
         entity: LodgingCompany,
         rooms: List<RoomInfo>,
-        checkIn: LocalDate,
-        checkOut: LocalDate
+        checkIn: String,
+        checkOut: String
     ) : this(
         id = entity.id!!,
         type = entity.type,
