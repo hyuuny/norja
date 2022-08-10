@@ -1,6 +1,6 @@
-package com.hyuuny.norja.users.security
+package com.hyuuny.norja.configs
 
-import com.hyuuny.norja.users.jwts.JwtFilter
+import com.hyuuny.norja.filters.JwtFilter
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @EnableWebSecurity
@@ -27,10 +28,7 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
             .and()
             .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/**").permitAll()
-//            .antMatchers(HttpMethod.POST).hasAnyRole("USER")
-//            .antMatchers(HttpMethod.PUT, "/**").permitAll()
-//            .antMatchers(HttpMethod.DELETE, "/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/v1/lodging-companies", "/api/v1/rooms/**").permitAll()
             .anyRequest().authenticated()
     }
 
@@ -42,5 +40,7 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
     override fun authenticationManagerBean(): AuthenticationManager =
         super.authenticationManagerBean()
 
+    @Bean
+    fun passwordEncoder() = BCryptPasswordEncoder()
 
 }

@@ -1,5 +1,6 @@
-package com.hyuuny.norja.users.jwts
+package com.hyuuny.norja.filters
 
+import com.hyuuny.norja.users.jwts.JwtUtils
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter

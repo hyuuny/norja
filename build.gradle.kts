@@ -53,30 +53,14 @@ subprojects {
         implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")
         implementation("org.modelmapper:modelmapper:2.3.7")
 
-        // Open API
-        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
-
-        // RestAssured
-        testImplementation("io.rest-assured:rest-assured")
-
         // kotest
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
         testImplementation("io.kotest:kotest-runner-junit5:5.0.3")
-
-        // security
-        implementation("org.springframework.boot:spring-boot-starter-security")
-        testImplementation("org.springframework.security:spring-security-test")
-
-        // jwt
-        implementation("io.jsonwebtoken:jjwt:0.9.1")
 
         // querydsl
         implementation("com.querydsl:querydsl-jpa:$querydslVersion")
         kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
         kapt("org.springframework.boot:spring-boot-configuration-processor")
-
     }
 
     dependencyManagement {
@@ -125,6 +109,21 @@ tasks.withType<Test> {
 
 project(":admin-apis") {
     dependencies {
+        // security
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        testImplementation("org.springframework.security:spring-security-test")
+
+        // jwt
+        implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+        // RestAssured
+        testImplementation("io.rest-assured:rest-assured")
+
+        // Open API
+        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
+
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
@@ -135,11 +134,35 @@ project(":admin-apis") {
 
 project(":apis") {
     dependencies {
+        // security
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        testImplementation("org.springframework.security:spring-security-test")
+
+        // jwt
+        implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+        // RestAssured
+        testImplementation("io.rest-assured:rest-assured")
+
+        // Open API
+        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
+
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
         implementation(project(":reservation"))
         implementation(project(":users"))
+    }
+}
+
+project(":common") {
+    dependencies {
+        // Open API
+        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
     }
 }
 
@@ -168,6 +191,13 @@ project(":reservation") {
 
 project(":users") {
     dependencies {
+        // security
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        testImplementation("org.springframework.security:spring-security-test")
+
+        // jwt
+        implementation("io.jsonwebtoken:jjwt:0.9.1")
+
         implementation(project(":common"))
     }
 }
