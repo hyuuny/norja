@@ -129,6 +129,7 @@ project(":admin-apis") {
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
         implementation(project(":reservation"))
+        implementation(project(":users"))
     }
 }
 
@@ -138,6 +139,7 @@ project(":apis") {
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
         implementation(project(":reservation"))
+        implementation(project(":users"))
     }
 }
 
@@ -145,6 +147,7 @@ project(":lodging-companies") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":rooms"))
+        implementation(project(":users"))
     }
 }
 
@@ -152,10 +155,18 @@ project(":rooms") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":reservation"))
+        implementation(project(":users"))
     }
 }
 
 project(":reservation") {
+    dependencies {
+        implementation(project(":common"))
+        implementation(project(":users"))
+    }
+}
+
+project(":users") {
     dependencies {
         implementation(project(":common"))
     }
