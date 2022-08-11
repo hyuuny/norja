@@ -1,6 +1,6 @@
 package com.hyuuny.norja.users.application
 
-import com.hyuuny.norja.users.domain.Credentials
+import com.hyuuny.norja.users.domain.CredentialsCommand
 import com.hyuuny.norja.users.domain.Token
 import com.hyuuny.norja.users.infrastructure.UserAdapter
 import com.hyuuny.norja.users.jwts.JwtUtils
@@ -16,9 +16,9 @@ class AuthService(
     private val jwtUtils: JwtUtils,
 ) {
 
-    fun auth(credentials: Credentials): UserAdapter {
+    fun auth(command: CredentialsCommand): UserAdapter {
         val usernamePasswordAuthenticationToken =
-            UsernamePasswordAuthenticationToken(credentials.username, credentials.password)
+            UsernamePasswordAuthenticationToken(command.username, command.password)
         val token = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
         return token.principal as UserAdapter
     }

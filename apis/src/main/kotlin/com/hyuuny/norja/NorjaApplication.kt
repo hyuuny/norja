@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 class NorjaApplication
 
 const val APPLICATION_LOCATIONS = "spring.config.location=" +
-        "classpath:application.yml,"
+        "classpath:application.yml"
 
 fun main(args: Array<String>) {
     SpringApplicationBuilder(NorjaApplication::class.java)

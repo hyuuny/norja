@@ -28,7 +28,9 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
             .and()
             .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/api/v1/lodging-companies", "/api/v1/rooms/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/", "/api/v1/lodging-companies", "/api/v1/rooms/**")
+            .permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
             .anyRequest().authenticated()
     }
 
