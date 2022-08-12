@@ -1,11 +1,11 @@
-package com.hyuuny.norja.users.domain
+package com.hyuuny.norja.users.infrastructure
 
+import com.hyuuny.norja.users.domain.SearchedUser
+import com.hyuuny.norja.users.domain.UserSearchQuery
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
-interface UserReader {
-
-    fun getUser(id: Long): User
+interface UserRepositoryCustom {
 
     fun retrieveUser(searchQuery: UserSearchQuery, pageable: Pageable): PageImpl<SearchedUser>
 

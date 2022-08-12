@@ -1,6 +1,9 @@
 package com.hyuuny.norja.users.application
 
 import com.hyuuny.norja.users.domain.*
+import com.hyuuny.norja.users.domain.collections.SearchedUsers
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,6 +30,12 @@ class UserService(
         newUser.assignRoles(roles)
         newUser.signUp(passwordEncoder, signUpValidator)
         return userStore.signUp(newUser).id!!
+    }
+
+    fun retrieveUser(searchQuery: UserSearchQuery, pageable: Pageable): PageImpl<UserListingInfo> {
+        val searched = userReader.retrieveUser(searchQuery, pageable)
+        val searchedUsers = SearchedUsers(searched.content)
+        return PageImpl(searchedUsers.toPage(), pageable, searched.totalElements)
     }
 
     fun getUser(id: Long): UserInfo {

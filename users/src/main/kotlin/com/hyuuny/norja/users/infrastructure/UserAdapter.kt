@@ -9,7 +9,7 @@ class UserAdapter(private val user: User) : UserDetails {
 
     private val enabled = true
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
+    override fun getAuthorities(): MutableCollection<GrantedAuthority> =
         AuthorityUtils.createAuthorityList(user.authorities)
 
     override fun getPassword() = user.password
@@ -29,5 +29,13 @@ class UserAdapter(private val user: User) : UserDetails {
     fun getNickname() = user.nickname
 
     fun getPhoneNumber() = user.phoneNumber
+
+    fun getRoles() = user.roles
+
+    fun getAgreedTermsOfService() = user.agreedTermsOfService
+
+    fun getAgreedPrivacyPolicy() = user.agreedPrivacyPolicy
+
+    fun getAgreedReceiveMessage() = user.agreedReceiveMessage
 
 }
