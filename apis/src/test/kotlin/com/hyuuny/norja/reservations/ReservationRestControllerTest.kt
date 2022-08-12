@@ -1,6 +1,7 @@
 package com.hyuuny.norja.reservations
 
 import com.hyuuny.norja.FixtureRoom
+import com.hyuuny.norja.FixtureUser.Companion.aUser
 import com.hyuuny.norja.common.BaseIntegrationTest
 import com.hyuuny.norja.reservations.application.ReservationService
 import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import java.time.LocalDate
 import java.util.stream.LongStream
@@ -37,10 +39,14 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
     fun setUp() {
         RestAssured.port = port
         savedRoomId = roomService.createRoom(FixtureRoom.aRoom(1))
+
+        val command = aUser()
+        savedUserId = userService.singUp(command)
     }
 
     @AfterEach
     fun afterEach() {
+        userRepository.deleteAll()
         reservationRepository.deleteAll()
         roomRepository.deleteAll()
     }
@@ -59,10 +65,16 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
 
     var savedRoomId: Long = 0
 
+    var savedUserId: Long = 0
+
+    val username = aUser().username
+
+    val password = aUser().password
+
     @Test
     fun `객실 예약`() {
         val dto = ReservationCreateDto(
-            userId = 3L,
+            userId = savedUserId,
             roomId = savedRoomId,
             roomCount = 25,
             price = 130_000,
@@ -71,6 +83,10 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
         )
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .body(dto)
             .`when`()
@@ -120,10 +136,14 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
         }
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .body(
                 ReservationCreateCommand(
-                    userId = 10,
+                    userId = savedUserId,
                     roomId = savedRoomId,
                     roomCount = roomCommand.roomCount,
                     price = roomCommand.price,
@@ -141,7 +161,7 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
     @Test
     fun `예약 상세 조회`() {
         val command = ReservationCreateCommand(
-            userId = 3L,
+            userId = savedUserId,
             roomId = savedRoomId,
             roomCount = 25,
             price = 130_000,
@@ -151,6 +171,10 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
         val savedReservationId = reservationService.createReservation(command)
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .get("$RESERVATION_REQUEST_URL/{id}", savedReservationId)
@@ -169,6 +193,10 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
     @Test
     fun `예약 상세 조회- 잘못된 아이디 예외`() {
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -181,7 +209,7 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
     @Test
     fun `예약 취소`() {
         val command = ReservationCreateCommand(
-            userId = 3L,
+            userId = savedUserId,
             roomId = savedRoomId,
             roomCount = 25,
             price = 130_000,
@@ -191,6 +219,10 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
         val savedReservationId = reservationService.createReservation(command)
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .delete("$RESERVATION_REQUEST_URL/cancellation/{id}", savedReservationId)
@@ -202,6 +234,10 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
     @Test
     fun `예약 취소 - 잘못된 아이디 예외`() {
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(username, password)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .delete("$RESERVATION_REQUEST_URL/cancellation/{id}", 999999)

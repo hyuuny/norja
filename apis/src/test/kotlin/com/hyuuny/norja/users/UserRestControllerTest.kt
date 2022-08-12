@@ -2,7 +2,6 @@ package com.hyuuny.norja.users
 
 import com.hyuuny.norja.FixtureUser
 import com.hyuuny.norja.common.BaseIntegrationTest
-import com.hyuuny.norja.users.application.UserService
 import com.hyuuny.norja.users.domain.Status.ACTIVE
 import com.hyuuny.norja.users.interfaces.*
 import io.restassured.RestAssured
@@ -13,7 +12,6 @@ import org.hamcrest.core.IsEqual.equalTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -34,9 +32,6 @@ class UserRestControllerTest : BaseIntegrationTest() {
     fun afterEach() {
         userRepository.deleteAll()
     }
-
-    @Autowired
-    lateinit var userService: UserService
 
 
     @Test

@@ -2,7 +2,6 @@ package com.hyuuny.norja.users
 
 import com.hyuuny.norja.FixtureUser
 import com.hyuuny.norja.common.BaseIntegrationTest
-import com.hyuuny.norja.users.application.UserService
 import com.hyuuny.norja.users.interfaces.CredentialsDto
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
@@ -10,7 +9,6 @@ import io.restassured.http.ContentType
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 
@@ -31,9 +29,6 @@ class AuthRestControllerTest : BaseIntegrationTest() {
     fun afterEach() {
         userRepository.deleteAll()
     }
-
-    @Autowired
-    lateinit var userService: UserService
 
     @Test
     fun `로그인 성공`() {

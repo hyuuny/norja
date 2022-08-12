@@ -2,6 +2,7 @@ package com.hyuuny.norja.common
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hyuuny.norja.users.AUTH_REQUEST_URL
+import com.hyuuny.norja.users.application.UserService
 import com.hyuuny.norja.users.infrastructure.UserRepository
 import com.hyuuny.norja.users.interfaces.CredentialsDto
 import com.hyuuny.norja.users.interfaces.UserWithToken
@@ -33,6 +34,9 @@ abstract class BaseIntegrationTest {
 
     @Autowired
     lateinit var userRepository: UserRepository
+
+    @Autowired
+    lateinit var userService: UserService
 
     @Autowired
     lateinit var mockMvc: MockMvc
