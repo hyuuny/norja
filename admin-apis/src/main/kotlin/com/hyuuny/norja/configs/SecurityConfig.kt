@@ -28,8 +28,9 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
             .and()
             .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/**").permitAll()
-            .anyRequest().hasRole("ADMIN")
+            .antMatchers(HttpMethod.GET, "/").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/users/sign-up").permitAll()
+            .anyRequest().authenticated()
     }
 
     override fun configure(web: WebSecurity) {

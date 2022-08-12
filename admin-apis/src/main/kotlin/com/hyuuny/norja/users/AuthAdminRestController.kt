@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@Tag(name = "로그인 API")
+@Tag(name = "인증 API")
 @RequestMapping(path = ["/api/v1"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
-class AuthRestController(
+class AuthAdminRestController(
     private val authService: AuthService,
 ) {
+
     @Operation(summary = "로그인")
     @PostMapping("/auth")
     fun auth(@RequestBody dto: CredentialsDto): UserWithToken {

@@ -1,5 +1,7 @@
 package com.hyuuny.norja.lodgingcompanies
 
+import com.hyuuny.norja.ADMIN_EMAIL
+import com.hyuuny.norja.ADMIN_PASSWORD
 import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyDto
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.common.BaseIntegrationTest
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
 const val LODGING_COMPANY_REQUEST_URL = "/api/v1/lodging-companies"
@@ -47,6 +50,10 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         val dto = aLodgingCompanyDto()
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .body(dto)
             .contentType(ContentType.JSON)
             .`when`()
@@ -63,6 +70,10 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -107,6 +118,10 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         )
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .body(updateDto)
             .`when`()
@@ -135,6 +150,10 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -150,6 +169,10 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(dto.toCommand())
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()

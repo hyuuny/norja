@@ -1,5 +1,7 @@
 package com.hyuuny.norja.reservations
 
+import com.hyuuny.norja.ADMIN_EMAIL
+import com.hyuuny.norja.ADMIN_PASSWORD
 import com.hyuuny.norja.FixtureReservation.Companion.aReservation
 import com.hyuuny.norja.FixtureRoom
 import com.hyuuny.norja.common.BaseIntegrationTest
@@ -22,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import java.time.LocalDate
 import java.util.stream.LongStream
@@ -98,6 +101,10 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
         }
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -166,6 +173,10 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
         }
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .queryParam("userId", 1)
             .`when`()
@@ -220,6 +231,10 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
         }
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .queryParam("checkIn", LocalDate.now().plusDays(2).toString())
             .`when`()
@@ -277,6 +292,10 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
         }
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .queryParam("checkOut", LocalDate.now().plusDays(2 + 5).toString())
             .`when`()
@@ -302,6 +321,10 @@ class ReservationAdminRestControllerTest : BaseIntegrationTest() {
         val savedReservationId = reservationService.createReservation(command)
 
         RestAssured.given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()

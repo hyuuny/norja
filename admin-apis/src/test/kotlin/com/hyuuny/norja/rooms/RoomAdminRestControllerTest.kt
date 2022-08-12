@@ -1,5 +1,7 @@
 package com.hyuuny.norja.rooms
 
+import com.hyuuny.norja.ADMIN_EMAIL
+import com.hyuuny.norja.ADMIN_PASSWORD
 import com.hyuuny.norja.FixtureLodgingCompany
 import com.hyuuny.norja.FixtureRoom
 import com.hyuuny.norja.common.BaseIntegrationTest
@@ -22,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
 const val ROOM_REQUEST_URL = "/api/v1/rooms"
@@ -65,6 +68,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
         val dto = FixtureRoom.aRoom(savedLodgingCompanyId)
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .body(dto)
             .contentType(ContentType.JSON)
             .`when`()
@@ -94,6 +101,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
         )
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .body(duplicateTypeDto)
             .contentType(ContentType.JSON)
             .`when`()
@@ -110,6 +121,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
         val savedRoomId = roomService.createRoom(dto.toCommand())
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -137,6 +152,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
     @Test
     fun `객실 상세 조회 - 잘못된 아이디 예외`() {
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
@@ -173,6 +192,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
         )
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .body(updateDto)
             .`when`()
@@ -211,6 +234,10 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
         val savedRoomId = roomService.createRoom(dto.toCommand())
 
         given()
+            .header(
+                HttpHeaders.AUTHORIZATION,
+                this.getBearerToken(ADMIN_EMAIL, ADMIN_PASSWORD)
+            )
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
