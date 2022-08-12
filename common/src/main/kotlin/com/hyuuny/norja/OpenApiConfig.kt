@@ -1,9 +1,12 @@
 package com.hyuuny.norja
 
+import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
+import io.swagger.v3.oas.models.security.SecurityRequirement
+import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springdoc.core.SpringDocUtils.getConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -30,7 +33,17 @@ class OpenApiConfig {
                 License().name("Apach License Version 2.0")
                     .url("https://www.apache.org/licenses/LICENSE-2.0")
             )
+        val securityScheme = SecurityScheme()
+            .type(SecurityScheme.Type.HTTP)
+            .scheme("bearer")
+            .bearerFormat("JWT")
+            .`in`(SecurityScheme.In.HEADER)
+            .name("Authorization")
+        val schemaRequirement = SecurityRequirement().addList("bearerAuth")
+
         return OpenAPI()
+            .components(Components().addSecuritySchemes("bearerAuth", securityScheme))
+            .security(listOf(schemaRequirement))
             .info(info)
     }
 

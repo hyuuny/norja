@@ -18,7 +18,7 @@ class JwtFilter(private val jwtUtils: JwtUtils) : OncePerRequestFilter() {
     ) {
         val authHeader =
             request.getHeader("Authorization") ?: return filterChain.doFilter(request, response)
-        val token = authHeader.replace("Bearer :", "")
+        val token = authHeader.replace("Bearer ", "")
 
         // 검증
         if (jwtUtils.validation(token)) {

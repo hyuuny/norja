@@ -28,14 +28,24 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
             .and()
             .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/", "/api/v1/lodging-companies/**", "/api/v1/rooms/**")
+            .antMatchers(
+                HttpMethod.GET,
+                "/",
+                "/api/v1/lodging-companies/**",
+                "/api/v1/rooms/**",
+                "/swagger-ui/**"
+            )
             .permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/users/sign-up").permitAll()
             .anyRequest().authenticated()
     }
 
     override fun configure(web: WebSecurity) {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+        web.ignoring().mvcMatchers(
+            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/api-docs/**",
+        ).requestMatchers(PathRequest.toStaticResources().atCommonLocations())
     }
 
     @Bean
