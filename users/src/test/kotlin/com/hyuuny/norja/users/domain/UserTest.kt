@@ -23,7 +23,7 @@ class UserTest {
         newUser.nickname shouldBe expectedNickname
         newUser.nickname shouldBe expectedNickname
         newUser.phoneNumber shouldBe expectedPhoneNumber
-        newUser.auth shouldBe expectedAuth
+        newUser.roles shouldBe expectedAuth
         newUser.agreedTermsOfService shouldBe expectedAgreedTermsOfService
         newUser.agreedPrivacyPolicy shouldBe expectedPrivacyPolicy
         newUser.agreedReceiveMessage shouldBe expectedReceiveMessage

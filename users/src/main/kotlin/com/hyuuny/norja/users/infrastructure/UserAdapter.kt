@@ -24,4 +24,10 @@ class UserAdapter(private val user: User) : UserDetails {
 
     override fun isEnabled() = this.enabled
 
+    fun getId() = user.id!!
+
+    fun getNickname() = user.nickname
+
+    fun getPhoneNumber() = user.phoneNumber
+
 }

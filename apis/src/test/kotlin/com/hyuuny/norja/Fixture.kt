@@ -8,8 +8,37 @@ import com.hyuuny.norja.lodgingcompanies.domain.Type
 import com.hyuuny.norja.rooms.domain.RoomCreateCommand
 import com.hyuuny.norja.rooms.domain.RoomFacilitiesCreateCommand
 import com.hyuuny.norja.rooms.domain.RoomImageCreateCommand
+import com.hyuuny.norja.users.domain.SignUpCommand
+
+const val ADMIN_EMAIL = "admin@knou.ac.kr"
+const val ADMIN_PASSWORD = "b123456B"
+
+const val MEMBER_EMAIL = "shyune@knou.ac.kr"
+const val MEMBER_PASSWORD = "a123456A"
 
 class Fixture
+
+class FixtureAdmin {
+    companion object {
+        fun anAdmin() = SignUpCommand(
+            username = ADMIN_EMAIL,
+            password = ADMIN_PASSWORD,
+            nickname = "관리자",
+            phoneNumber = "010-8462-7121",
+        )
+    }
+}
+
+class FixtureMember {
+    companion object {
+        fun aMember() = SignUpCommand(
+            username = MEMBER_EMAIL,
+            password = MEMBER_PASSWORD,
+            nickname = "회원",
+            phoneNumber = "010-4832-8923",
+        )
+    }
+}
 
 class FixtureLodgingCompany {
     companion object {
@@ -56,6 +85,17 @@ class FixtureRoom {
                 RoomFacilitiesCreateCommand("퀸 침대", "icon2-url", 300L),
                 RoomFacilitiesCreateCommand("정수기 비치", "icon3-url", 200L),
             )
+        )
+    }
+}
+
+class FixtureUser {
+    companion object {
+        fun aUser(username: String = "hyuuny@knou.ac.kr") = SignUpCommand(
+            username = username,
+            password = "a123456A",
+            nickname = "김성현",
+            phoneNumber = "010-1234-4567",
         )
     }
 }

@@ -30,7 +30,7 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, "/", "/api/v1/lodging-companies", "/api/v1/rooms/**")
             .permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/users/sign-up").permitAll()
             .anyRequest().authenticated()
     }
 

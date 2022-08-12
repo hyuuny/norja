@@ -11,12 +11,21 @@ class UserService(
     private val userStore: UserStore,
     private val userReader: UserReader,
     private val passwordEncoder: PasswordEncoder,
+    private val signUpValidator: SignUpValidator,
 ) {
 
     @Transactional
     fun singUp(command: SignUpCommand): Long {
         val newUser = command.toEntity()
-        newUser.encode(passwordEncoder)
+        newUser.signUp(passwordEncoder, signUpValidator)
+        return userStore.signUp(newUser).id!!
+    }
+
+    @Transactional
+    fun singUp(command: SignUpCommand, roles: String): Long {
+        val newUser = command.toEntity()
+        newUser.assignRoles(roles)
+        newUser.signUp(passwordEncoder, signUpValidator)
         return userStore.signUp(newUser).id!!
     }
 

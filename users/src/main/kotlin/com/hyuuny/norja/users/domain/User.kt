@@ -15,7 +15,7 @@ class User private constructor(
     status: Status = Status.ACTIVE,
     nickname: String,
     phoneNumber: String,
-    auth: String = "ROLE_USER",
+    roles: String = "ROLE_USER",
     agreedTermsOfService: Boolean = true,
     agreedPrivacyPolicy: Boolean = true,
     agreedReceiveMessage: Boolean = true,
@@ -55,11 +55,11 @@ class User private constructor(
     var phoneNumber = phoneNumber
         private set
 
-    var auth = auth
+    var roles = roles
         private set
 
     val authorities
-        get() = if (this.auth.isNotEmpty()) this.auth.split(",").toString() else ""
+        get() = if (this.roles.isNotEmpty()) this.roles.split(",").toString() else ""
 
     var agreedTermsOfService = agreedTermsOfService
         private set
@@ -70,8 +70,9 @@ class User private constructor(
     var agreedReceiveMessage = agreedReceiveMessage
         private set
 
-    fun encode(passwordEncoder: PasswordEncoder) {
+    fun signUp(passwordEncoder: PasswordEncoder, signUpValidator: SignUpValidator) {
         this.password = passwordEncoder.encode(this.password)
+        signUpValidator.validate(this)
     }
 
     fun changePassword(passwordEncoder: PasswordEncoder, password: String) {
@@ -100,6 +101,10 @@ class User private constructor(
 
     fun leave() {
         this.status = Status.LEAVE
+    }
+
+    fun assignRoles(roles: String) {
+        this.roles = roles
     }
 
 }
