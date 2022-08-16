@@ -202,6 +202,12 @@ project(":users") {
     }
 }
 
+project(":reviews") {
+    dependencies {
+        implementation(project(":common"))
+    }
+}
+
 tasks.named("bootJar") {
     enabled = false
 }
