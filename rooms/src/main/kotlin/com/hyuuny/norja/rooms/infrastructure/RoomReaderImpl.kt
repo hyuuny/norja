@@ -1,8 +1,8 @@
 package com.hyuuny.norja.rooms.infrastructure
 
 import com.hyuuny.norja.rooms.domain.Room
-import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.RoomReader
+import com.hyuuny.norja.rooms.domain.RoomResponse
 import com.hyuuny.norja.rooms.domain.SearchedRoom
 import com.hyuuny.norja.web.model.HttpStatusMessageException
 import org.springframework.data.repository.findByIdOrNull
@@ -26,17 +26,18 @@ class RoomReaderImpl(
         lodgingCompanyId: Long,
         checkIn: LocalDate,
         checkOut: LocalDate
-    ): List<RoomInfo> {
+    ): List<RoomResponse> {
         val loadedRoom =
             roomRepository.loadRoomsByLodgingCompanyId(lodgingCompanyId, checkIn, checkOut)
 
         return loadedRoom.stream()
-            .map(::toRoomInfo)
+            .map(::toResponse)
+            .sorted(Comparator.comparing(RoomResponse::price))
             .toList()
     }
 
-    private fun toRoomInfo(searchedRoom: SearchedRoom) =
-        RoomInfo(searchedRoom.room!!, searchedRoom.remainingRoomCount())
+    private fun toResponse(searchedRoom: SearchedRoom) =
+        RoomResponse(searchedRoom.room!!, searchedRoom.remainingRoomCount())
 
     override fun getCountByType(room: Room) =
         roomRepository.countByLodgingCompanyIdAndType(room.lodgingCompanyId, room.type)

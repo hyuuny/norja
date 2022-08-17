@@ -1,8 +1,8 @@
 package com.hyuuny.norja.users
 
 import com.hyuuny.norja.users.application.AuthService
+import com.hyuuny.norja.users.domain.UserWithToken
 import com.hyuuny.norja.users.interfaces.CredentialsDto
-import com.hyuuny.norja.users.interfaces.UserWithToken
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
@@ -19,10 +19,7 @@ class AuthRestController(
 ) {
     @Operation(summary = "로그인")
     @PostMapping("/auth")
-    fun auth(@RequestBody dto: CredentialsDto): UserWithToken {
-        val authedUser = authService.auth(dto.toCommand())
-        val token = authService.generateToken(authedUser.username)
-        return UserWithToken(authedUser, token)
-    }
+    fun auth(@RequestBody dto: CredentialsDto): UserWithToken =
+        authService.authenticate(dto.toCommand())
 
 }

@@ -1,14 +1,12 @@
 package com.hyuuny.norja.users
 
 import com.hyuuny.norja.users.application.UserService
-import com.hyuuny.norja.users.domain.UserListingInfo
+import com.hyuuny.norja.users.domain.UserListingResponse
+import com.hyuuny.norja.users.domain.UserResponse
 import com.hyuuny.norja.users.domain.UserSearchQuery
-import com.hyuuny.norja.users.interfaces.UserListingResponse
-import com.hyuuny.norja.users.interfaces.UserResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.api.annotations.ParameterObject
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -44,25 +42,17 @@ class UserAdminRestController(
         ) pageable: Pageable,
         pagedResourcesAssembler: PagedResourcesAssembler<UserListingResponse>,
     ): ResponseEntity<PagedModel<EntityModel<UserListingResponse>>> {
-        val searched = userService.retrieveUser(searchQuery, pageable)
-        val page = toPage(searched, pageable)
+        val page = userService.retrieveUser(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, userListingResourceAssembler)
         )
     }
 
-    private fun toPage(searched: PageImpl<UserListingInfo>, pageable: Pageable) =
-        PageImpl(toResponses(searched.content), pageable, searched.totalElements)
-
-    private fun toResponses(searched: List<UserListingInfo>) =
-        searched.stream().map(::UserListingResponse).toList()
-
     @Operation(summary = "회원 상세 조회")
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponse>> {
         val loadedUser = userService.getUser(id)
-        val resource = UserResponse(loadedUser)
-        return ResponseEntity.ok(userResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(userResourceAssembler.toModel(loadedUser))
     }
 
 

@@ -1,10 +1,10 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.domain.DateSearchQuery
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyAndRoomResponse
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponse
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
-import com.hyuuny.norja.lodgingcompanies.interfaces.SearchQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.api.annotations.ParameterObject
@@ -54,10 +54,10 @@ class LodgingCompanyRestController(
     @GetMapping("/{id}")
     fun getLodgingCompany(
         @PathVariable id: Long,
-        @ParameterObject searchQuery: SearchQuery
+        @ParameterObject dateSearchQuery: DateSearchQuery
     ): ResponseEntity<EntityModel<LodgingCompanyAndRoomResponse>> {
         val loadedLodgingCompanyAndRooms =
-            lodgingCompanyService.getLodgingCompanyAndRooms(id, searchQuery.toDateSearchQuery())
+            lodgingCompanyService.getLodgingCompanyAndRooms(id, dateSearchQuery)
         return ResponseEntity.ok(
             lodgingCompanyResourceAssembler.toModel(
                 loadedLodgingCompanyAndRooms
@@ -76,7 +76,7 @@ class LodgingCompanyRestController(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
                         .getLodgingCompany(
                             entity.id,
-                            SearchQuery(LocalDate.now().toString(), LocalDate.now().toString())
+                            DateSearchQuery(LocalDate.now().toString(), LocalDate.now().toString())
                         )
                 )
                     .withSelfRel()
@@ -95,7 +95,7 @@ class LodgingCompanyRestController(
                     WebMvcLinkBuilder.methodOn(LodgingCompanyRestController::class.java)
                         .getLodgingCompany(
                             entity.id,
-                            SearchQuery(entity.checkIn, entity.checkOut)
+                            DateSearchQuery(entity.checkIn, entity.checkOut)
                         )
                 )
                     .withSelfRel()

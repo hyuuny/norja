@@ -12,23 +12,21 @@ data class ReservationCreateCommand(
     val checkIn: LocalDate,
     val checkOut: LocalDate,
 ) {
-    val toEntity: Reservation
-        get() = Reservation.create(
-            userId = this.userId,
-            roomId = this.roomId,
-            roomCount = this.roomCount,
-            price = this.price,
-            checkIn = this.checkIn,
-            checkOut = this.checkOut,
-        )
+    val toEntity = Reservation.create(
+        userId = this.userId,
+        roomId = this.roomId,
+        roomCount = this.roomCount,
+        price = this.price,
+        checkIn = this.checkIn,
+        checkOut = this.checkOut,
+    )
 
-    val toCountCommand: ReservationCountCommand
-        get() = ReservationCountCommand(
-            roomId = this.roomId,
-            roomCount = this.roomCount,
-            checkIn = this.checkIn,
-            checkOut = this.checkOut,
-        )
+    val toCountCommand = ReservationCountCommand(
+        roomId = this.roomId,
+        roomCount = this.roomCount,
+        checkIn = this.checkIn,
+        checkOut = this.checkOut,
+    )
 }
 
 data class ReservationCountCommand(

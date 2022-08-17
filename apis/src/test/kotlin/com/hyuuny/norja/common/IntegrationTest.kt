@@ -5,9 +5,9 @@ import com.hyuuny.norja.ADMIN_EMAIL
 import com.hyuuny.norja.MEMBER_EMAIL
 import com.hyuuny.norja.users.AUTH_REQUEST_URL
 import com.hyuuny.norja.users.application.UserService
+import com.hyuuny.norja.users.domain.UserWithToken
 import com.hyuuny.norja.users.infrastructure.UserRepository
 import com.hyuuny.norja.users.interfaces.CredentialsDto
-import com.hyuuny.norja.users.interfaces.UserWithToken
 import org.junit.jupiter.api.extension.ExtendWith
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,8 +1,8 @@
 package com.hyuuny.norja.rooms
 
 import com.hyuuny.norja.rooms.application.RoomService
+import com.hyuuny.norja.rooms.domain.RoomResponse
 import com.hyuuny.norja.rooms.interfaces.RoomCreateDto
-import com.hyuuny.norja.rooms.interfaces.RoomResponse
 import com.hyuuny.norja.rooms.interfaces.RoomUpdateDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,8 +33,7 @@ class RoomAdminRestController(
     @GetMapping("/{id}")
     fun getRoom(@PathVariable id: Long): ResponseEntity<EntityModel<RoomResponse>> {
         val loadedRoom = roomService.getRoom(id)
-        val resource = RoomResponse(loadedRoom)
-        return ResponseEntity.ok(roomResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(roomResourceAssembler.toModel(loadedRoom))
     }
 
     @Operation(summary = "객실 수정")
@@ -44,8 +43,7 @@ class RoomAdminRestController(
         @RequestBody dto: RoomUpdateDto,
     ): ResponseEntity<EntityModel<RoomResponse>> {
         val updatedRoom = roomService.updateRoom(id, dto.toCommand())
-        val resource = RoomResponse(updatedRoom)
-        return ResponseEntity.ok(roomResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(roomResourceAssembler.toModel(updatedRoom))
     }
 
     @Operation(summary = "객실 삭제")

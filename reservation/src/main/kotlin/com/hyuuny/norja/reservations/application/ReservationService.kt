@@ -23,9 +23,9 @@ class ReservationService(
         return reservationStore.store(newReservation).id!!
     }
 
-    fun getReservation(id: Long): ReservationInfo {
+    fun getReservation(id: Long): ReservationResponse {
         val loadedReservation = reservationReader.getReservation(id)
-        return ReservationInfo(loadedReservation)
+        return ReservationResponse(loadedReservation)
     }
 
     @Transactional
@@ -37,7 +37,7 @@ class ReservationService(
     fun retrieveReservation(
         searchQuery: ReservationSearchQuery,
         pageable: Pageable
-    ): PageImpl<ReservationListingInfo> {
+    ): PageImpl<ReservationListingResponse> {
         val searched = reservationReader.retrieveReservation(searchQuery, pageable)
         val searchedReservations = SearchedReservations(searched.content)
         return PageImpl(searchedReservations.toPage(), pageable, searched.totalElements)

@@ -22,6 +22,9 @@ class RoomFacilities private constructor(
         )
     }
 
+    val roomId
+        get() = this.room?.id!!
+
     @ManyToOne(optional = true, fetch = LAZY)
     var room = room
         private set

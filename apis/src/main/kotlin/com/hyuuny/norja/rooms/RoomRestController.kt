@@ -1,7 +1,7 @@
 package com.hyuuny.norja.rooms
 
 import com.hyuuny.norja.rooms.application.RoomService
-import com.hyuuny.norja.rooms.interfaces.RoomResponse
+import com.hyuuny.norja.rooms.domain.RoomResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.hateoas.EntityModel
@@ -27,8 +27,7 @@ class RoomRestController(
     @GetMapping("/{id}")
     fun getRoom(@PathVariable id: Long): ResponseEntity<EntityModel<RoomResponse>> {
         val loadedRoom = roomService.getRoom(id)
-        val resource = RoomResponse(loadedRoom)
-        return ResponseEntity.ok(roomResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(roomResourceAssembler.toModel(loadedRoom))
     }
 
     @Component

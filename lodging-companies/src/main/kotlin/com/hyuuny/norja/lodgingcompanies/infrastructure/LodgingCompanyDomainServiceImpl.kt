@@ -16,10 +16,10 @@ class LodgingCompanyDomainServiceImpl(
 
     override fun getLodgingCompanyAndRoom(
         id: Long,
-        searchQuery: DateSearchQuery
+        dateSearchQuery: DateSearchQuery
     ): LodgingCompanyAndRoomResponse {
-        val parsedCheckIn = LocalDate.parse(searchQuery.checkIn)
-        val parsedCheckOut = LocalDate.parse(searchQuery.checkOut)
+        val parsedCheckIn = LocalDate.parse(dateSearchQuery.checkIn)
+        val parsedCheckOut = LocalDate.parse(dateSearchQuery.checkOut)
 
         val loadedLodgingCompany = lodgingCompanyReader.loadLodgingCompany(id)
         val loadedRooms = roomReader.getRoomsByLodgingCompanyId(
@@ -30,8 +30,8 @@ class LodgingCompanyDomainServiceImpl(
         return LodgingCompanyAndRoomResponse(
             loadedLodgingCompany,
             loadedRooms,
-            searchQuery.checkIn,
-            searchQuery.checkOut
+            dateSearchQuery.checkIn,
+            dateSearchQuery.checkOut
         )
     }
 }

@@ -32,15 +32,18 @@ class UserService(
         return userStore.signUp(newUser).id!!
     }
 
-    fun retrieveUser(searchQuery: UserSearchQuery, pageable: Pageable): PageImpl<UserListingInfo> {
+    fun retrieveUser(
+        searchQuery: UserSearchQuery,
+        pageable: Pageable
+    ): PageImpl<UserListingResponse> {
         val searched = userReader.retrieveUser(searchQuery, pageable)
         val searchedUsers = SearchedUsers(searched.content)
         return PageImpl(searchedUsers.toPage(), pageable, searched.totalElements)
     }
 
-    fun getUser(id: Long): UserInfo {
+    fun getUser(id: Long): UserResponse {
         val loadedUser = userReader.getUser(id)
-        return UserInfo(loadedUser)
+        return UserResponse(loadedUser)
     }
 
     @Transactional
@@ -56,7 +59,7 @@ class UserService(
     }
 
     @Transactional
-    fun updateUser(id: Long, command: UserUpdateCommand): UserInfo {
+    fun updateUser(id: Long, command: UserUpdateCommand): UserResponse {
         val loadedUser = userReader.getUser(id)
         command.update(loadedUser)
         return getUser(id)

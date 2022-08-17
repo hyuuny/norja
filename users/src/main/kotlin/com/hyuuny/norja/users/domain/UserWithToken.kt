@@ -1,6 +1,5 @@
-package com.hyuuny.norja.users.interfaces
+package com.hyuuny.norja.users.domain
 
-import com.hyuuny.norja.users.domain.Token
 import com.hyuuny.norja.users.infrastructure.UserAdapter
 
 data class UserWithToken(

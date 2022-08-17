@@ -1,12 +1,12 @@
-package com.hyuuny.norja.users.interfaces
+package com.hyuuny.norja.users.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-import com.hyuuny.norja.users.domain.Status
-import com.hyuuny.norja.users.domain.UserInfo
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.hateoas.server.core.Relation
 import java.time.LocalDateTime
 
+@Relation(collectionRelation = "user")
 @JsonInclude(Include.NON_NULL)
 data class UserResponse(
 
@@ -37,15 +37,15 @@ data class UserResponse(
     @field:Schema(description = "등록일", example = "2022-08-11T21:51:00.797659")
     val createdAt: LocalDateTime? = null,
 ) {
-    constructor(info: UserInfo) : this(
-        id = info.id,
-        username = info.username,
-        status = info.status,
-        nickname = info.nickname,
-        phoneNumber = info.phoneNumber,
-        agreedTermsOfService = info.agreedTermsOfService,
-        agreedPrivacyPolicy = info.agreedPrivacyPolicy,
-        agreedReceiveMessage = info.agreedReceiveMessage,
-        createdAt = info.createdAt,
+    constructor(entity: User) : this(
+        id = entity.id!!,
+        username = entity.username,
+        status = entity.status,
+        nickname = entity.nickname,
+        phoneNumber = entity.phoneNumber,
+        agreedTermsOfService = entity.agreedTermsOfService,
+        agreedPrivacyPolicy = entity.agreedPrivacyPolicy,
+        agreedReceiveMessage = entity.agreedReceiveMessage,
+        createdAt = entity.createdAt,
     )
 }

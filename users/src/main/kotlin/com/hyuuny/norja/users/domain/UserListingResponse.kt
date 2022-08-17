@@ -1,8 +1,6 @@
-package com.hyuuny.norja.users.interfaces
+package com.hyuuny.norja.users.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.hyuuny.norja.users.domain.Status
-import com.hyuuny.norja.users.domain.UserListingInfo
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.server.core.Relation
 import java.time.LocalDateTime
@@ -29,12 +27,12 @@ data class UserListingResponse(
     @field:Schema(description = "등록일", example = "2022-08-11T21:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
-    constructor(info: UserListingInfo) : this(
-        id = info.id,
-        username = info.username,
-        status = info.status,
-        nickname = info.nickname,
-        phoneNumber = info.phoneNumber,
-        createdAt = info.createdAt,
+    constructor(searched: SearchedUser) : this(
+        id = searched.id!!,
+        username = searched.username!!,
+        status = searched.status!!,
+        nickname = searched.nickname!!,
+        phoneNumber = searched.phoneNumber!!,
+        createdAt = searched.createdAt!!,
     )
 }

@@ -20,6 +20,9 @@ class RoomImage private constructor(
         )
     }
 
+    val roomId
+        get() = this.room?.id!!
+
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     var room = room
         private set

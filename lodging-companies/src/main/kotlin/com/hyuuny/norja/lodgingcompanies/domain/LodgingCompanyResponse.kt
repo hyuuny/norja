@@ -3,7 +3,6 @@ package com.hyuuny.norja.lodgingcompanies.domain
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.hyuuny.norja.address.domain.Address
-import com.hyuuny.norja.rooms.domain.RoomInfo
 import com.hyuuny.norja.rooms.domain.RoomResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.server.core.Relation
@@ -166,7 +165,7 @@ data class LodgingCompanyAndRoomResponse(
 ) {
     constructor(
         searched: SearchedLodgingCompany,
-        rooms: List<RoomInfo>,
+        rooms: List<RoomResponse>,
         checkIn: String,
         checkOut: String
     ) : this(
@@ -183,10 +182,7 @@ data class LodgingCompanyAndRoomResponse(
         reviewCount = searched.reviewCount!!,
         checkIn = checkIn,
         checkOut = checkOut,
-        rooms = rooms.stream()
-            .map(::RoomResponse)
-            .sorted(Comparator.comparing(RoomResponse::price))
-            .toList(),
+        rooms = rooms,
         images = searched.images,
         facilities = searched.facilities,
         createdAt = searched.createdAt,

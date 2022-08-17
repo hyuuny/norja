@@ -1,13 +1,11 @@
 package com.hyuuny.norja.reservations
 
 import com.hyuuny.norja.reservations.application.ReservationService
-import com.hyuuny.norja.reservations.domain.ReservationListingInfo
+import com.hyuuny.norja.reservations.domain.ReservationListingResponse
+import com.hyuuny.norja.reservations.domain.ReservationResponse
 import com.hyuuny.norja.reservations.domain.ReservationSearchQuery
-import com.hyuuny.norja.reservations.interfaces.ReservationListingResponse
-import com.hyuuny.norja.reservations.interfaces.ReservationResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort.Direction.DESC
 import org.springframework.data.web.PageableDefault
@@ -40,25 +38,17 @@ class ReservationAdminRestController(
         @PageableDefault(sort = ["createdAt"], direction = DESC) pageable: Pageable,
         pagedResourcesAssembler: PagedResourcesAssembler<ReservationListingResponse>
     ): ResponseEntity<PagedModel<EntityModel<ReservationListingResponse>>> {
-        val searched = reservationsService.retrieveReservation(searchQuery, pageable)
-        val page = toPage(searched, pageable)
+        val page = reservationsService.retrieveReservation(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, reservationListingResourceAssembler)
         )
     }
 
-    private fun toPage(searched: PageImpl<ReservationListingInfo>, pageable: Pageable) =
-        PageImpl(toResponses(searched.content), pageable, searched.totalElements)
-
-    private fun toResponses(searched: List<ReservationListingInfo>) =
-        searched.stream().map(::ReservationListingResponse).toList()
-
     @Operation(summary = "예약 상세 조회")
     @GetMapping("/{id}")
     fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponse>> {
         val loadedReservation = reservationsService.getReservation(id)
-        val resource = ReservationResponse(loadedReservation)
-        return ResponseEntity.ok(reservationResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(reservationResourceAssembler.toModel(loadedReservation))
     }
 
     @Component

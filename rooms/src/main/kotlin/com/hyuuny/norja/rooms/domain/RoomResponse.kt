@@ -1,11 +1,7 @@
-package com.hyuuny.norja.rooms.interfaces
+package com.hyuuny.norja.rooms.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-import com.hyuuny.norja.rooms.domain.RoomFacilitiesInfo
-import com.hyuuny.norja.rooms.domain.RoomImageInfo
-import com.hyuuny.norja.rooms.domain.RoomInfo
-import com.hyuuny.norja.rooms.domain.Type
 import io.swagger.v3.oas.annotations.media.Schema
 
 @JsonInclude(Include.NON_NULL)
@@ -47,22 +43,24 @@ data class RoomResponse(
     @field:Schema(description = "시설")
     val roomFacilities: List<RoomFacilitiesResponse>? = listOf(),
 ) {
-    constructor(info: RoomInfo) : this(
-        id = info.id,
-        lodgingCompanyId = info.lodgingCompanyId,
-        type = info.type,
-        name = info.name,
-        roomCount = info.roomCount,
-        remainingRoomCount = info.remainingRoomCount,
-        standardPersonnel = info.standardPersonnel,
-        maximumPersonnel = info.maximumPersonnel,
-        price = info.price,
-        content = info.content,
-        roomImages = info.roomImages.stream()
+    constructor(entity: Room) : this(entity, 0)
+
+    constructor(entity: Room, remainingRoomCount: Long) : this(
+        id = entity.id!!,
+        lodgingCompanyId = entity.lodgingCompanyId,
+        type = entity.type,
+        name = entity.name,
+        roomCount = entity.roomCount,
+        remainingRoomCount = remainingRoomCount,
+        standardPersonnel = entity.standardPersonnel,
+        maximumPersonnel = entity.maximumPersonnel,
+        price = entity.price,
+        content = entity.content,
+        roomImages = entity.roomImages!!.stream()
             .map(::RoomImageResponse)
             .sorted((Comparator.comparing(RoomImageResponse::priority)))
             .toList(),
-        roomFacilities = info.roomFacilities.stream()
+        roomFacilities = entity.roomFacilities!!.stream()
             .map(::RoomFacilitiesResponse)
             .sorted((Comparator.comparing(RoomFacilitiesResponse::priority)))
             .toList(),
@@ -80,10 +78,10 @@ data class RoomImageResponse(
     @field:Schema(description = "이미지 URL", example = "image-url", required = true)
     val imageUrl: String,
 ) {
-    constructor(info: RoomImageInfo) : this(
-        roomId = info.roomId,
-        priority = info.priority!!,
-        imageUrl = info.imageUrl
+    constructor(entity: RoomImage) : this(
+        roomId = entity.roomId,
+        priority = entity.priority!!,
+        imageUrl = entity.imageUrl
     )
 }
 
@@ -101,10 +99,10 @@ data class RoomFacilitiesResponse(
     @field:Schema(description = "아이콘이미지 URL", example = "icon-image-url", required = true)
     val iconImageUrl: String,
 ) {
-    constructor(info: RoomFacilitiesInfo) : this(
-        roomId = info.roomId,
-        name = info.name,
-        priority = info.priority!!,
-        iconImageUrl = info.iconImageUrl,
+    constructor(entity: RoomFacilities) : this(
+        roomId = entity.roomId,
+        name = entity.name,
+        priority = entity.priority!!,
+        iconImageUrl = entity.iconImageUrl,
     )
 }

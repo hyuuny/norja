@@ -1,8 +1,8 @@
 package com.hyuuny.norja.reservations
 
 import com.hyuuny.norja.reservations.application.ReservationService
+import com.hyuuny.norja.reservations.domain.ReservationResponse
 import com.hyuuny.norja.reservations.interfaces.ReservationCreateDto
-import com.hyuuny.norja.reservations.interfaces.ReservationResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.hateoas.EntityModel
@@ -32,8 +32,7 @@ class ReservationRestController(
     @GetMapping("/{id}")
     fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponse>> {
         val loadedReservation = reservationService.getReservation(id)
-        val resource = ReservationResponse(loadedReservation)
-        return ResponseEntity.ok(reservationResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(reservationResourceAssembler.toModel(loadedReservation))
     }
 
     @Operation(summary = "예약 취소")

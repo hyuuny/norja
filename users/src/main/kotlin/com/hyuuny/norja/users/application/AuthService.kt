@@ -2,6 +2,7 @@ package com.hyuuny.norja.users.application
 
 import com.hyuuny.norja.users.domain.CredentialsCommand
 import com.hyuuny.norja.users.domain.Token
+import com.hyuuny.norja.users.domain.UserWithToken
 import com.hyuuny.norja.users.infrastructure.UserAdapter
 import com.hyuuny.norja.users.jwts.JwtUtils
 import org.springframework.security.authentication.AuthenticationManager
@@ -16,6 +17,12 @@ class AuthService(
     private val jwtUtils: JwtUtils,
 ) {
 
+    fun authenticate(command: CredentialsCommand): UserWithToken {
+        val authedUser = this.auth(command)
+        val token = this.generateToken(authedUser.username)
+        return UserWithToken(authedUser, token)
+    }
+
     fun auth(command: CredentialsCommand): UserAdapter {
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(command.username, command.password)
@@ -27,5 +34,6 @@ class AuthService(
         val accessToken = jwtUtils.createToken(username)
         return Token(accessToken)
     }
+
 
 }

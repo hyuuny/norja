@@ -1,7 +1,11 @@
 package com.hyuuny.norja.users
 
 import com.hyuuny.norja.users.application.UserService
-import com.hyuuny.norja.users.interfaces.*
+import com.hyuuny.norja.users.domain.UserResponse
+import com.hyuuny.norja.users.interfaces.ChangeAgreedDto
+import com.hyuuny.norja.users.interfaces.ChangePasswordDto
+import com.hyuuny.norja.users.interfaces.SignUpDto
+import com.hyuuny.norja.users.interfaces.UserUpdateDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.hateoas.EntityModel
@@ -31,8 +35,7 @@ class UserRestController(
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponse>> {
         val loadedUser = userService.getUser(id)
-        val resource = UserResponse(loadedUser)
-        return ResponseEntity.ok(userResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(userResourceAssembler.toModel(loadedUser))
     }
 
     @Operation(summary = "비밀번호 변경")
@@ -62,8 +65,7 @@ class UserRestController(
         @RequestBody dto: UserUpdateDto
     ): ResponseEntity<EntityModel<UserResponse>> {
         val updatedUser = userService.updateUser(id, dto.toCommand())
-        val resource = UserResponse(updatedUser)
-        return ResponseEntity.ok(userResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(userResourceAssembler.toModel(updatedUser))
     }
 
     @Operation(summary = "회원 탈퇴")

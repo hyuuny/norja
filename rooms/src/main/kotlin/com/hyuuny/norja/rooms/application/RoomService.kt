@@ -19,13 +19,13 @@ class RoomService(
         return roomStore.store(newRoom).id!!
     }
 
-    fun getRoom(id: Long): RoomInfo {
+    fun getRoom(id: Long): RoomResponse {
         val loadedRoom = roomReader.getRoom(id)
-        return RoomInfo(loadedRoom)
+        return RoomResponse(loadedRoom)
     }
 
     @Transactional
-    fun updateRoom(id: Long, command: RoomUpdateCommand): RoomInfo {
+    fun updateRoom(id: Long, command: RoomUpdateCommand): RoomResponse {
         val loadedRoom = roomReader.getRoom(id)
         command.update(loadedRoom)
         return getRoom(id)
