@@ -1,9 +1,11 @@
 package com.hyuuny.norja.reviews.infrastructure
 
 import com.hyuuny.norja.jpa.support.CustomQueryDslRepository
-import com.hyuuny.norja.reviews.domain.*
 import com.hyuuny.norja.reviews.domain.QReview.review
-import com.querydsl.core.types.ExpressionUtils
+import com.hyuuny.norja.reviews.domain.Review
+import com.hyuuny.norja.reviews.domain.ReviewAverageScoreResponse
+import com.hyuuny.norja.reviews.domain.ReviewSearchQuery
+import com.hyuuny.norja.reviews.domain.Type
 import com.querydsl.core.types.Projections.fields
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.PageImpl
@@ -17,36 +19,28 @@ class ReviewRepositoryImpl(
     override fun retrieveReview(
         searchQuery: ReviewSearchQuery,
         pageable: Pageable
-    ): PageImpl<SearchedReview> {
-        return applyPageImpl(
-            pageable, queryFactory.select(
-                fields(
-                    SearchedReview::class.java,
-                    ExpressionUtils.`as`(review, "review"),
-                )
-
+    ): PageImpl<Review> = applyPageImpl(
+        pageable, queryFactory
+            .selectFrom(review)
+            .where(
+                lodgingCompanyIdEq(searchQuery.lodgingCompanyId),
+                roomIdEq(searchQuery.roomId),
+                userIdEq(searchQuery.userId),
+                typeEq(searchQuery.type),
+                wholeScoreEq(searchQuery.wholeScore),
+                bestEq(searchQuery.best),
             )
-                .from(review)
-                .where(
-                    lodgingCompanyIdEq(searchQuery.lodgingCompanyId),
-                    roomIdEq(searchQuery.roomId),
-                    userIdEq(searchQuery.userId),
-                    typeEq(searchQuery.type),
-                    wholeScoreEq(searchQuery.wholeScore),
-                    bestEq(searchQuery.best),
-                )
-        )
-    }
+    )
 
-    override fun loadReviewAverageScore(lodgingCompanyId: Long): SearchedReviewAverageScore {
+    override fun loadReviewAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponse {
         return queryFactory.select(
             fields(
-                SearchedReviewAverageScore::class.java,
-                review.wholeScore.avg(),
-                review.serviceScore.avg(),
-                review.cleanlinessScore.avg(),
-                review.convenienceScore.avg(),
-                review.satisfactionScore.avg(),
+                ReviewAverageScoreResponse::class.java,
+                review.wholeScore.avg().`as`("wholeScore"),
+                review.serviceScore.avg().`as`("serviceScore"),
+                review.cleanlinessScore.avg().`as`("cleanlinessScore"),
+                review.convenienceScore.avg().`as`("convenienceScore"),
+                review.satisfactionScore.avg().`as`("satisfactionScore"),
             )
         )
             .from(review)

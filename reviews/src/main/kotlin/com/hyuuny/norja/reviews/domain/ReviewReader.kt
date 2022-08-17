@@ -7,8 +7,8 @@ interface ReviewReader {
 
     fun getReview(id: Long): Review
 
-    fun retrieveReview(searchQuery: ReviewSearchQuery, pageable: Pageable): PageImpl<SearchedReview>
+    fun retrieveReview(searchQuery: ReviewSearchQuery, pageable: Pageable): PageImpl<Review>
 
-    fun getReviewAverageScore(lodgingCompanyId: Long): SearchedReviewAverageScore
+    fun getReviewAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponse
 
 }

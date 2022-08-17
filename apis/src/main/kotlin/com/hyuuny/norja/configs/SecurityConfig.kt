@@ -33,7 +33,8 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
                 "/",
                 "/api/v1/lodging-companies/**",
                 "/api/v1/rooms/**",
-                "/swagger-ui/**"
+                "/api/v1/reviews/**",
+                "/swagger-ui/**",
             )
             .permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/users/sign-up").permitAll()

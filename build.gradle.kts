@@ -61,6 +61,11 @@ subprojects {
         implementation("com.querydsl:querydsl-jpa:$querydslVersion")
         kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
         kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+        // Open API
+        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
+        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
     }
 
     dependencyManagement {
@@ -119,11 +124,6 @@ project(":admin-apis") {
         // RestAssured
         testImplementation("io.rest-assured:rest-assured")
 
-        // Open API
-        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
-
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
@@ -144,25 +144,12 @@ project(":apis") {
         // RestAssured
         testImplementation("io.rest-assured:rest-assured")
 
-        // Open API
-        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
-
         implementation(project(":common"))
         implementation(project(":lodging-companies"))
         implementation(project(":rooms"))
         implementation(project(":reservation"))
         implementation(project(":users"))
-    }
-}
-
-project(":common") {
-    dependencies {
-        // Open API
-        implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-hateoas:1.5.9")
-        implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
+        implementation(project(":reviews"))
     }
 }
 
@@ -171,6 +158,7 @@ project(":lodging-companies") {
         implementation(project(":common"))
         implementation(project(":rooms"))
         implementation(project(":users"))
+        implementation(project(":reviews"))
     }
 }
 

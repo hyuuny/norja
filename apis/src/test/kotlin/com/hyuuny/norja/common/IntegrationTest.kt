@@ -1,6 +1,8 @@
 package com.hyuuny.norja.common
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.hyuuny.norja.ADMIN_EMAIL
+import com.hyuuny.norja.MEMBER_EMAIL
 import com.hyuuny.norja.users.AUTH_REQUEST_URL
 import com.hyuuny.norja.users.application.UserService
 import com.hyuuny.norja.users.infrastructure.UserRepository
@@ -61,6 +63,13 @@ abstract class BaseIntegrationTest {
         )
         val responseBody = perform.andReturn().response.contentAsString
         return objectMapper.readValue(responseBody, UserWithToken::class.java).token.accessToke
+    }
+
+    fun deleteAllUsers() {
+        userRepository.findAll().stream()
+            .filter { user -> user.username != ADMIN_EMAIL }
+            .filter { user -> user.username != MEMBER_EMAIL }
+            .forEach { user -> userRepository.delete(user) }
     }
 
 

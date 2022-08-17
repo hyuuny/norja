@@ -27,7 +27,7 @@ class AuthRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
-        userRepository.deleteAll()
+        deleteAllUsers()
     }
 
     @Test

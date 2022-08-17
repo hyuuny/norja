@@ -31,6 +31,7 @@ class RoomRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
+        deleteAllUsers()
         roomRepository.deleteAll()
     }
 

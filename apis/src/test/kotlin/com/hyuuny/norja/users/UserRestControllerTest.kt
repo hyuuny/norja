@@ -30,7 +30,7 @@ class UserRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
-        userRepository.deleteAll()
+        deleteAllUsers()
     }
 
 

@@ -24,27 +24,25 @@ class ReviewService(
     fun retrieveReview(
         searchQuery: ReviewSearchQuery,
         pageable: Pageable
-    ): PageImpl<ReviewListingInfo> {
+    ): PageImpl<ReviewListingResponse> {
         val searched = reviewReader.retrieveReview(searchQuery, pageable)
         val searchedReviews = SearchedReviews(searched.content)
         return PageImpl(searchedReviews.toPage(), pageable, searched.totalElements)
     }
 
-    fun getAverageScore(lodgingCompanyId: Long): ReviewAverageScoreInfo {
-        val reviewAverageScore = reviewReader.getReviewAverageScore(lodgingCompanyId)
-        return ReviewAverageScoreInfo(reviewAverageScore)
-    }
+    fun getAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponse =
+        reviewReader.getReviewAverageScore(lodgingCompanyId)
 
-    fun getReview(id: Long): ReviewInfo {
+    fun getReview(id: Long): ReviewResponse {
         val loadedReview = reviewReader.getReview(id)
-        return ReviewInfo(loadedReview)
+        return ReviewResponse(loadedReview)
     }
 
     @Transactional
-    fun changeBestReview(command: ChangeBestReviewCommand) = command.reviews.forEach { review ->
+    fun changeBestReview(command: ChangeBestReviewCommand) = command.reviews.forEach {
         run {
-            val loadedReview = reviewReader.getReview(review.id)
-            loadedReview.changeBestReview(review.best)
+            val loadedReview = reviewReader.getReview(it.id)
+            loadedReview.changeBestReview(it.best)
         }
     }
 
