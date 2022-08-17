@@ -1,9 +1,6 @@
 package com.hyuuny.norja.lodgingcompanies.infrastructure
 
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompany
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyReader
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
-import com.hyuuny.norja.lodgingcompanies.domain.SearchedLodgingCompanyListing
+import com.hyuuny.norja.lodgingcompanies.domain.*
 import com.hyuuny.norja.web.model.HttpStatusMessageException
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -23,7 +20,7 @@ class LodgingCompanyReaderImpl(
             id
         )
 
-    override fun loadLodgingCompany(id: Long): LodgingCompany =
+    override fun loadLodgingCompany(id: Long): SearchedLodgingCompany =
         lodgingCompanyRepository.loadLodgingCompany(id) ?: throw HttpStatusMessageException(
             HttpStatus.BAD_REQUEST,
             "lodgingCompany.id.notFound",

@@ -1,8 +1,8 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyResponse
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
-import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyResponse
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,8 +33,7 @@ class LodgingCompanyAdminRestController(
     @GetMapping("/{id}")
     fun getLodgingCompany(@PathVariable id: Long): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
         val loadedLodgingCompany = lodgingCompanyService.getLodgingCompany(id)
-        val resource = LodgingCompanyResponse(loadedLodgingCompany)
-        return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(loadedLodgingCompany))
     }
 
     @Operation(summary = "숙박업체 수정")
@@ -44,8 +43,7 @@ class LodgingCompanyAdminRestController(
         @RequestBody dto: LodgingCompanyUpdateDto
     ): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
         val updatedLodgingCompany = lodgingCompanyService.updateLodgingCompany(id, dto.toCommand())
-        val resource = LodgingCompanyResponse(updatedLodgingCompany)
-        return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(resource))
+        return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(updatedLodgingCompany))
     }
 
     @Operation(summary = "숙박업체 휴무")

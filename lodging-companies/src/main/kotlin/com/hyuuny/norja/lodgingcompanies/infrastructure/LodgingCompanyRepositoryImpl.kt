@@ -1,11 +1,9 @@
 package com.hyuuny.norja.lodgingcompanies.infrastructure
 
 import com.hyuuny.norja.jpa.support.CustomQueryDslRepository
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompany
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
+import com.hyuuny.norja.lodgingcompanies.domain.*
 import com.hyuuny.norja.lodgingcompanies.domain.QLodgingCompany.lodgingCompany
-import com.hyuuny.norja.lodgingcompanies.domain.SearchedLodgingCompanyListing
-import com.hyuuny.norja.lodgingcompanies.domain.Status
+import com.hyuuny.norja.reviews.domain.QReview.review
 import com.hyuuny.norja.rooms.domain.QRoom.room
 import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections.fields
@@ -18,14 +16,40 @@ import org.springframework.util.ObjectUtils.isEmpty
 class LodgingCompanyRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : CustomQueryDslRepository(LodgingCompany::class.java), LodgingCompanyRepositoryCustom {
-    override fun loadLodgingCompany(id: Long) = queryFactory
-        .selectFrom(lodgingCompany)
-        .from(lodgingCompany)
-        .where(
-            lodgingCompany.id.eq(id),
-            lodgingCompany.status.eq(Status.OPEN)
+//    override fun loadLodgingCompany(id: Long) = queryFactory
+//        .selectFrom(lodgingCompany)
+//        .where(
+//            lodgingCompany.id.eq(id),
+//            lodgingCompany.status.eq(Status.OPEN)
+//        )
+//        .fetchOne()
+
+    override fun loadLodgingCompany(id: Long): SearchedLodgingCompany? {
+        return queryFactory.select(
+            fields(
+                SearchedLodgingCompany::class.java,
+                ExpressionUtils.`as`(lodgingCompany, "lodgingCompany"),
+                ExpressionUtils.`as`(
+                    JPAExpressions.select(review.wholeScore.avg())
+                        .from(review)
+                        .where(review.lodgingCompanyId.eq(lodgingCompany.id)),
+                    "reviewAverageScore"
+                ),
+                ExpressionUtils.`as`(
+                    JPAExpressions.select(review.id.count())
+                        .from(review)
+                        .where(review.lodgingCompanyId.eq(lodgingCompany.id)),
+                    "reviewCount"
+                ),
+            )
         )
-        .fetchOne()
+            .from(lodgingCompany)
+            .where(
+                lodgingCompany.id.eq(id),
+                lodgingCompany.status.eq(Status.OPEN)
+            )
+            .fetchOne()
+    }
 
     override fun retrieveLodgingCompanies(
         searchQuery: LodgingCompanySearchQuery,
@@ -45,6 +69,18 @@ class LodgingCompanyRepositoryImpl(
                         JPAExpressions.select(room.price.min())
                             .from(room)
                             .where(room.lodgingCompanyId.eq(lodgingCompany.id)), "price"
+                    ),
+                    ExpressionUtils.`as`(
+                        JPAExpressions.select(review.wholeScore.avg())
+                            .from(review)
+                            .where(review.lodgingCompanyId.eq(lodgingCompany.id)),
+                        "reviewAverageScore"
+                    ),
+                    ExpressionUtils.`as`(
+                        JPAExpressions.select(review.id.count())
+                            .from(review)
+                            .where(review.lodgingCompanyId.eq(lodgingCompany.id)),
+                        "reviewCount"
                     ),
                     lodgingCompany.searchTag,
                     lodgingCompany.createdAt,

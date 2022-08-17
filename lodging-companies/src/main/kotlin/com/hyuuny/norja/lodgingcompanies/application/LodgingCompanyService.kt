@@ -24,25 +24,28 @@ class LodgingCompanyService(
     fun retrieveLodgingCompany(
         searchQuery: LodgingCompanySearchQuery,
         pageable: Pageable,
-    ): PageImpl<LodgingCompanyListingInfo> {
+    ): PageImpl<LodgingCompanyListingResponse> {
         val searched = lodgingCompanyReader.retrieveLodgingCompany(searchQuery, pageable)
         val searchedLodgingCompanies = SearchedLodgingCompanies(searched.content)
         return PageImpl(searchedLodgingCompanies.toPage(), pageable, searched.totalElements)
     }
 
-    fun getLodgingCompany(id: Long): LodgingCompanyInfo {
+    fun getLodgingCompany(id: Long): LodgingCompanyResponse {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
-        return LodgingCompanyInfo(loadedLodgingCompany)
+        return LodgingCompanyResponse(loadedLodgingCompany)
     }
 
     fun getLodgingCompanyAndRooms(
         id: Long,
         searchQuery: DateSearchQuery
-    ): LodgingCompanyAndRoomInfo =
+    ): LodgingCompanyAndRoomResponse =
         lodgingCompanyDomainService.getLodgingCompanyAndRoom(id, searchQuery)
 
     @Transactional
-    fun updateLodgingCompany(id: Long, command: LodgingCompanyUpdateCommand): LodgingCompanyInfo {
+    fun updateLodgingCompany(
+        id: Long,
+        command: LodgingCompanyUpdateCommand
+    ): LodgingCompanyResponse {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
         command.update(loadedLodgingCompany)
         return getLodgingCompany(id)

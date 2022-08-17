@@ -7,7 +7,7 @@ interface LodgingCompanyReader {
 
     fun getLodgingCompany(id: Long): LodgingCompany
 
-    fun loadLodgingCompany(id: Long): LodgingCompany
+    fun loadLodgingCompany(id: Long): SearchedLodgingCompany
 
     fun retrieveLodgingCompany(
         searchQuery: LodgingCompanySearchQuery,

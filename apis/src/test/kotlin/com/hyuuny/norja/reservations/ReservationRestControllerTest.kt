@@ -46,7 +46,7 @@ class ReservationRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
-        userRepository.deleteAll()
+        deleteAllUsers()
         reservationRepository.deleteAll()
         roomRepository.deleteAll()
     }

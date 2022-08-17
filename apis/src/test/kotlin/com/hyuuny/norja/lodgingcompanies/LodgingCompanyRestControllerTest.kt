@@ -1,6 +1,7 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyCommand
+import com.hyuuny.norja.FixtureReview
 import com.hyuuny.norja.address.domain.Address
 import com.hyuuny.norja.common.BaseIntegrationTest
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
@@ -12,6 +13,8 @@ import com.hyuuny.norja.lodgingcompanies.domain.Type.HOTEL
 import com.hyuuny.norja.reservations.application.ReservationService
 import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
 import com.hyuuny.norja.reservations.infrastructure.ReservationRepository
+import com.hyuuny.norja.reviews.application.ReviewService
+import com.hyuuny.norja.reviews.infrastructure.ReviewRepository
 import com.hyuuny.norja.rooms.application.RoomService
 import com.hyuuny.norja.rooms.domain.RoomCreateCommand
 import com.hyuuny.norja.rooms.domain.RoomFacilitiesCreateCommand
@@ -31,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import java.time.LocalDate
+import java.util.*
 import java.util.stream.IntStream
 import java.util.stream.LongStream
 
@@ -48,6 +52,8 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
+        deleteAllUsers()
+        reviewRepository.deleteAll()
         reservationRepository.deleteAll()
         roomRepository.deleteAll()
         lodgingCompanyRepository.deleteAll()
@@ -71,11 +77,32 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     @Autowired
     lateinit var reservationService: ReservationService
 
+    @Autowired
+    lateinit var reviewRepository: ReviewRepository
+
+    @Autowired
+    lateinit var reviewService: ReviewService
+
     @Test
     @Disabled
     fun `숙박 업체 상세 조회`() {
+        val random = Random()
         val command = aLodgingCompanyCommand()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(command)
+
+        IntStream.range(1, 6).forEach {
+            run {
+                val command = FixtureReview.aReview(
+                    lodgingCompanyId = savedLodgingCompanyId,
+                    wholeScore = random.nextInt(1, 6),
+                    serviceScore = random.nextInt(1, 6),
+                    cleanlinessScore = random.nextInt(1, 6),
+                    convenienceScore = random.nextInt(1, 6),
+                    satisfactionScore = random.nextInt(1, 6),
+                )
+                reviewService.createReview(command)
+            }
+        }
 
         given()
             .contentType(ContentType.JSON)
@@ -112,6 +139,21 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     fun `숙박 업체 및 방 상세 조회`() {
         val command = aLodgingCompanyCommand()
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(command)
+
+        val random = Random()
+        IntStream.range(1, 6).forEach {
+            run {
+                val command = FixtureReview.aReview(
+                    lodgingCompanyId = savedLodgingCompanyId,
+                    wholeScore = random.nextInt(1, 6),
+                    serviceScore = random.nextInt(1, 6),
+                    cleanlinessScore = random.nextInt(1, 6),
+                    convenienceScore = random.nextInt(1, 6),
+                    satisfactionScore = random.nextInt(1, 6),
+                )
+                reviewService.createReview(command)
+            }
+        }
 
         IntStream.range(1, 5).forEach { value ->
             run {
@@ -322,6 +364,8 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat().body("rooms[1].remainingRoomCount", equalTo(17))
             .assertThat().body("rooms[2].remainingRoomCount", equalTo(8))
             .assertThat().body("rooms[3].remainingRoomCount", equalTo(8))
+            .assertThat().body(containsString("reviewAverageScore"))
+            .assertThat().body(containsString("reviewCount"))
 
     }
 
@@ -345,6 +389,7 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `숙박 업체 검색 및 조회`() {
+        val random = Random()
         IntStream.range(1, 12).forEach { i ->
             run {
                 // 숙박 업체 등록
@@ -389,6 +434,20 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
                     )
                 )
                 roomService.createRoom(roomCommand)
+
+                IntStream.range(1, 6).forEach {
+                    run {
+                        val command = FixtureReview.aReview(
+                            lodgingCompanyId = savedLodgingCompanyId,
+                            wholeScore = random.nextInt(1, 6),
+                            serviceScore = random.nextInt(1, 6),
+                            cleanlinessScore = random.nextInt(1, 6),
+                            convenienceScore = random.nextInt(1, 6),
+                            satisfactionScore = random.nextInt(1, 6),
+                        )
+                        reviewService.createReview(command)
+                    }
+                }
             }
         }
 
@@ -417,4 +476,5 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             .assertThat()
             .body("_embedded.lodgingCompanies[0].price", equalTo(11000))
     }
+
 }

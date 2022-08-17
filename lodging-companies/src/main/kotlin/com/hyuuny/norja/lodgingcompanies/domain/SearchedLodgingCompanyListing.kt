@@ -12,5 +12,7 @@ data class SearchedLodgingCompanyListing(
     val address: Address? = null,
     val price: Long? = 0,
     val searchTag: String? = null,
+    val reviewAverageScore: Double? = null,
+    val reviewCount: Long? = null,
     val createdAt: LocalDateTime? = null,
 )
