@@ -99,7 +99,7 @@ class CategoryRestControllerTest : BaseIntegrationTest() {
             .contentType(ContentType.JSON)
             .`when`()
             .log().all()
-            .get("$CATEGORY_REQUEST_URL/{id}/children", savedParentCategoryId)
+            .get("$CATEGORY_REQUEST_URL/{parentCategoryId}/children", savedParentCategoryId)
             .then()
             .log().all()
             .statusCode(HttpStatus.OK.value())

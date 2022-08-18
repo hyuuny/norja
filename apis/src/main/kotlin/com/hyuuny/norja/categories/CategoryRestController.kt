@@ -31,9 +31,9 @@ class CategoryRestController(
     }
 
     @Operation(summary = "자녀 카테고리 조회")
-    @GetMapping("/{id}/children")
-    fun getChildrenCategories(@PathVariable id: Long): ResponseEntity<List<CategoryResponse>> {
-        val childrenCategories = categoryService.getChildrenCategories(id)
+    @GetMapping("/{parentCategoryId}/children")
+    fun getChildrenCategories(@PathVariable parentCategoryId: Long): ResponseEntity<List<CategoryResponse>> {
+        val childrenCategories = categoryService.getChildrenCategories(parentCategoryId)
         return ResponseEntity.ok(childrenCategories)
     }
 
