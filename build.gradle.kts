@@ -129,6 +129,7 @@ project(":admin-apis") {
         implementation(project(":rooms"))
         implementation(project(":reservation"))
         implementation(project(":users"))
+        implementation(project(":reviews"))
     }
 }
 

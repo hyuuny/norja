@@ -55,7 +55,7 @@ class ReviewRepositoryImpl(
 
     private fun roomIdEq(roomId: Long?) = if (isEmpty(roomId)) null else review.roomId.eq(roomId)
 
-    private fun userIdEq(userId: Long?) = if (isEmpty(userId)) null else review.roomId.eq(userId)
+    private fun userIdEq(userId: Long?) = if (isEmpty(userId)) null else review.userId.eq(userId)
 
     private fun typeEq(type: Type?) = if (isEmpty(type)) null else review.type.eq(type)
 

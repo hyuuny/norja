@@ -6,6 +6,8 @@ import com.hyuuny.norja.lodgingcompanies.interfaces.FacilitiesCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.ImageCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
 import com.hyuuny.norja.reservations.domain.ReservationCreateCommand
+import com.hyuuny.norja.reviews.domain.ReviewCreateCommand
+import com.hyuuny.norja.reviews.domain.ReviewPhotoCreateCommand
 import com.hyuuny.norja.rooms.domain.Type
 import com.hyuuny.norja.rooms.interfaces.RoomCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomFacilitiesCreateDto
@@ -114,6 +116,42 @@ class FixtureUser {
             password = "a123456A",
             nickname = "김성현",
             phoneNumber = "010-1234-4567",
+        )
+    }
+}
+
+class FixtureReview {
+    companion object {
+        fun aReview(
+            lodgingCompanyId: Long = 1L,
+            roomId: Long = 1L,
+            userId: Long = 1L,
+            nickname: String = "김성현",
+            roomName: String = "더블룸",
+            content: String = "방 너무 아늑했어요 ㅋㅋㅋ 다시 오고싶어요!!",
+            wholeScore: Int = 5,
+            serviceScore: Int = 5,
+            cleanlinessScore: Int = 5,
+            convenienceScore: Int = 5,
+            satisfactionScore: Int = 5,
+            reviewPhotos: MutableList<ReviewPhotoCreateCommand> = mutableListOf(
+                ReviewPhotoCreateCommand(100L, "image1-url"),
+                ReviewPhotoCreateCommand(300L, "image3-url"),
+                ReviewPhotoCreateCommand(200L, "image2-url"),
+            ),
+        ) = ReviewCreateCommand(
+            lodgingCompanyId = lodgingCompanyId,
+            roomId = roomId,
+            userId = userId,
+            nickname = nickname,
+            roomName = roomName,
+            content = content,
+            wholeScore = wholeScore,
+            serviceScore = serviceScore,
+            cleanlinessScore = cleanlinessScore,
+            convenienceScore = convenienceScore,
+            satisfactionScore = satisfactionScore,
+            reviewPhotos = reviewPhotos,
         )
     }
 }

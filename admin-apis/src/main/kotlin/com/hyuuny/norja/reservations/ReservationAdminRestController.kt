@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(path = ["/api/v1/reservations"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class ReservationAdminRestController(
-    private val reservationsService: ReservationService,
+    private val reservationService: ReservationService,
     private val reservationListingResourceAssembler: ReservationListingResourceAssembler,
     private val reservationResourceAssembler: ReservationResourceAssembler,
 ) {
@@ -38,7 +38,7 @@ class ReservationAdminRestController(
         @PageableDefault(sort = ["createdAt"], direction = DESC) pageable: Pageable,
         pagedResourcesAssembler: PagedResourcesAssembler<ReservationListingResponse>
     ): ResponseEntity<PagedModel<EntityModel<ReservationListingResponse>>> {
-        val page = reservationsService.retrieveReservation(searchQuery, pageable)
+        val page = reservationService.retrieveReservation(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, reservationListingResourceAssembler)
         )
@@ -47,7 +47,7 @@ class ReservationAdminRestController(
     @Operation(summary = "예약 상세 조회")
     @GetMapping("/{id}")
     fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponse>> {
-        val loadedReservation = reservationsService.getReservation(id)
+        val loadedReservation = reservationService.getReservation(id)
         return ResponseEntity.ok(reservationResourceAssembler.toModel(loadedReservation))
     }
 
