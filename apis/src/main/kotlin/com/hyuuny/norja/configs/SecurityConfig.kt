@@ -34,6 +34,7 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
                 "/api/v1/lodging-companies/**",
                 "/api/v1/rooms/**",
                 "/api/v1/reviews/**",
+                "/api/v1/categories/**",
                 "/swagger-ui/**",
             )
             .permitAll()

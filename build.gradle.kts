@@ -151,6 +151,7 @@ project(":apis") {
         implementation(project(":reservation"))
         implementation(project(":users"))
         implementation(project(":reviews"))
+        implementation(project(":categories"))
     }
 }
 
@@ -192,6 +193,12 @@ project(":users") {
 }
 
 project(":reviews") {
+    dependencies {
+        implementation(project(":common"))
+    }
+}
+
+project(":categories") {
     dependencies {
         implementation(project(":common"))
     }

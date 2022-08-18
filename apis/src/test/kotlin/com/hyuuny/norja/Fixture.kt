@@ -1,6 +1,7 @@
 package com.hyuuny.norja
 
 import com.hyuuny.norja.address.domain.Address
+import com.hyuuny.norja.domain.CategoryCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.FacilitiesCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.ImageCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyCreateCommand
@@ -133,6 +134,22 @@ class FixtureReview {
             convenienceScore = convenienceScore,
             satisfactionScore = satisfactionScore,
             reviewPhotos = reviewPhotos,
+        )
+    }
+}
+
+class FixtureCategory {
+    companion object {
+        fun aCategory(
+            name: String = "국내호텔",
+            priority: Long = 100,
+            level: Int = 1,
+            iconImageUrl : String = "icon-image-url",
+        ) = CategoryCreateCommand(
+            name = name,
+            priority = priority,
+            level = level,
+            iconImageUrl = iconImageUrl,
         )
     }
 }
