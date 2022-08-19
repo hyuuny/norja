@@ -130,6 +130,7 @@ project(":admin-apis") {
         implementation(project(":reservation"))
         implementation(project(":users"))
         implementation(project(":reviews"))
+        implementation(project(":categories"))
     }
 }
 

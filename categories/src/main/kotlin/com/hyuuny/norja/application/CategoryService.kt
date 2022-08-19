@@ -23,9 +23,9 @@ class CategoryService(
         command: CategoryCreateCommand
     ): CategoryResponse {
         val parentCategory = categoryReader.getCategory(parentCategoryId)
-        val newCategory = command.toEntity
-        newCategory.assignCategory(parentCategory)
-        val savedChildCategoryId = categoryStore.store(newCategory).id!!
+        val childCategory = command.toEntity
+        childCategory.assignCategory(parentCategory)
+        val savedChildCategoryId = categoryStore.store(childCategory).id!!
         return getCategory(savedChildCategoryId)
     }
 
