@@ -3,7 +3,10 @@ package com.hyuuny.norja.lodgingcompanies
 import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyCommand
 import com.hyuuny.norja.FixtureReview
 import com.hyuuny.norja.address.domain.Address
+import com.hyuuny.norja.application.CategoryService
 import com.hyuuny.norja.common.BaseIntegrationTest
+import com.hyuuny.norja.domain.CategoryCreateCommand
+import com.hyuuny.norja.infrastructure.CategoryRepository
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
 import com.hyuuny.norja.lodgingcompanies.domain.FacilitiesCreateCommand
 import com.hyuuny.norja.lodgingcompanies.domain.ImageCreateCommand
@@ -48,6 +51,14 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     @BeforeEach
     fun setUp() {
         RestAssured.port = port
+        savedCategoryId = categoryService.createCategory(
+            CategoryCreateCommand(
+                name = "국내호텔",
+                priority = 100,
+                level = 1,
+                iconImageUrl = "icon-image-url",
+            )
+        )
     }
 
     @AfterEach
@@ -57,6 +68,7 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
         reservationRepository.deleteAll()
         roomRepository.deleteAll()
         lodgingCompanyRepository.deleteAll()
+        categoryRepository.deleteAll()
     }
 
     @Autowired
@@ -83,11 +95,19 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
     @Autowired
     lateinit var reviewService: ReviewService
 
+    @Autowired
+    lateinit var categoryRepository: CategoryRepository
+
+    @Autowired
+    lateinit var categoryService: CategoryService
+
+    var savedCategoryId = 0L
+
     @Test
     @Disabled
     fun `숙박 업체 상세 조회`() {
         val random = Random()
-        val command = aLodgingCompanyCommand()
+        val command = aLodgingCompanyCommand(savedCategoryId)
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(command)
 
         IntStream.range(1, 6).forEach {
@@ -137,7 +157,7 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
 
     @Test
     fun `숙박 업체 및 방 상세 조회`() {
-        val command = aLodgingCompanyCommand()
+        val command = aLodgingCompanyCommand(savedCategoryId)
         val savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(command)
 
         val random = Random()
@@ -394,6 +414,7 @@ class LodgingCompanyRestControllerTest : BaseIntegrationTest() {
             run {
                 // 숙박 업체 등록
                 val command = LodgingCompanyCreateCommand(
+                    categoryId = savedCategoryId,
                     type = HOTEL,
                     name = "스테이 호텔 $i",
                     thumbnail = "thumbnail-url",

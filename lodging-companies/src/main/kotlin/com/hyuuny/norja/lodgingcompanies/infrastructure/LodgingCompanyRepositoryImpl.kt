@@ -16,13 +16,6 @@ import org.springframework.util.ObjectUtils.isEmpty
 class LodgingCompanyRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : CustomQueryDslRepository(LodgingCompany::class.java), LodgingCompanyRepositoryCustom {
-//    override fun loadLodgingCompany(id: Long) = queryFactory
-//        .selectFrom(lodgingCompany)
-//        .where(
-//            lodgingCompany.id.eq(id),
-//            lodgingCompany.status.eq(Status.OPEN)
-//        )
-//        .fetchOne()
 
     override fun loadLodgingCompany(id: Long): SearchedLodgingCompany? {
         return queryFactory.select(
@@ -60,6 +53,7 @@ class LodgingCompanyRepositoryImpl(
                 fields(
                     SearchedLodgingCompanyListing::class.java,
                     lodgingCompany.id,
+                    lodgingCompany.categoryId,
                     lodgingCompany.type,
                     lodgingCompany.status,
                     lodgingCompany.name,
@@ -88,10 +82,17 @@ class LodgingCompanyRepositoryImpl(
             )
             .from(lodgingCompany)
             .where(
+                categoryIdEq(searchQuery.categoryId),
+                typeEq(searchQuery.type),
                 searchTagContains(searchQuery.searchTag),
                 addressContains(searchQuery.address),
             )
     )
+
+    private fun categoryIdEq(categoryId: Long?) =
+        if (isEmpty(categoryId)) null else lodgingCompany.categoryId.eq(categoryId)
+
+    private fun typeEq(type: Type?) = if (isEmpty(type)) null else lodgingCompany.type.eq(type)
 
     private fun searchTagContains(searchTag: String?) =
         if (isEmpty(searchTag)) null else lodgingCompany.searchTag.contains(searchTag)

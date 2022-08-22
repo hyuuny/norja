@@ -10,6 +10,7 @@ class LodgingCompanyTest {
 
     @Test
     fun `업체 등록`() {
+        val expectedCategoryId = 1L
         val expectedType = Type.HOTEL
         val expectedStatus = Status.OPEN
         val expectedName = "스테이 호텔"
@@ -33,6 +34,7 @@ class LodgingCompanyTest {
 
         val newLodgingCompany = aLodgingCompany()
 
+        newLodgingCompany.categoryId shouldBe expectedCategoryId
         newLodgingCompany.type shouldBe expectedType
         newLodgingCompany.status shouldBe expectedStatus
         newLodgingCompany.name shouldBe expectedName
@@ -56,6 +58,14 @@ class LodgingCompanyTest {
         newLodgingCompany.facilities?.get(2)?.name shouldBe expectedFacilities[2].name
         newLodgingCompany.facilities?.get(2)?.iconImageUrl shouldBe expectedFacilities[2].iconImageUrl
         newLodgingCompany.facilities?.get(2)?.priority shouldBe expectedFacilities[2].priority
+    }
+
+    @Test
+    fun `카테고리 변경`() {
+        val expectedCategoryId = 5L
+        val newLodgingCompany = aLodgingCompany()
+        newLodgingCompany.changeCategoryId(expectedCategoryId)
+        newLodgingCompany.categoryId shouldBe expectedCategoryId
     }
 
     @Test
@@ -137,6 +147,7 @@ class LodgingCompanyTest {
 class FixtureLodgingCompany {
     companion object {
         fun aLodgingCompany(
+            categoryId: Long = 1L,
             type: Type = Type.HOTEL,
             name: String = "스테이 호텔",
             thumbnail: String = "thumbnail-url",
@@ -154,6 +165,7 @@ class FixtureLodgingCompany {
                 Facilities.create("VOD", "vod-url", 300L)
             ),
         ) = LodgingCompany.create(
+            categoryId,
             type,
             name,
             thumbnail,

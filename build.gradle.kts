@@ -46,8 +46,6 @@ subprojects {
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
         implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
 
-        implementation("io.pebbletemplates:pebble-spring-boot-starter:3.1.5")
-
         implementation("org.springframework.boot:spring-boot-starter-hateoas")
 
         implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")

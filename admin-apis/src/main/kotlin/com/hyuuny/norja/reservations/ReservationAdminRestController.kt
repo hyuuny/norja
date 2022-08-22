@@ -6,6 +6,7 @@ import com.hyuuny.norja.reservations.domain.ReservationResponse
 import com.hyuuny.norja.reservations.domain.ReservationSearchQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springdoc.api.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort.Direction.DESC
 import org.springframework.data.web.PageableDefault
@@ -34,8 +35,8 @@ class ReservationAdminRestController(
     @Operation(summary = "예약 조회 및 검색")
     @GetMapping
     fun retrieveReservation(
-        searchQuery: ReservationSearchQuery,
-        @PageableDefault(sort = ["createdAt"], direction = DESC) pageable: Pageable,
+        @ParameterObject searchQuery: ReservationSearchQuery,
+        @ParameterObject @PageableDefault(sort = ["createdAt"], direction = DESC) pageable: Pageable,
         pagedResourcesAssembler: PagedResourcesAssembler<ReservationListingResponse>
     ): ResponseEntity<PagedModel<EntityModel<ReservationListingResponse>>> {
         val page = reservationService.retrieveReservation(searchQuery, pageable)

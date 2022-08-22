@@ -2,9 +2,12 @@ package com.hyuuny.norja.rooms
 
 import com.hyuuny.norja.ADMIN_EMAIL
 import com.hyuuny.norja.ADMIN_PASSWORD
-import com.hyuuny.norja.FixtureLodgingCompany
+import com.hyuuny.norja.FixtureLodgingCompany.Companion.aLodgingCompanyDto
 import com.hyuuny.norja.FixtureRoom
+import com.hyuuny.norja.application.CategoryService
 import com.hyuuny.norja.common.BaseIntegrationTest
+import com.hyuuny.norja.domain.CategoryCreateCommand
+import com.hyuuny.norja.infrastructure.CategoryRepository
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
 import com.hyuuny.norja.lodgingcompanies.infrastructure.LodgingCompanyRepository
 import com.hyuuny.norja.rooms.application.RoomService
@@ -38,7 +41,16 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
     fun setUp() {
         RestAssured.port = port
         savedLodgingCompanyId = lodgingCompanyService.createLodgingCompany(
-            FixtureLodgingCompany.aLodgingCompanyDto().toCommand()
+            aLodgingCompanyDto(
+                categoryService.createCategory(
+                    CategoryCreateCommand(
+                        name = "국내호텔",
+                        priority = 100,
+                        level = 1,
+                        iconImageUrl = "icon-image-url",
+                    )
+                )
+            ).toCommand()
         )
     }
 
@@ -46,7 +58,14 @@ class RoomAdminRestControllerTest : BaseIntegrationTest() {
     fun afterEach() {
         roomRepository.deleteAll()
         lodgingCompanyRepository.deleteAll()
+        categoryRepository.deleteAll()
     }
+
+    @Autowired
+    lateinit var categoryRepository: CategoryRepository
+
+    @Autowired
+    lateinit var categoryService: CategoryService
 
     @Autowired
     lateinit var lodgingCompanyRepository: LodgingCompanyRepository

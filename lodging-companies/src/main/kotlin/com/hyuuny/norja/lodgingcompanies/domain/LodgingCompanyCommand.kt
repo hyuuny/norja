@@ -5,6 +5,7 @@ import com.hyuuny.norja.address.domain.Address
 class LodgingCompanyCommand
 
 data class LodgingCompanyCreateCommand(
+    val categoryId: Long,
     val type: Type,
     val name: String,
     val thumbnail: String,
@@ -19,6 +20,7 @@ data class LodgingCompanyCreateCommand(
     val toEntity: LodgingCompany
         get() {
             val newLodging = LodgingCompany.create(
+                categoryId = this.categoryId,
                 type = this.type,
                 name = this.name,
                 thumbnail = this.thumbnail,
@@ -57,6 +59,7 @@ data class FacilitiesCreateCommand(
 }
 
 data class LodgingCompanyUpdateCommand(
+    val categoryId: Long,
     val type: Type,
     val name: String,
     val thumbnail: String,
@@ -69,6 +72,7 @@ data class LodgingCompanyUpdateCommand(
 ) {
 
     fun update(entity: LodgingCompany) {
+        entity.changeCategoryId(this.categoryId)
         entity.changeType(this.type)
         entity.changeName(this.name)
         entity.changeThumbnail(this.thumbnail)

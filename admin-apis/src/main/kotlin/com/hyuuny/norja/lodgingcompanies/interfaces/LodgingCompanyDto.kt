@@ -8,6 +8,9 @@ class LodgingCompanyDto
 
 data class LodgingCompanyCreateDto(
 
+    @field:Schema(description = "카테고리 아이디", example = "1", required = true)
+    val categoryId: Long,
+
     @field:Schema(description = "타입", example = "HOTEL", required = true)
     val type: Type,
 
@@ -36,6 +39,7 @@ data class LodgingCompanyCreateDto(
     val facilities: MutableList<FacilitiesCreateDto> = mutableListOf(),
 ) {
     fun toCommand() = LodgingCompanyCreateCommand(
+        categoryId = this.categoryId,
         type = this.type,
         name = this.name,
         thumbnail = this.thumbnail,
@@ -83,6 +87,9 @@ data class FacilitiesCreateDto(
 
 data class LodgingCompanyUpdateDto(
 
+    @field:Schema(description = "카테고리 아이디", example = "1", required = true)
+    val categoryId: Long,
+
     @field:Schema(description = "타입", example = "HOTEL", required = true)
     val type: Type,
 
@@ -111,6 +118,7 @@ data class LodgingCompanyUpdateDto(
     val facilities: MutableList<FacilitiesCreateDto> = mutableListOf(),
 ) {
     fun toCommand() = LodgingCompanyUpdateCommand(
+        categoryId = this.categoryId,
         type = this.type,
         name = this.name,
         thumbnail = this.thumbnail,

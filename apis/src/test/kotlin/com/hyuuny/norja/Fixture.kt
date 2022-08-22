@@ -45,7 +45,8 @@ class FixtureMember {
 
 class FixtureLodgingCompany {
     companion object {
-        fun aLodgingCompanyCommand() = LodgingCompanyCreateCommand(
+        fun aLodgingCompanyCommand(categoryId: Long) = LodgingCompanyCreateCommand(
+            categoryId,
             type = Type.HOTEL,
             name = "스테이 호텔",
             thumbnail = "thumbnail-url",

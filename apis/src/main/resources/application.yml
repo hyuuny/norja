@@ -5,13 +5,6 @@ spring:
 server:
   port: 8080
 
-pebble:
-  suffix: .html
-  cache: false
-  exposeSessionAttributes: true
-  exposeRequestAttributes: true
-  split-view: false
-
 springdoc:
   version: v1
   api-docs:

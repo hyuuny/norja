@@ -11,6 +11,7 @@ import javax.persistence.OneToMany
 
 @Entity
 class LodgingCompany private constructor(
+    categoryId: Long,
     type: Type,
     status: Status = Status.OPEN,
     name: String,
@@ -25,6 +26,7 @@ class LodgingCompany private constructor(
 
     companion object {
         fun create(
+            categoryId: Long,
             type: Type,
             name: String,
             thumbnail: String,
@@ -35,6 +37,7 @@ class LodgingCompany private constructor(
             images: MutableList<Image>? = mutableListOf(),
             facilities: MutableList<Facilities>? = mutableListOf(),
         ) = LodgingCompany(
+            categoryId = categoryId,
             type = type,
             name = name,
             status = Status.OPEN,
@@ -47,6 +50,9 @@ class LodgingCompany private constructor(
             facilities = facilities
         )
     }
+
+    var categoryId = categoryId
+        private set
 
     @Enumerated(EnumType.STRING)
     var type = type
@@ -81,6 +87,10 @@ class LodgingCompany private constructor(
     @OneToMany(mappedBy = "lodgingCompany", cascade = [ALL], fetch = LAZY, orphanRemoval = true)
     var facilities = facilities
         private set
+
+    fun changeCategoryId(categoryId: Long) {
+        this.categoryId = categoryId
+    }
 
     fun changeType(type: Type) {
         this.type = type

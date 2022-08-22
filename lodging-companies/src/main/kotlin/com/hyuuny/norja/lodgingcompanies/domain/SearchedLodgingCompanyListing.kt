@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class SearchedLodgingCompanyListing(
     val id: Long? = null,
+    val categoryId: Long? = null,
     val type: Type = Type.HOTEL,
     val status: Status = Status.OPEN,
     val name: String? = null,

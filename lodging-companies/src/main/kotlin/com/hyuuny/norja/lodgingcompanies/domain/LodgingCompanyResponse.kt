@@ -15,6 +15,9 @@ data class LodgingCompanyResponse(
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,
 
+    @field:Schema(description = "카테고리 아이디", example = "1", required = true)
+    val categoryId: Long,
+
     @field:Schema(description = "타입", example = "HOTEL", required = true)
     val type: Type,
 
@@ -48,6 +51,7 @@ data class LodgingCompanyResponse(
 
     constructor(entity: LodgingCompany) : this(
         id = entity.id!!,
+        categoryId = entity.categoryId,
         type = entity.type,
         status = entity.status,
         name = entity.name,
@@ -115,6 +119,9 @@ data class LodgingCompanyAndRoomResponse(
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,
 
+    @field:Schema(description = "카테고리 아이디", example = "1", required = true)
+    val categoryId: Long,
+
     @field:Schema(description = "체크인", example = "2022-08-08", required = true)
     val checkIn: String,
 
@@ -170,6 +177,7 @@ data class LodgingCompanyAndRoomResponse(
         checkOut: String
     ) : this(
         id = searched.id!!,
+        categoryId = searched.categoryId,
         type = searched.type,
         status = searched.status,
         name = searched.name,
@@ -196,6 +204,9 @@ data class LodgingCompanyListingResponse(
 
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,
+
+    @field:Schema(description = "카테고리 아이디", example = "1", required = true)
+    val categoryId: Long,
 
     @field:Schema(description = "타입", example = "HOTEL", required = true)
     val type: Type,
@@ -229,6 +240,7 @@ data class LodgingCompanyListingResponse(
 ) {
     constructor(searched: SearchedLodgingCompanyListing) : this(
         id = searched.id!!,
+        categoryId = searched.categoryId!!,
         type = searched.type,
         status = searched.status,
         name = searched.name!!,

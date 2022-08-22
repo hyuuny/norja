@@ -11,13 +11,6 @@ spring:
           order_updates: true
         default_batch_fetch_size: 1000
 
-pebble:
-  suffix: .html
-  cache: false
-  exposeSessionAttributes: true
-  exposeRequestAttributes: true
-  split-view: false
-
 server:
   error:
     whitelabel:

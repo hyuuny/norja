@@ -8,6 +8,9 @@ data class SearchedLodgingCompany(
     val id
         get() = this.lodgingCompany!!.id
 
+    val categoryId
+        get() = this.lodgingCompany!!.categoryId
+
     val type
         get() = this.lodgingCompany!!.type
 

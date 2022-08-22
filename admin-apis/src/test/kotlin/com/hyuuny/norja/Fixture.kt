@@ -49,7 +49,8 @@ class FixtureMember {
 
 class FixtureLodgingCompany {
     companion object {
-        fun aLodgingCompanyDto() = LodgingCompanyCreateDto(
+        fun aLodgingCompanyDto(categoryId: Long) = LodgingCompanyCreateDto(
+            categoryId = categoryId,
             type = HOTEL,
             name = "스테이 호텔",
             thumbnail = "thumbnail-url",

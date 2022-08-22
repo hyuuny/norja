@@ -1,12 +1,20 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponse
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyResponse
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springdoc.api.annotations.ParameterObject
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort.Direction.DESC
+import org.springframework.data.web.PageableDefault
+import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.server.RepresentationModelAssembler
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.http.MediaType
@@ -19,8 +27,25 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class LodgingCompanyAdminRestController(
     private val lodgingCompanyService: LodgingCompanyService,
+    private val lodgingCompanyListingResourcesAssembler: LodgingCompanyListingResourceAssembler,
     private val lodgingCompanyResourceAssembler: LodgingCompanyResourceAssembler,
 ) {
+
+    @Operation(summary = "숙박업체 조회 및 검색")
+    @GetMapping
+    fun retrieveLodgingCompanies(
+        @ParameterObject searchQuery: LodgingCompanySearchQuery,
+        @ParameterObject @PageableDefault(
+            sort = ["createdAt"],
+            direction = DESC
+        ) pageable: Pageable,
+        pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponse>,
+    ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponse>>> {
+        val page = lodgingCompanyService.retrieveLodgingCompany(searchQuery, pageable)
+        return ResponseEntity.ok(
+            pagedResourcesAssembler.toModel(page, lodgingCompanyListingResourcesAssembler)
+        )
+    }
 
     @Operation(summary = "숙박업체 등록")
     @PostMapping
@@ -60,6 +85,21 @@ class LodgingCompanyAdminRestController(
         return ResponseEntity.noContent().build()
     }
 
+    @Component
+    class LodgingCompanyListingResourceAssembler :
+        RepresentationModelAssembler<LodgingCompanyListingResponse, EntityModel<LodgingCompanyListingResponse>> {
+
+        override fun toModel(entity: LodgingCompanyListingResponse): EntityModel<LodgingCompanyListingResponse> {
+            return EntityModel.of(
+                entity,
+                WebMvcLinkBuilder.linkTo(
+                    WebMvcLinkBuilder.methodOn(LodgingCompanyAdminRestController::class.java)
+                        .getLodgingCompany(entity.id)
+                )
+                    .withSelfRel()
+            )
+        }
+    }
 
     @Component
     companion object LodgingCompanyResourceAssembler :
