@@ -57,7 +57,7 @@ class CommonRestControllerAdvice(
         status: HttpStatus,
         request: WebRequest
     ): ResponseEntity<Any> {
-        val bindingResult: BindingResult = ex.getBindingResult()
+        val bindingResult: BindingResult = ex.bindingResult
         val fieldErrors: List<FieldError> = getFieldErrors(bindingResult)
         val code = "exception.${ex.javaClass.simpleName}"
         return toErrorResponse(
