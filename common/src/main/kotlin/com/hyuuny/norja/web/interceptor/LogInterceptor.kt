@@ -2,7 +2,6 @@ package com.hyuuny.norja.web.interceptor
 
 import org.slf4j.LoggerFactory
 import org.springframework.web.servlet.HandlerInterceptor
-import org.springframework.web.servlet.ModelAndView
 import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -24,13 +23,6 @@ class LogInterceptor : HandlerInterceptor {
         log.info("REQUEST  [{}][{}][{}][{}]", uuid, request.dispatcherType, requestURI, handler)
         return true
     }
-
-    override fun postHandle(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        handler: Any,
-        modelAndView: ModelAndView?
-    ) = log.info("postHandle [{}]", modelAndView)
 
     override fun afterCompletion(
         request: HttpServletRequest,
