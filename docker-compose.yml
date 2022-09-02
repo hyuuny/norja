@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mysql:
-    container_name: kotlin_norja
+    container_name: norja_mysql
     image: mysql/mysql-server:5.7
     restart: always
     environment:
@@ -18,3 +18,12 @@ services:
       - "--collation-server=utf8mb4_unicode_ci"
     volumes:
       - ~/docker-volumes/norja/mysql:/data
+
+  redis:
+    container_name: norja_redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ~/docker-volumes/norja/redis:/data
