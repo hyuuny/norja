@@ -1,6 +1,8 @@
 package com.hyuuny.norja.rooms.application
 
 import com.hyuuny.norja.rooms.domain.*
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,11 +21,13 @@ class RoomService(
         return roomStore.store(newRoom).id!!
     }
 
+    @Cacheable(value = ["roomCache"], key = "#id")
     fun getRoom(id: Long): RoomResponse {
         val loadedRoom = roomReader.getRoom(id)
         return RoomResponse(loadedRoom)
     }
 
+    @CacheEvict(value = ["roomCache"], key = "#id")
     @Transactional
     fun updateRoom(id: Long, command: RoomUpdateCommand): RoomResponse {
         val loadedRoom = roomReader.getRoom(id)
@@ -31,6 +35,7 @@ class RoomService(
         return getRoom(id)
     }
 
+    @CacheEvict(value = ["roomCache"], key = "#id")
     @Transactional
     fun deleteRoom(id: Long) = roomStore.delete(id)
 

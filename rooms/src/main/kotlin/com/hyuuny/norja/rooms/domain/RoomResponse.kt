@@ -2,22 +2,26 @@ package com.hyuuny.norja.rooms.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id
 import io.swagger.v3.oas.annotations.media.Schema
 
+@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class")
 @JsonInclude(Include.NON_NULL)
 data class RoomResponse(
 
     @field:Schema(description = "아이디", example = "1", required = true)
-    val id: Long,
+    val id: Long = 0,
 
     @field:Schema(description = "숙박업체 아이디", example = "1", required = true)
-    val lodgingCompanyId: Long,
+    val lodgingCompanyId: Long = 0,
 
     @field:Schema(description = "타입", example = "DOUBLE_ROOM", required = true)
-    val type: Type,
+    val type: Type = Type.DOUBLE_ROOM,
 
     @field:Schema(description = "이름", example = "더블룸", required = true)
-    val name: String,
+    val name: String = "",
 
     @field:Schema(description = "객실 수", example = "10", required = true)
     val roomCount: Int = 10,
@@ -32,7 +36,7 @@ data class RoomResponse(
     val maximumPersonnel: Int = 2,
 
     @field:Schema(description = "금액", example = "130000", required = true)
-    val price: Long,
+    val price: Long = 0,
 
     @field:Schema(description = "내용", example = "야경 뷰 최고!")
     val content: String? = null,
@@ -70,13 +74,13 @@ data class RoomResponse(
 data class RoomImageResponse(
 
     @field:Schema(description = "객실 아이디", example = "1", required = true)
-    val roomId: Long,
+    val roomId: Long = 0,
 
     @field:Schema(description = "우선순위", example = "100", required = true)
-    val priority: Long,
+    val priority: Long = 100,
 
     @field:Schema(description = "이미지 URL", example = "image-url", required = true)
-    val imageUrl: String,
+    val imageUrl: String = "",
 ) {
     constructor(entity: RoomImage) : this(
         roomId = entity.roomId,
@@ -88,16 +92,16 @@ data class RoomImageResponse(
 data class RoomFacilitiesResponse(
 
     @field:Schema(description = "객실 아이디", example = "1", required = true)
-    val roomId: Long,
+    val roomId: Long = 0,
 
     @field:Schema(description = "시설명", example = "퀸 침대", required = true)
-    val name: String,
+    val name: String = "",
 
     @field:Schema(description = "우선순위", example = "100", required = true)
-    val priority: Long,
+    val priority: Long = 100,
 
     @field:Schema(description = "아이콘이미지 URL", example = "icon-image-url", required = true)
-    val iconImageUrl: String,
+    val iconImageUrl: String = "",
 ) {
     constructor(entity: RoomFacilities) : this(
         roomId = entity.roomId,
