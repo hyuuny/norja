@@ -51,7 +51,7 @@ subprojects {
         implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")
         implementation("org.modelmapper:modelmapper:2.3.7")
 
-        implementation ("org.springframework.boot:spring-boot-starter-cache")
+        implementation("org.springframework.boot:spring-boot-starter-cache")
 
         // kotest
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
@@ -68,8 +68,8 @@ subprojects {
         implementation("org.springdoc:springdoc-openapi-data-rest:1.5.9")
 
         // redis
-        implementation ("org.springframework.boot:spring-boot-starter-data-redis")
-        implementation ("it.ozimov:embedded-redis:0.7.2")
+        implementation("org.springframework.boot:spring-boot-starter-data-redis")
+        implementation("it.ozimov:embedded-redis:0.7.2")
     }
 
     dependencyManagement {

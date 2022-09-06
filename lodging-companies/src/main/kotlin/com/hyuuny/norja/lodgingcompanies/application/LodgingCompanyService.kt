@@ -2,6 +2,8 @@ package com.hyuuny.norja.lodgingcompanies.application
 
 import com.hyuuny.norja.lodgingcompanies.domain.*
 import com.hyuuny.norja.lodgingcompanies.domain.collections.SearchedLodgingCompanies
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -24,39 +26,43 @@ class LodgingCompanyService(
     fun retrieveLodgingCompany(
         searchQuery: LodgingCompanySearchQuery,
         pageable: Pageable,
-    ): PageImpl<LodgingCompanyListingResponse> {
+    ): PageImpl<LodgingCompanyListingResponseDto> {
         val searched = lodgingCompanyReader.retrieveLodgingCompany(searchQuery, pageable)
         val searchedLodgingCompanies = SearchedLodgingCompanies(searched.content)
         return PageImpl(searchedLodgingCompanies.toPage(), pageable, searched.totalElements)
     }
 
-    fun getLodgingCompany(id: Long): LodgingCompanyResponse {
+    @Cacheable(value = ["lodgingCompanyCache"], key = "#id")
+    fun getLodgingCompany(id: Long): LodgingCompanyResponseDto {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
-        return LodgingCompanyResponse(loadedLodgingCompany)
+        return LodgingCompanyResponseDto(loadedLodgingCompany)
     }
 
     fun getLodgingCompanyAndRooms(
         id: Long,
         dateSearchQuery: DateSearchQuery
-    ): LodgingCompanyAndRoomResponse =
+    ): LodgingCompanyAndRoomResponseDto =
         lodgingCompanyDomainService.getLodgingCompanyAndRoom(id, dateSearchQuery)
 
+    @CacheEvict(value = ["lodgingCompanyCache"], key = "#id")
     @Transactional
     fun updateLodgingCompany(
         id: Long,
         command: LodgingCompanyUpdateCommand
-    ): LodgingCompanyResponse {
+    ): LodgingCompanyResponseDto {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
         command.update(loadedLodgingCompany)
         return getLodgingCompany(id)
     }
 
+    @CacheEvict(value = ["lodgingCompanyCache"], key = "#id")
     @Transactional
     fun vacation(id: Long) {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)
         loadedLodgingCompany.vacation()
     }
 
+    @CacheEvict(value = ["lodgingCompanyCache"], key = "#id")
     @Transactional
     fun deleteLodgingCompany(id: Long) {
         val loadedLodgingCompany = lodgingCompanyReader.getLodgingCompany(id)

@@ -31,6 +31,12 @@ class ReviewAdminRestControllerTest : BaseIntegrationTest() {
     @LocalServerPort
     val port: Int = 0
 
+    @Autowired
+    lateinit var reviewRepository: ReviewRepository
+
+    @Autowired
+    lateinit var reviewService: ReviewService
+
     @BeforeEach
     fun setUp() {
         RestAssured.port = port
@@ -38,16 +44,10 @@ class ReviewAdminRestControllerTest : BaseIntegrationTest() {
 
     @AfterEach
     fun afterEach() {
-        deleteAllUsers()
+        this.deleteAllUsers()
         reviewRepository.deleteAll()
+        this.deleteCache()
     }
-
-    @Autowired
-    lateinit var reviewRepository: ReviewRepository
-
-    @Autowired
-    lateinit var reviewService: ReviewService
-
 
     @Test
     fun `후기 조회 및 검색`() {

@@ -1,8 +1,8 @@
 package com.hyuuny.norja.reviews
 
 import com.hyuuny.norja.reviews.application.ReviewService
-import com.hyuuny.norja.reviews.domain.ReviewListingResponse
-import com.hyuuny.norja.reviews.domain.ReviewResponse
+import com.hyuuny.norja.reviews.domain.ReviewListingResponseDto
+import com.hyuuny.norja.reviews.domain.ReviewResponseDto
 import com.hyuuny.norja.reviews.domain.ReviewSearchQuery
 import com.hyuuny.norja.reviews.interfaces.ChangeBestReviewDto
 import io.swagger.v3.oas.annotations.Operation
@@ -43,8 +43,8 @@ class ReviewAdminRestController(
             sort = ["createdAt"],
             direction = Sort.Direction.DESC
         ) pageable: Pageable,
-        pagedResourcesAssembler: PagedResourcesAssembler<ReviewListingResponse>
-    ): ResponseEntity<PagedModel<EntityModel<ReviewListingResponse>>> {
+        pagedResourcesAssembler: PagedResourcesAssembler<ReviewListingResponseDto>
+    ): ResponseEntity<PagedModel<EntityModel<ReviewListingResponseDto>>> {
         val page = reviewService.retrieveReview(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, reviewListingResourceAssembler)
@@ -53,7 +53,7 @@ class ReviewAdminRestController(
 
     @Operation(summary = "후기 상세 조회")
     @GetMapping("/{id}")
-    fun getReview(@PathVariable id: Long): ResponseEntity<EntityModel<ReviewResponse>> {
+    fun getReview(@PathVariable id: Long): ResponseEntity<EntityModel<ReviewResponseDto>> {
         val loadedReview = reviewService.getReview(id)
         return ResponseEntity.ok(reviewResourceAssembler.toModel(loadedReview))
     }
@@ -74,9 +74,9 @@ class ReviewAdminRestController(
 
     @Component
     class ReviewListingResourceAssembler :
-        RepresentationModelAssembler<ReviewListingResponse, EntityModel<ReviewListingResponse>> {
+        RepresentationModelAssembler<ReviewListingResponseDto, EntityModel<ReviewListingResponseDto>> {
 
-        override fun toModel(entity: ReviewListingResponse): EntityModel<ReviewListingResponse> {
+        override fun toModel(entity: ReviewListingResponseDto): EntityModel<ReviewListingResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
@@ -90,9 +90,9 @@ class ReviewAdminRestController(
 
     @Component
     companion object ReviewResourceAssembler :
-        RepresentationModelAssembler<ReviewResponse, EntityModel<ReviewResponse>> {
+        RepresentationModelAssembler<ReviewResponseDto, EntityModel<ReviewResponseDto>> {
 
-        override fun toModel(entity: ReviewResponse): EntityModel<ReviewResponse> {
+        override fun toModel(entity: ReviewResponseDto): EntityModel<ReviewResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

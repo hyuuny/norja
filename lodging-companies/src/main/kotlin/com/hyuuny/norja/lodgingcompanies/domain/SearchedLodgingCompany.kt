@@ -37,14 +37,14 @@ data class SearchedLodgingCompany(
 
     val images
         get() = this.lodgingCompany!!.images!!.stream()
-            .map(::ImageResponse)
-            .sorted((Comparator.comparing(ImageResponse::priority)))
+            .map(::ImageResponseDto)
+            .sorted((Comparator.comparing(ImageResponseDto::priority)))
             .toList()
 
     val facilities
         get() = this.lodgingCompany!!.facilities!!.stream()
-            .map(::FacilitiesResponse)
-            .sorted((Comparator.comparing(FacilitiesResponse::priority)))
+            .map(::FacilitiesResponseDto)
+            .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
             .toList()
 
     val createdAt

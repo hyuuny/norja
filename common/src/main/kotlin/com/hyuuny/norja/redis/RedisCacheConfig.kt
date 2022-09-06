@@ -1,6 +1,5 @@
 package com.hyuuny.norja.redis
 
-import com.google.common.collect.Maps
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.KeyGenerator
@@ -27,7 +26,7 @@ class RedisCacheConfig {
             .entryTtl(Duration.ofMinutes(300))
             .computePrefixWith(CacheKeyPrefix.simple())
             .serializeValuesWith(SerializationPair.fromSerializer(GenericJackson2JsonRedisSerializer()))
-        val cacheConfigurations: Map<String, RedisCacheConfiguration> = Maps.newHashMap()
+        val cacheConfigurations: Map<String, RedisCacheConfiguration> = mutableMapOf()
 
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(connectionFactory)

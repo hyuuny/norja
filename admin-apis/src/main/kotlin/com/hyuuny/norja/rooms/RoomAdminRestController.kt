@@ -1,7 +1,7 @@
 package com.hyuuny.norja.rooms
 
 import com.hyuuny.norja.rooms.application.RoomService
-import com.hyuuny.norja.rooms.domain.RoomResponse
+import com.hyuuny.norja.rooms.domain.RoomResponseDto
 import com.hyuuny.norja.rooms.interfaces.RoomCreateDto
 import com.hyuuny.norja.rooms.interfaces.RoomUpdateDto
 import io.swagger.v3.oas.annotations.Operation
@@ -31,7 +31,7 @@ class RoomAdminRestController(
 
     @Operation(summary = "객실 상세 조회")
     @GetMapping("/{id}")
-    fun getRoom(@PathVariable id: Long): ResponseEntity<EntityModel<RoomResponse>> {
+    fun getRoom(@PathVariable id: Long): ResponseEntity<EntityModel<RoomResponseDto>> {
         val loadedRoom = roomService.getRoom(id)
         return ResponseEntity.ok(roomResourceAssembler.toModel(loadedRoom))
     }
@@ -41,7 +41,7 @@ class RoomAdminRestController(
     fun updateRoom(
         @PathVariable id: Long,
         @RequestBody dto: RoomUpdateDto,
-    ): ResponseEntity<EntityModel<RoomResponse>> {
+    ): ResponseEntity<EntityModel<RoomResponseDto>> {
         val updatedRoom = roomService.updateRoom(id, dto.toCommand())
         return ResponseEntity.ok(roomResourceAssembler.toModel(updatedRoom))
     }
@@ -55,9 +55,9 @@ class RoomAdminRestController(
 
     @Component
     companion object RoomResourceAssembler :
-        RepresentationModelAssembler<RoomResponse, EntityModel<RoomResponse>> {
+        RepresentationModelAssembler<RoomResponseDto, EntityModel<RoomResponseDto>> {
 
-        override fun toModel(entity: RoomResponse): EntityModel<RoomResponse> {
+        override fun toModel(entity: RoomResponseDto): EntityModel<RoomResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

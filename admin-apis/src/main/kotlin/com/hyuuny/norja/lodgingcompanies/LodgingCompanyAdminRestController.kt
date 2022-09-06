@@ -1,8 +1,8 @@
 package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponse
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyResponse
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponseDto
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyResponseDto
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyCreateDto
 import com.hyuuny.norja.lodgingcompanies.interfaces.LodgingCompanyUpdateDto
@@ -39,8 +39,8 @@ class LodgingCompanyAdminRestController(
             sort = ["createdAt"],
             direction = DESC
         ) pageable: Pageable,
-        pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponse>,
-    ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponse>>> {
+        pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponseDto>,
+    ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponseDto>>> {
         val page = lodgingCompanyService.retrieveLodgingCompany(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, lodgingCompanyListingResourcesAssembler)
@@ -56,7 +56,7 @@ class LodgingCompanyAdminRestController(
 
     @Operation(summary = "숙박업체 상세 조회")
     @GetMapping("/{id}")
-    fun getLodgingCompany(@PathVariable id: Long): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
+    fun getLodgingCompany(@PathVariable id: Long): ResponseEntity<EntityModel<LodgingCompanyResponseDto>> {
         val loadedLodgingCompany = lodgingCompanyService.getLodgingCompany(id)
         return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(loadedLodgingCompany))
     }
@@ -66,7 +66,7 @@ class LodgingCompanyAdminRestController(
     fun updateLodgingCompany(
         @PathVariable id: Long,
         @RequestBody dto: LodgingCompanyUpdateDto
-    ): ResponseEntity<EntityModel<LodgingCompanyResponse>> {
+    ): ResponseEntity<EntityModel<LodgingCompanyResponseDto>> {
         val updatedLodgingCompany = lodgingCompanyService.updateLodgingCompany(id, dto.toCommand())
         return ResponseEntity.ok(lodgingCompanyResourceAssembler.toModel(updatedLodgingCompany))
     }
@@ -87,9 +87,9 @@ class LodgingCompanyAdminRestController(
 
     @Component
     class LodgingCompanyListingResourceAssembler :
-        RepresentationModelAssembler<LodgingCompanyListingResponse, EntityModel<LodgingCompanyListingResponse>> {
+        RepresentationModelAssembler<LodgingCompanyListingResponseDto, EntityModel<LodgingCompanyListingResponseDto>> {
 
-        override fun toModel(entity: LodgingCompanyListingResponse): EntityModel<LodgingCompanyListingResponse> {
+        override fun toModel(entity: LodgingCompanyListingResponseDto): EntityModel<LodgingCompanyListingResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
@@ -103,9 +103,9 @@ class LodgingCompanyAdminRestController(
 
     @Component
     companion object LodgingCompanyResourceAssembler :
-        RepresentationModelAssembler<LodgingCompanyResponse, EntityModel<LodgingCompanyResponse>> {
+        RepresentationModelAssembler<LodgingCompanyResponseDto, EntityModel<LodgingCompanyResponseDto>> {
 
-        override fun toModel(entity: LodgingCompanyResponse): EntityModel<LodgingCompanyResponse> {
+        override fun toModel(entity: LodgingCompanyResponseDto): EntityModel<LodgingCompanyResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

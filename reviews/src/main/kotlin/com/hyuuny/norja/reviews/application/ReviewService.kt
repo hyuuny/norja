@@ -2,6 +2,8 @@ package com.hyuuny.norja.reviews.application
 
 import com.hyuuny.norja.reviews.domain.*
 import com.hyuuny.norja.reviews.domain.collections.SearchedReviews
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -24,18 +26,19 @@ class ReviewService(
     fun retrieveReview(
         searchQuery: ReviewSearchQuery,
         pageable: Pageable
-    ): PageImpl<ReviewListingResponse> {
+    ): PageImpl<ReviewListingResponseDto> {
         val searched = reviewReader.retrieveReview(searchQuery, pageable)
         val searchedReviews = SearchedReviews(searched.content)
         return PageImpl(searchedReviews.toPage(), pageable, searched.totalElements)
     }
 
-    fun getAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponse =
+    fun getAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponseDto =
         reviewReader.getReviewAverageScore(lodgingCompanyId)
 
-    fun getReview(id: Long): ReviewResponse {
+    @Cacheable(value = ["reviewCache"], key = "#id")
+    fun getReview(id: Long): ReviewResponseDto {
         val loadedReview = reviewReader.getReview(id)
-        return ReviewResponse(loadedReview)
+        return ReviewResponseDto(loadedReview)
     }
 
     @Transactional
@@ -46,6 +49,7 @@ class ReviewService(
         }
     }
 
+    @CacheEvict(value = ["reviewCache"], key = "#id")
     @Transactional
     fun deleteReview(id: Long) {
         val loadedReview = reviewReader.getReview(id)

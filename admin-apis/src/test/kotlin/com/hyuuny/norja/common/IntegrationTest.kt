@@ -3,13 +3,13 @@ package com.hyuuny.norja.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hyuuny.norja.ADMIN_EMAIL
 import com.hyuuny.norja.MEMBER_EMAIL
+import com.hyuuny.norja.redis.RedisRepository
 import com.hyuuny.norja.users.AUTH_REQUEST_URL
 import com.hyuuny.norja.users.application.UserService
 import com.hyuuny.norja.users.domain.UserWithToken
 import com.hyuuny.norja.users.infrastructure.UserRepository
 import com.hyuuny.norja.users.interfaces.CredentialsDto
 import org.junit.jupiter.api.extension.ExtendWith
-import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -47,7 +47,7 @@ abstract class BaseIntegrationTest {
     lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    lateinit var modelMapper: ModelMapper
+    lateinit var redisRepository: RedisRepository
 
     @Throws(Exception::class)
     protected fun getBearerToken(username: String, password: String) =
@@ -70,6 +70,10 @@ abstract class BaseIntegrationTest {
             .filter { user -> user.username != ADMIN_EMAIL }
             .filter { user -> user.username != MEMBER_EMAIL }
             .forEach { user -> userRepository.delete(user) }
+    }
+
+    fun deleteCache() {
+        this.redisRepository.clear()
     }
 
 }

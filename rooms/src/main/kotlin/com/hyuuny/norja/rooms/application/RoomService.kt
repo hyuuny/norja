@@ -22,14 +22,14 @@ class RoomService(
     }
 
     @Cacheable(value = ["roomCache"], key = "#id")
-    fun getRoom(id: Long): RoomResponse {
+    fun getRoom(id: Long): RoomResponseDto {
         val loadedRoom = roomReader.getRoom(id)
-        return RoomResponse(loadedRoom)
+        return RoomResponseDto(loadedRoom)
     }
 
     @CacheEvict(value = ["roomCache"], key = "#id")
     @Transactional
-    fun updateRoom(id: Long, command: RoomUpdateCommand): RoomResponse {
+    fun updateRoom(id: Long, command: RoomUpdateCommand): RoomResponseDto {
         val loadedRoom = roomReader.getRoom(id)
         command.update(loadedRoom)
         return getRoom(id)

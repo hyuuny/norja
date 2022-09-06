@@ -2,8 +2,8 @@ package com.hyuuny.norja.lodgingcompanies
 
 import com.hyuuny.norja.lodgingcompanies.application.LodgingCompanyService
 import com.hyuuny.norja.lodgingcompanies.domain.DateSearchQuery
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyAndRoomResponse
-import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponse
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyAndRoomResponseDto
+import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanyListingResponseDto
 import com.hyuuny.norja.lodgingcompanies.domain.LodgingCompanySearchQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
+import javax.validation.constraints.NotNull
 
 @Tag(name = "숙박업체 API")
 @RequestMapping(path = ["/api/v1/lodging-companies"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -42,8 +43,8 @@ class LodgingCompanyRestController(
             sort = ["createdAt"],
             direction = DESC
         ) pageable: Pageable,
-        pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponse>,
-    ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponse>>> {
+        pagedResourcesAssembler: PagedResourcesAssembler<LodgingCompanyListingResponseDto>,
+    ): ResponseEntity<PagedModel<EntityModel<LodgingCompanyListingResponseDto>>> {
         val page = lodgingCompanyService.retrieveLodgingCompany(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, lodgingCompanyListingResourcesAssembler)
@@ -54,8 +55,8 @@ class LodgingCompanyRestController(
     @GetMapping("/{id}")
     fun getLodgingCompany(
         @PathVariable id: Long,
-        @ParameterObject dateSearchQuery: DateSearchQuery
-    ): ResponseEntity<EntityModel<LodgingCompanyAndRoomResponse>> {
+        @ParameterObject @NotNull dateSearchQuery: DateSearchQuery
+    ): ResponseEntity<EntityModel<LodgingCompanyAndRoomResponseDto>> {
         val loadedLodgingCompanyAndRooms =
             lodgingCompanyService.getLodgingCompanyAndRooms(id, dateSearchQuery)
         return ResponseEntity.ok(
@@ -67,9 +68,9 @@ class LodgingCompanyRestController(
 
     @Component
     class LodgingCompanyListingResourceAssembler :
-        RepresentationModelAssembler<LodgingCompanyListingResponse, EntityModel<LodgingCompanyListingResponse>> {
+        RepresentationModelAssembler<LodgingCompanyListingResponseDto, EntityModel<LodgingCompanyListingResponseDto>> {
 
-        override fun toModel(entity: LodgingCompanyListingResponse): EntityModel<LodgingCompanyListingResponse> {
+        override fun toModel(entity: LodgingCompanyListingResponseDto): EntityModel<LodgingCompanyListingResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
@@ -86,9 +87,9 @@ class LodgingCompanyRestController(
 
     @Component
     class LodgingCompanyResourceAssembler :
-        RepresentationModelAssembler<LodgingCompanyAndRoomResponse, EntityModel<LodgingCompanyAndRoomResponse>> {
+        RepresentationModelAssembler<LodgingCompanyAndRoomResponseDto, EntityModel<LodgingCompanyAndRoomResponseDto>> {
 
-        override fun toModel(entity: LodgingCompanyAndRoomResponse): EntityModel<LodgingCompanyAndRoomResponse> {
+        override fun toModel(entity: LodgingCompanyAndRoomResponseDto): EntityModel<LodgingCompanyAndRoomResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

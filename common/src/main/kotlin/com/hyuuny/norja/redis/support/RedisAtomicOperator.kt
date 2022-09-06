@@ -27,7 +27,7 @@ class RedisAtomicOperator(
         redisTemplate.isExposeConnection = true
         redisTemplate.setConnectionFactory(redisConnectionFactory)
         redisTemplate.afterPropertiesSet()
-        redisOperations = redisTemplate
+        this.redisOperations = redisTemplate
     }
 
     fun keys(pattern: String): Set<String>? {

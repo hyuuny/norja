@@ -10,7 +10,7 @@ interface RoomReader {
         lodgingCompanyId: Long,
         checkIn: LocalDate,
         checkOut: LocalDate
-    ): List<RoomResponse>
+    ): List<RoomResponseDto>
 
     fun getCountByType(room: Room): Long
 

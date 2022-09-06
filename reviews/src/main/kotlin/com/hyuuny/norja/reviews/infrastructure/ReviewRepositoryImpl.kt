@@ -3,7 +3,7 @@ package com.hyuuny.norja.reviews.infrastructure
 import com.hyuuny.norja.jpa.support.CustomQueryDslRepository
 import com.hyuuny.norja.reviews.domain.QReview.review
 import com.hyuuny.norja.reviews.domain.Review
-import com.hyuuny.norja.reviews.domain.ReviewAverageScoreResponse
+import com.hyuuny.norja.reviews.domain.ReviewAverageScoreResponseDto
 import com.hyuuny.norja.reviews.domain.ReviewSearchQuery
 import com.hyuuny.norja.reviews.domain.Type
 import com.querydsl.core.types.Projections.fields
@@ -32,10 +32,10 @@ class ReviewRepositoryImpl(
             )
     )
 
-    override fun loadReviewAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponse {
+    override fun loadReviewAverageScore(lodgingCompanyId: Long): ReviewAverageScoreResponseDto {
         return queryFactory.select(
             fields(
-                ReviewAverageScoreResponse::class.java,
+                ReviewAverageScoreResponseDto::class.java,
                 review.wholeScore.avg().`as`("wholeScore"),
                 review.serviceScore.avg().`as`("serviceScore"),
                 review.cleanlinessScore.avg().`as`("cleanlinessScore"),

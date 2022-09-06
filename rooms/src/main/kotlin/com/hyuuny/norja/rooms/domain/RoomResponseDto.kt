@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class")
 @JsonInclude(Include.NON_NULL)
-data class RoomResponse(
+data class RoomResponseDto(
 
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long = 0,
@@ -42,10 +42,10 @@ data class RoomResponse(
     val content: String? = null,
 
     @field:Schema(description = "이미지")
-    val roomImages: List<RoomImageResponse>? = listOf(),
+    val roomImages: List<RoomImageResponseDto>? = listOf(),
 
     @field:Schema(description = "시설")
-    val roomFacilities: List<RoomFacilitiesResponse>? = listOf(),
+    val roomFacilities: List<RoomFacilitiesResponseDto>? = listOf(),
 ) {
     constructor(entity: Room) : this(entity, 0)
 
@@ -61,17 +61,17 @@ data class RoomResponse(
         price = entity.price,
         content = entity.content,
         roomImages = entity.roomImages!!.stream()
-            .map(::RoomImageResponse)
-            .sorted((Comparator.comparing(RoomImageResponse::priority)))
+            .map(::RoomImageResponseDto)
+            .sorted((Comparator.comparing(RoomImageResponseDto::priority)))
             .toList(),
         roomFacilities = entity.roomFacilities!!.stream()
-            .map(::RoomFacilitiesResponse)
-            .sorted((Comparator.comparing(RoomFacilitiesResponse::priority)))
+            .map(::RoomFacilitiesResponseDto)
+            .sorted((Comparator.comparing(RoomFacilitiesResponseDto::priority)))
             .toList(),
     )
 }
 
-data class RoomImageResponse(
+data class RoomImageResponseDto(
 
     @field:Schema(description = "객실 아이디", example = "1", required = true)
     val roomId: Long = 0,
@@ -89,7 +89,7 @@ data class RoomImageResponse(
     )
 }
 
-data class RoomFacilitiesResponse(
+data class RoomFacilitiesResponseDto(
 
     @field:Schema(description = "객실 아이디", example = "1", required = true)
     val roomId: Long = 0,
