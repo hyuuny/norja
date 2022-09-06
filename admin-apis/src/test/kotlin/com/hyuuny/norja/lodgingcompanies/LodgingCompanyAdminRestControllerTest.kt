@@ -68,6 +68,7 @@ class LodgingCompanyAdminRestControllerTest : BaseIntegrationTest() {
         roomRepository.deleteAll()
         lodgingCompanyRepository.deleteAll()
         categoryRepository.deleteAll()
+        this.deleteCache()
     }
 
     @Autowired
