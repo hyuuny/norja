@@ -6,6 +6,8 @@ import com.hyuuny.norja.web.model.HttpStatusMessageException
 import org.springframework.http.HttpStatus
 import java.time.LocalDate
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 
 @Entity
 class Reservation private constructor(
@@ -40,6 +42,7 @@ class Reservation private constructor(
             )
     }
 
+    @Enumerated(EnumType.STRING)
     var status = status
         private set
 

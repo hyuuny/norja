@@ -2,6 +2,8 @@ package com.hyuuny.norja.reservations.application
 
 import com.hyuuny.norja.reservations.domain.*
 import com.hyuuny.norja.reservations.domain.collections.SearchedReservations
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -23,11 +25,13 @@ class ReservationService(
         return reservationStore.store(newReservation).id!!
     }
 
-    fun getReservation(id: Long): ReservationResponse {
+    @Cacheable(value = ["reservationCache"], key = "#id")
+    fun getReservation(id: Long): ReservationResponseDto {
         val loadedReservation = reservationReader.getReservation(id)
-        return ReservationResponse(loadedReservation)
+        return ReservationResponseDto(loadedReservation)
     }
 
+    @CacheEvict(value = ["reservationCache"], key = "#id")
     @Transactional
     fun requestCancel(id: Long) {
         val loadedReservation = reservationReader.getCompletionReservation(id)
@@ -37,7 +41,7 @@ class ReservationService(
     fun retrieveReservation(
         searchQuery: ReservationSearchQuery,
         pageable: Pageable
-    ): PageImpl<ReservationListingResponse> {
+    ): PageImpl<ReservationListingResponseDto> {
         val searched = reservationReader.retrieveReservation(searchQuery, pageable)
         val searchedReservations = SearchedReservations(searched.content)
         return PageImpl(searchedReservations.toPage(), pageable, searched.totalElements)

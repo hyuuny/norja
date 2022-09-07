@@ -1,8 +1,8 @@
 package com.hyuuny.norja.reservations
 
 import com.hyuuny.norja.reservations.application.ReservationService
-import com.hyuuny.norja.reservations.domain.ReservationListingResponse
-import com.hyuuny.norja.reservations.domain.ReservationResponse
+import com.hyuuny.norja.reservations.domain.ReservationListingResponseDto
+import com.hyuuny.norja.reservations.domain.ReservationResponseDto
 import com.hyuuny.norja.reservations.domain.ReservationSearchQuery
 import com.hyuuny.norja.reservations.interfaces.ReservationCreateDto
 import io.swagger.v3.oas.annotations.Operation
@@ -35,8 +35,8 @@ class ReservationRestController(
     fun retrieveReservation(
         @ParameterObject searchQuery: ReservationSearchQuery,
         @ParameterObject @PageableDefault(sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
-        pagedResourcesAssembler: PagedResourcesAssembler<ReservationListingResponse>
-    ): ResponseEntity<PagedModel<EntityModel<ReservationListingResponse>>> {
+        pagedResourcesAssembler: PagedResourcesAssembler<ReservationListingResponseDto>
+    ): ResponseEntity<PagedModel<EntityModel<ReservationListingResponseDto>>> {
         val page = reservationService.retrieveReservation(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, reservationListingResourceAssembler)
@@ -52,7 +52,7 @@ class ReservationRestController(
 
     @Operation(summary = "예약 상세 조회")
     @GetMapping("/{id}")
-    fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponse>> {
+    fun getReservation(@PathVariable id: Long): ResponseEntity<EntityModel<ReservationResponseDto>> {
         val loadedReservation = reservationService.getReservation(id)
         return ResponseEntity.ok(reservationResourceAssembler.toModel(loadedReservation))
     }
@@ -66,9 +66,9 @@ class ReservationRestController(
 
     @Component
     class ReservationListingResourceAssembler :
-        RepresentationModelAssembler<ReservationListingResponse, EntityModel<ReservationListingResponse>> {
+        RepresentationModelAssembler<ReservationListingResponseDto, EntityModel<ReservationListingResponseDto>> {
 
-        override fun toModel(entity: ReservationListingResponse): EntityModel<ReservationListingResponse> {
+        override fun toModel(entity: ReservationListingResponseDto): EntityModel<ReservationListingResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
@@ -82,9 +82,9 @@ class ReservationRestController(
 
     @Component
     class ReservationResourceAssembler :
-        RepresentationModelAssembler<ReservationResponse, EntityModel<ReservationResponse>> {
+        RepresentationModelAssembler<ReservationResponseDto, EntityModel<ReservationResponseDto>> {
 
-        override fun toModel(entity: ReservationResponse): EntityModel<ReservationResponse> {
+        override fun toModel(entity: ReservationResponseDto): EntityModel<ReservationResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
