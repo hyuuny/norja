@@ -1,7 +1,7 @@
 package com.hyuuny.norja.users
 
 import com.hyuuny.norja.users.application.UserService
-import com.hyuuny.norja.users.domain.UserResponse
+import com.hyuuny.norja.users.domain.UserResponseDto
 import com.hyuuny.norja.users.interfaces.ChangeAgreedDto
 import com.hyuuny.norja.users.interfaces.ChangePasswordDto
 import com.hyuuny.norja.users.interfaces.SignUpDto
@@ -33,7 +33,7 @@ class UserRestController(
 
     @Operation(summary = "회원 상세 조회")
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponse>> {
+    fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponseDto>> {
         val loadedUser = userService.getUser(id)
         return ResponseEntity.ok(userResourceAssembler.toModel(loadedUser))
     }
@@ -63,7 +63,7 @@ class UserRestController(
     fun updateUser(
         @PathVariable id: Long,
         @RequestBody dto: UserUpdateDto
-    ): ResponseEntity<EntityModel<UserResponse>> {
+    ): ResponseEntity<EntityModel<UserResponseDto>> {
         val updatedUser = userService.updateUser(id, dto.toCommand())
         return ResponseEntity.ok(userResourceAssembler.toModel(updatedUser))
     }
@@ -78,9 +78,9 @@ class UserRestController(
 
     @Component
     class UserResourceAssembler :
-        RepresentationModelAssembler<UserResponse, EntityModel<UserResponse>> {
+        RepresentationModelAssembler<UserResponseDto, EntityModel<UserResponseDto>> {
 
-        override fun toModel(entity: UserResponse): EntityModel<UserResponse> {
+        override fun toModel(entity: UserResponseDto): EntityModel<UserResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

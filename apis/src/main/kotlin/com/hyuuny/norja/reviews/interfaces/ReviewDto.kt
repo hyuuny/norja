@@ -1,6 +1,7 @@
 package com.hyuuny.norja.reviews.interfaces
 
 import com.hyuuny.norja.reviews.domain.ReviewCreateCommand
+import com.hyuuny.norja.reviews.domain.ReviewPhotoCreateCommand
 import io.swagger.v3.oas.annotations.media.Schema
 
 class ReviewDto
@@ -39,6 +40,9 @@ data class ReviewCreateDto(
 
     @field:Schema(description = "내용", example = "방 너무 좋았어요 ㅎㅎ 잘 쉬고 갑니다!", required = true)
     val content: String,
+
+    @field:Schema(description = "후기 이미지")
+    val reviewPhotos: MutableList<ReviewPhotoCreateDto> = mutableListOf(),
 ) {
     fun toCommand() = ReviewCreateCommand(
         lodgingCompanyId = this.lodgingCompanyId,
@@ -52,5 +56,19 @@ data class ReviewCreateDto(
         convenienceScore = this.convenienceScore,
         satisfactionScore = this.satisfactionScore,
         content = this.content,
+        reviewPhotos = this.reviewPhotos.stream()
+            .map(ReviewPhotoCreateDto::toCommand)
+            .toList().toMutableList(),
     )
+}
+
+data class ReviewPhotoCreateDto(
+
+    @field:Schema(description = "우선순위", example = "100")
+    val priority: Long? = 100,
+
+    @field:Schema(description = "이미지 URL", example = "image-url", required = true)
+    val imageUrl: String,
+) {
+    fun toCommand() = ReviewPhotoCreateCommand(priority = this.priority, imageUrl = this.imageUrl)
 }

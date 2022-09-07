@@ -1,8 +1,8 @@
 package com.hyuuny.norja.users
 
 import com.hyuuny.norja.users.application.UserService
-import com.hyuuny.norja.users.domain.UserListingResponse
-import com.hyuuny.norja.users.domain.UserResponse
+import com.hyuuny.norja.users.domain.UserListingResponseDto
+import com.hyuuny.norja.users.domain.UserResponseDto
 import com.hyuuny.norja.users.domain.UserSearchQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -40,8 +40,8 @@ class UserAdminRestController(
             sort = ["createdAt"],
             direction = Sort.Direction.DESC
         ) pageable: Pageable,
-        pagedResourcesAssembler: PagedResourcesAssembler<UserListingResponse>,
-    ): ResponseEntity<PagedModel<EntityModel<UserListingResponse>>> {
+        pagedResourcesAssembler: PagedResourcesAssembler<UserListingResponseDto>,
+    ): ResponseEntity<PagedModel<EntityModel<UserListingResponseDto>>> {
         val page = userService.retrieveUser(searchQuery, pageable)
         return ResponseEntity.ok(
             pagedResourcesAssembler.toModel(page, userListingResourceAssembler)
@@ -50,7 +50,7 @@ class UserAdminRestController(
 
     @Operation(summary = "회원 상세 조회")
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponse>> {
+    fun getUser(@PathVariable id: Long): ResponseEntity<EntityModel<UserResponseDto>> {
         val loadedUser = userService.getUser(id)
         return ResponseEntity.ok(userResourceAssembler.toModel(loadedUser))
     }
@@ -58,9 +58,9 @@ class UserAdminRestController(
 
     @Component
     class UserListingResourceAssembler :
-        RepresentationModelAssembler<UserListingResponse, EntityModel<UserListingResponse>> {
+        RepresentationModelAssembler<UserListingResponseDto, EntityModel<UserListingResponseDto>> {
 
-        override fun toModel(entity: UserListingResponse): EntityModel<UserListingResponse> {
+        override fun toModel(entity: UserListingResponseDto): EntityModel<UserListingResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(
@@ -74,9 +74,9 @@ class UserAdminRestController(
 
     @Component
     class UserResourceAssembler :
-        RepresentationModelAssembler<UserResponse, EntityModel<UserResponse>> {
+        RepresentationModelAssembler<UserResponseDto, EntityModel<UserResponseDto>> {
 
-        override fun toModel(entity: UserResponse): EntityModel<UserResponse> {
+        override fun toModel(entity: UserResponseDto): EntityModel<UserResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

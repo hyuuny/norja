@@ -1,7 +1,7 @@
 package com.hyuuny.norja.categories
 
 import com.hyuuny.norja.application.CategoryService
-import com.hyuuny.norja.domain.CategoryResponse
+import com.hyuuny.norja.domain.CategoryResponseDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.hateoas.EntityModel
@@ -25,30 +25,30 @@ class CategoryRestController(
 
     @Operation(summary = "카테고리 전체 조회")
     @GetMapping
-    fun getAllCategories(): ResponseEntity<List<CategoryResponse>> {
+    fun getAllCategories(): ResponseEntity<List<CategoryResponseDto>> {
         val loadedAllCategories = categoryService.getAllCategories()
         return ResponseEntity.ok(loadedAllCategories)
     }
 
     @Operation(summary = "자녀 카테고리 조회")
     @GetMapping("/{parentCategoryId}/children")
-    fun getChildrenCategories(@PathVariable parentCategoryId: Long): ResponseEntity<List<CategoryResponse>> {
+    fun getChildrenCategories(@PathVariable parentCategoryId: Long): ResponseEntity<List<CategoryResponseDto>> {
         val childrenCategories = categoryService.getChildrenCategories(parentCategoryId)
         return ResponseEntity.ok(childrenCategories)
     }
 
     @Operation(summary = "카테고리 상세 조회")
     @GetMapping("/{id}")
-    fun getCategory(@PathVariable id: Long): ResponseEntity<EntityModel<CategoryResponse>> {
+    fun getCategory(@PathVariable id: Long): ResponseEntity<EntityModel<CategoryResponseDto>> {
         val loadedCategory = categoryService.getCategory(id)
         return ResponseEntity.ok(categoryResourceAssembler.toModel(loadedCategory))
     }
 
     @Component
     class CategoryResourceAssembler :
-        RepresentationModelAssembler<CategoryResponse, EntityModel<CategoryResponse>> {
+        RepresentationModelAssembler<CategoryResponseDto, EntityModel<CategoryResponseDto>> {
 
-        override fun toModel(entity: CategoryResponse): EntityModel<CategoryResponse> {
+        override fun toModel(entity: CategoryResponseDto): EntityModel<CategoryResponseDto> {
             return EntityModel.of(
                 entity,
                 WebMvcLinkBuilder.linkTo(

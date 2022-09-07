@@ -27,7 +27,7 @@ data class RoomResponseDto(
     val roomCount: Int = 10,
 
     @field:Schema(description = "남은 객실 수", example = "2")
-    val remainingRoomCount: Long? = 0,
+    val remainingRoomCount: String? = null,
 
     @field:Schema(description = "기준 인원", example = "2")
     val standardPersonnel: Int = 2,
@@ -47,9 +47,9 @@ data class RoomResponseDto(
     @field:Schema(description = "시설")
     val roomFacilities: List<RoomFacilitiesResponseDto>? = listOf(),
 ) {
-    constructor(entity: Room) : this(entity, 0)
+    constructor(entity: Room) : this(entity, null)
 
-    constructor(entity: Room, remainingRoomCount: Long) : this(
+    constructor(entity: Room, remainingRoomCount: String?) : this(
         id = entity.id!!,
         lodgingCompanyId = entity.lodgingCompanyId,
         type = entity.type,

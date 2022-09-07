@@ -21,7 +21,7 @@ class CategoryService(
     fun createChildCategory(
         parentCategoryId: Long,
         command: CategoryCreateCommand
-    ): CategoryResponse {
+    ): CategoryResponseDto {
         val parentCategory = categoryReader.getCategory(parentCategoryId)
         val childCategory = command.toEntity
         childCategory.assignCategory(parentCategory)
@@ -29,27 +29,27 @@ class CategoryService(
         return getCategory(savedChildCategoryId)
     }
 
-    fun getCategory(id: Long): CategoryResponse {
+    fun getCategory(id: Long): CategoryResponseDto {
         val loadedCategory = categoryReader.getCategory(id)
-        return CategoryResponse(loadedCategory)
+        return CategoryResponseDto(loadedCategory)
     }
 
-    fun getAllCategories(): List<CategoryResponse> {
+    fun getAllCategories(): List<CategoryResponseDto> {
         val loadedCategories = categoryReader.getAllCategories()
         return toResponses(loadedCategories)
     }
 
-    fun getChildrenCategories(parentCategoryId: Long): List<CategoryResponse> {
+    fun getChildrenCategories(parentCategoryId: Long): List<CategoryResponseDto> {
         val childrenCategories = categoryReader.getChildrenCategories(parentCategoryId)
         return toResponses(childrenCategories)
     }
 
-    private fun toResponses(categories: List<Category>): List<CategoryResponse> =
+    private fun toResponses(categories: List<Category>): List<CategoryResponseDto> =
         categories.stream()
-            .map(::CategoryResponse)
+            .map(::CategoryResponseDto)
             .toList()
 
-    fun updateCategory(id: Long, command: CategoryUpdateCommand): CategoryResponse {
+    fun updateCategory(id: Long, command: CategoryUpdateCommand): CategoryResponseDto {
         val loadedCategory = categoryReader.getCategory(id)
         command.update(loadedCategory)
         return getCategory(id)

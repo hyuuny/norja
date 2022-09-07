@@ -3,6 +3,8 @@ package com.hyuuny.norja.rooms.domain
 import com.hyuuny.norja.jpa.domain.BaseEntity
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.FetchType.LAZY
 import javax.persistence.OneToMany
 
@@ -49,6 +51,7 @@ class Room private constructor(
     var lodgingCompanyId = lodgingCompanyId
         private set
 
+    @Enumerated(EnumType.STRING)
     var type = type
         private set
 

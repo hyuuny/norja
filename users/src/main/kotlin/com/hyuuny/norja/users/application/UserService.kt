@@ -35,15 +35,15 @@ class UserService(
     fun retrieveUser(
         searchQuery: UserSearchQuery,
         pageable: Pageable
-    ): PageImpl<UserListingResponse> {
+    ): PageImpl<UserListingResponseDto> {
         val searched = userReader.retrieveUser(searchQuery, pageable)
         val searchedUsers = SearchedUsers(searched.content)
         return PageImpl(searchedUsers.toPage(), pageable, searched.totalElements)
     }
 
-    fun getUser(id: Long): UserResponse {
+    fun getUser(id: Long): UserResponseDto {
         val loadedUser = userReader.getUser(id)
-        return UserResponse(loadedUser)
+        return UserResponseDto(loadedUser)
     }
 
     @Transactional
@@ -59,7 +59,7 @@ class UserService(
     }
 
     @Transactional
-    fun updateUser(id: Long, command: UserUpdateCommand): UserResponse {
+    fun updateUser(id: Long, command: UserUpdateCommand): UserResponseDto {
         val loadedUser = userReader.getUser(id)
         command.update(loadedUser)
         return getUser(id)

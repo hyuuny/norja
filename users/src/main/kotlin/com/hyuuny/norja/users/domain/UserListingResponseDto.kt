@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Relation(collectionRelation = "users")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class UserListingResponse(
+data class UserListingResponseDto(
 
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,

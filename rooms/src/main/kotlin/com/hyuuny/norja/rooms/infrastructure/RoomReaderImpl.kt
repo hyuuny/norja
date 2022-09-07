@@ -37,7 +37,7 @@ class RoomReaderImpl(
     }
 
     private fun toResponse(searchedRoom: SearchedRoom) =
-        RoomResponseDto(searchedRoom.room!!, searchedRoom.remainingRoomCount())
+        RoomResponseDto(searchedRoom.room!!, searchedRoom.remainingRoomCount().toString())
 
     override fun getCountByType(room: Room) =
         roomRepository.countByLodgingCompanyIdAndType(room.lodgingCompanyId, room.type)

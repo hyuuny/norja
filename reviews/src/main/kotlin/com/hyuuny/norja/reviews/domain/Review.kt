@@ -3,11 +3,9 @@ package com.hyuuny.norja.reviews.domain
 import com.hyuuny.norja.jpa.domain.BaseEntity
 import com.hyuuny.norja.reviews.domain.Type.PHOTO
 import com.hyuuny.norja.reviews.domain.Type.TEXT
+import javax.persistence.*
 import javax.persistence.CascadeType.ALL
-import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
-import javax.persistence.Lob
-import javax.persistence.OneToMany
 
 @Entity
 class Review private constructor(
@@ -56,6 +54,7 @@ class Review private constructor(
         )
     }
 
+    @Enumerated(EnumType.STRING)
     var type = type
         private set
 

@@ -7,7 +7,7 @@ import org.springframework.hateoas.server.core.Relation
 
 @Relation(collectionRelation = "category")
 @JsonInclude(Include.NON_NULL)
-data class CategoryResponse(
+data class CategoryResponseDto(
 
     @field:Schema(description = "아이디", example = "1", required = true)
     val id: Long,
