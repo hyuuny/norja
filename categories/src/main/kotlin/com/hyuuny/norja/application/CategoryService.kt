@@ -46,7 +46,7 @@ class CategoryService(
 
     private fun toResponses(categories: List<Category>): List<CategoryResponseDto> =
         categories.stream()
-            .map(::CategoryResponseDto)
+            .map { CategoryResponseDto(it) }
             .toList()
 
     fun updateCategory(id: Long, command: CategoryUpdateCommand): CategoryResponseDto {

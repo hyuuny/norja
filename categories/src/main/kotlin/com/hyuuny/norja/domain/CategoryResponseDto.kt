@@ -27,13 +27,16 @@ data class CategoryResponseDto(
     @field:Schema(description = "부모 카테고리 아이디", example = "1")
     val parentId: Long?,
 ) {
-    constructor(entity: Category) : this(
-        id = entity.id!!,
-        name = entity.name,
-        priority = entity.priority,
-        level = entity.level,
-        iconImageUrl = entity.iconImageUrl,
-        parentId = entity.parentId,
-    )
-
+    companion object {
+        operator fun invoke(category: Category) = with(category) {
+            CategoryResponseDto(
+                id = id!!,
+                name = name,
+                priority = priority,
+                level = level,
+                iconImageUrl = iconImageUrl,
+                parentId = parentId,
+            )
+        }
+    }
 }
