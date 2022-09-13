@@ -47,28 +47,37 @@ data class RoomResponseDto(
     @field:Schema(description = "시설")
     val roomFacilities: List<RoomFacilitiesResponseDto>? = listOf(),
 ) {
-    constructor(entity: Room) : this(entity, null)
 
-    constructor(entity: Room, remainingRoomCount: String?) : this(
-        id = entity.id!!,
-        lodgingCompanyId = entity.lodgingCompanyId,
-        type = entity.type,
-        name = entity.name,
-        roomCount = entity.roomCount,
-        remainingRoomCount = remainingRoomCount,
-        standardPersonnel = entity.standardPersonnel,
-        maximumPersonnel = entity.maximumPersonnel,
-        price = entity.price,
-        content = entity.content,
-        roomImages = entity.roomImages!!.stream()
-            .map(::RoomImageResponseDto)
-            .sorted((Comparator.comparing(RoomImageResponseDto::priority)))
-            .toList(),
-        roomFacilities = entity.roomFacilities!!.stream()
-            .map(::RoomFacilitiesResponseDto)
-            .sorted((Comparator.comparing(RoomFacilitiesResponseDto::priority)))
-            .toList(),
-    )
+    companion object {
+
+        operator fun invoke(room: Room) = with(room) {
+            RoomResponseDto(room, null)
+        }
+
+        operator fun invoke(room: Room, remainingRoomCount: String?) = with(room) {
+            RoomResponseDto(
+                id = id!!,
+                lodgingCompanyId = lodgingCompanyId,
+                type = type,
+                name = name,
+                roomCount = roomCount,
+                remainingRoomCount = remainingRoomCount,
+                standardPersonnel = standardPersonnel,
+                maximumPersonnel = maximumPersonnel,
+                price = price,
+                content = content,
+                roomImages = roomImages!!.stream()
+                    .map { RoomImageResponseDto(it) }
+                    .sorted((Comparator.comparing(RoomImageResponseDto::priority)))
+                    .toList(),
+                roomFacilities = roomFacilities!!.stream()
+                    .map { RoomFacilitiesResponseDto(it) }
+                    .sorted((Comparator.comparing(RoomFacilitiesResponseDto::priority)))
+                    .toList(),
+            )
+        }
+    }
+
 }
 
 data class RoomImageResponseDto(
@@ -82,11 +91,15 @@ data class RoomImageResponseDto(
     @field:Schema(description = "이미지 URL", example = "image-url", required = true)
     val imageUrl: String = "",
 ) {
-    constructor(entity: RoomImage) : this(
-        roomId = entity.roomId,
-        priority = entity.priority!!,
-        imageUrl = entity.imageUrl
-    )
+    companion object {
+        operator fun invoke(roomImage: RoomImage) = with(roomImage) {
+            RoomImageResponseDto(
+                roomId = roomId,
+                priority = priority!!,
+                imageUrl = imageUrl
+            )
+        }
+    }
 }
 
 data class RoomFacilitiesResponseDto(
@@ -103,10 +116,14 @@ data class RoomFacilitiesResponseDto(
     @field:Schema(description = "아이콘이미지 URL", example = "icon-image-url", required = true)
     val iconImageUrl: String = "",
 ) {
-    constructor(entity: RoomFacilities) : this(
-        roomId = entity.roomId,
-        name = entity.name,
-        priority = entity.priority!!,
-        iconImageUrl = entity.iconImageUrl,
-    )
+    companion object {
+        operator fun invoke(roomFacilities: RoomFacilities) = with(roomFacilities) {
+            RoomFacilitiesResponseDto(
+                roomId = roomId,
+                name = name,
+                priority = priority!!,
+                iconImageUrl = iconImageUrl,
+            )
+        }
+    }
 }
