@@ -65,18 +65,23 @@ data class ReservationResponseDto(
     @field:Schema(description = "등록일", example = "2022-08-08T21:51:00.797659")
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
-    constructor(entity: Reservation) : this(
-        id = entity.id!!,
-        code = entity.code,
-        userId = entity.userId,
-        roomId = entity.roomId,
-        roomCount = entity.roomCount,
-        status = entity.status,
-        price = entity.price,
-        checkIn = entity.checkIn,
-        checkOut = entity.checkOut,
-        createdAt = entity.createdAt,
-    )
+    companion object {
+        operator fun invoke(reservation: Reservation) = with(reservation) {
+            ReservationResponseDto(
+                id = id!!,
+                code = code,
+                userId = userId,
+                roomId = roomId,
+                roomCount = roomCount,
+                status = status,
+                price = price,
+                checkIn = checkIn,
+                checkOut = checkOut,
+                createdAt = createdAt,
+            )
+        }
+    }
+
 }
 
 @Relation(collectionRelation = "reservations")
@@ -113,16 +118,20 @@ class ReservationListingResponseDto(
     @field:Schema(description = "등록일", example = "2022-08-08T21:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
-    constructor(info: SearchedReservationListing) : this(
-        id = info.id!!,
-        code = info.code!!,
-        userId = info.userId!!,
-        roomId = info.roomId!!,
-        roomCount = info.roomCount!!,
-        status = info.status!!,
-        price = info.price!!,
-        checkIn = info.checkIn!!,
-        checkOut = info.checkOut!!,
-        createdAt = info.createdAt!!,
-    )
+    companion object {
+        operator fun invoke(searched: SearchedReservationListing) = with(searched) {
+            ReservationListingResponseDto(
+                id = id!!,
+                code = code!!,
+                userId = userId!!,
+                roomId = roomId!!,
+                roomCount = roomCount!!,
+                status = status!!,
+                price = price!!,
+                checkIn = checkIn!!,
+                checkOut = checkOut!!,
+                createdAt = createdAt!!,
+            )
+        }
+    }
 }
