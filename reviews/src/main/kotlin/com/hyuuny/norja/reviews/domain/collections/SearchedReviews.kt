@@ -7,8 +7,8 @@ data class SearchedReviews(
     val reviews: List<Review>,
 ) {
 
-    fun toPage() = this.reviews.stream()
-        .map(::ReviewListingResponseDto)
+    fun toPage(): List<ReviewListingResponseDto> = this.reviews.stream()
+        .map { ReviewListingResponseDto(it) }
         .toList()
 
 }

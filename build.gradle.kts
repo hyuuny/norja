@@ -40,8 +40,6 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        runtimeOnly("com.h2database:h2")
-        runtimeOnly("mysql:mysql-connector-java")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
         implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
@@ -70,6 +68,10 @@ subprojects {
         // redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("it.ozimov:embedded-redis:0.7.2")
+
+        // DB
+        runtimeOnly("com.h2database:h2")
+        runtimeOnly("mysql:mysql-connector-java")
     }
 
     dependencyManagement {

@@ -74,28 +74,31 @@ data class ReviewResponseDto(
     @field:Schema(description = "등록일", example = "2022-08-16T13:51:00.797659")
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
-
-    constructor(entity: Review) : this(
-        id = entity.id!!,
-        type = entity.type,
-        lodgingCompanyId = entity.lodgingCompanyId,
-        roomId = entity.roomId,
-        userId = entity.userId,
-        nickname = entity.nickname,
-        roomName = entity.roomName,
-        content = entity.content,
-        wholeScore = entity.wholeScore,
-        serviceScore = entity.serviceScore,
-        cleanlinessScore = entity.cleanlinessScore,
-        convenienceScore = entity.convenienceScore,
-        satisfactionScore = entity.satisfactionScore,
-        best = entity.best,
-        reviewPhotos = entity.reviewPhotos!!.stream()
-            .map(::ReviewPhotoResponseDto)
-            .sorted((Comparator.comparing(ReviewPhotoResponseDto::priority)))
-            .toList(),
-        createdAt = entity.createdAt,
-    )
+    companion object {
+        operator fun invoke(review: Review) = with(review) {
+            ReviewResponseDto(
+                id = id!!,
+                type = type,
+                lodgingCompanyId = lodgingCompanyId,
+                roomId = roomId,
+                userId = userId,
+                nickname = nickname,
+                roomName = roomName,
+                content = content,
+                wholeScore = wholeScore,
+                serviceScore = serviceScore,
+                cleanlinessScore = cleanlinessScore,
+                convenienceScore = convenienceScore,
+                satisfactionScore = satisfactionScore,
+                best = best,
+                reviewPhotos = reviewPhotos!!.stream()
+                    .map { ReviewPhotoResponseDto(it) }
+                    .sorted((Comparator.comparing(ReviewPhotoResponseDto::priority)))
+                    .toList(),
+                createdAt = createdAt,
+            )
+        }
+    }
 }
 
 data class ReviewPhotoResponseDto(
@@ -109,11 +112,15 @@ data class ReviewPhotoResponseDto(
     @field:Schema(description = "이미지 URL", example = "image-url", required = true)
     val imageUrl: String = "",
 ) {
-    constructor(entity: ReviewPhoto) : this(
-        reviewId = entity.review?.id!!,
-        priority = entity.priority!!,
-        imageUrl = entity.imageUrl,
-    )
+    companion object {
+        operator fun invoke(photo: ReviewPhoto) = with(photo) {
+            ReviewPhotoResponseDto(
+                reviewId = review?.id!!,
+                priority = priority!!,
+                imageUrl = imageUrl,
+            )
+        }
+    }
 }
 
 data class ReviewAverageScoreResponseDto(
@@ -174,23 +181,27 @@ data class ReviewListingResponseDto(
     @field:Schema(description = "등록일", example = "2022-08-16T13:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
-    constructor(entity: Review) : this(
-        id = entity.id!!,
-        type = entity.type,
-        lodgingCompanyId = entity.lodgingCompanyId,
-        roomId = entity.roomId,
-        userId = entity.userId,
-        nickname = entity.nickname,
-        roomName = entity.roomName,
-        wholeScore = entity.wholeScore,
-        content = entity.content,
-        best = entity.best,
-        reviewPhotos = entity.reviewPhotos!!.stream()
-            .map(::ReviewPhotoListingResponseDto)
-            .sorted((Comparator.comparing(ReviewPhotoListingResponseDto::priority)))
-            .toList(),
-        createdAt = entity.createdAt,
-    )
+    companion object {
+        operator fun invoke(review: Review) = with(review) {
+            ReviewListingResponseDto(
+                id = id!!,
+                type = type,
+                lodgingCompanyId = lodgingCompanyId,
+                roomId = roomId,
+                userId = userId,
+                nickname = nickname,
+                roomName = roomName,
+                wholeScore = wholeScore,
+                content = content,
+                best = best,
+                reviewPhotos = reviewPhotos!!.stream()
+                    .map { ReviewPhotoListingResponseDto(it) }
+                    .sorted((Comparator.comparing(ReviewPhotoListingResponseDto::priority)))
+                    .toList(),
+                createdAt = createdAt,
+            )
+        }
+    }
 }
 
 data class ReviewPhotoListingResponseDto(
@@ -198,9 +209,13 @@ data class ReviewPhotoListingResponseDto(
     val priority: Long,
     val imageUrl: String,
 ) {
-    constructor(entity: ReviewPhoto) : this(
-        reviewId = entity.review?.id!!,
-        priority = entity.priority!!,
-        imageUrl = entity.imageUrl,
-    )
+    companion object {
+        operator fun invoke(photo: ReviewPhoto) = with(photo) {
+            ReviewPhotoListingResponseDto(
+                reviewId = review?.id!!,
+                priority = priority!!,
+                imageUrl = imageUrl,
+            )
+        }
+    }
 }
