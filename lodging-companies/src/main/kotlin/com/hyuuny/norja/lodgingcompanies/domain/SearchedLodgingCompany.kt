@@ -35,15 +35,15 @@ data class SearchedLodgingCompany(
     val searchTag
         get() = this.lodgingCompany!!.searchTag
 
-    val images
+    val images: List<ImageResponseDto>
         get() = this.lodgingCompany!!.images!!.stream()
-            .map(::ImageResponseDto)
+            .map { ImageResponseDto(it) }
             .sorted((Comparator.comparing(ImageResponseDto::priority)))
             .toList()
 
-    val facilities
+    val facilities: List<FacilitiesResponseDto>
         get() = this.lodgingCompany!!.facilities!!.stream()
-            .map(::FacilitiesResponseDto)
+            .map { FacilitiesResponseDto(it) }
             .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
             .toList()
 

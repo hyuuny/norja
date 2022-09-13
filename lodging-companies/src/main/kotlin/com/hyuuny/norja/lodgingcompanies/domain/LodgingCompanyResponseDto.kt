@@ -1,5 +1,7 @@
 package com.hyuuny.norja.lodgingcompanies.domain
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonFormat.Shape
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.annotation.JsonTypeInfo
@@ -53,26 +55,30 @@ data class LodgingCompanyResponseDto(
     val facilities: List<FacilitiesResponseDto>? = listOf(),
 ) {
 
-    constructor(entity: LodgingCompany) : this(
-        id = entity.id!!,
-        categoryId = entity.categoryId,
-        type = entity.type,
-        status = entity.status,
-        name = entity.name,
-        thumbnail = entity.thumbnail,
-        businessNumber = entity.businessNumber,
-        tellNumber = entity.tellNumber,
-        address = entity.address,
-        searchTag = entity.searchTag,
-        images = entity.images!!.stream()
-            .map(::ImageResponseDto)
-            .sorted((Comparator.comparing(ImageResponseDto::priority)))
-            .toList(),
-        facilities = entity.facilities!!.stream()
-            .map(::FacilitiesResponseDto)
-            .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
-            .toList()
-    )
+    companion object {
+        operator fun invoke(lodgingCompany: LodgingCompany) = with(lodgingCompany) {
+            LodgingCompanyResponseDto(
+                id = id!!,
+                categoryId = categoryId,
+                type = type,
+                status = status,
+                name = name,
+                thumbnail = thumbnail,
+                businessNumber = businessNumber,
+                tellNumber = tellNumber,
+                address = address,
+                searchTag = searchTag,
+                images = images!!.stream()
+                    .map { ImageResponseDto(it) }
+                    .sorted((Comparator.comparing(ImageResponseDto::priority)))
+                    .toList(),
+                facilities = facilities!!.stream()
+                    .map { FacilitiesResponseDto(it) }
+                    .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
+                    .toList()
+            )
+        }
+    }
 
 }
 
@@ -87,11 +93,17 @@ data class ImageResponseDto(
     @field:Schema(description = "이미지 URL", example = "image-url", required = true)
     val imageUrl: String = "",
 ) {
-    constructor(entity: Image) : this(
-        lodgingCompanyId = entity.lodgingCompany?.id!!,
-        priority = entity.priority!!,
-        imageUrl = entity.imageUrl
-    )
+
+    companion object {
+        operator fun invoke(image: Image) = with(image) {
+            ImageResponseDto(
+                lodgingCompanyId = lodgingCompany?.id!!,
+                priority = priority!!,
+                imageUrl = imageUrl
+            )
+        }
+    }
+
 }
 
 data class FacilitiesResponseDto(
@@ -108,12 +120,17 @@ data class FacilitiesResponseDto(
     @field:Schema(description = "아이콘이미지 URL", example = "icon-image-url", required = true)
     val iconImageUrl: String = "",
 ) {
-    constructor(entity: Facilities) : this(
-        lodgingCompanyId = entity.lodgingCompany?.id!!,
-        name = entity.name,
-        priority = entity.priority!!,
-        iconImageUrl = entity.iconImageUrl,
-    )
+
+    companion object {
+        operator fun invoke(facilities: Facilities) = with(facilities) {
+            FacilitiesResponseDto(
+                lodgingCompanyId = lodgingCompany?.id!!,
+                name = name,
+                priority = priority!!,
+                iconImageUrl = iconImageUrl,
+            )
+        }
+    }
 }
 
 @Relation(collectionRelation = "lodgingCompanies")
@@ -171,34 +188,44 @@ data class LodgingCompanyAndRoomResponseDto(
     @field:Schema(description = "시설")
     val facilities: List<FacilitiesResponseDto>? = listOf(),
 
+    @field:JsonFormat(
+        shape = Shape.STRING,
+        pattern = "yyyy-MM-dd'T'HH:mm:ss",
+        timezone = "Asia/Seoul"
+    )
     @field:Schema(description = "등록일", example = "2022-08-08T21:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
-    constructor(
-        searched: SearchedLodgingCompany,
-        rooms: List<RoomResponseDto>,
-        checkIn: String,
-        checkOut: String
-    ) : this(
-        id = searched.id!!,
-        categoryId = searched.categoryId,
-        type = searched.type,
-        status = searched.status,
-        name = searched.name,
-        thumbnail = searched.thumbnail,
-        businessNumber = searched.businessNumber,
-        tellNumber = searched.tellNumber,
-        address = searched.address,
-        searchTag = searched.searchTag,
-        reviewAverageScore = searched.reviewAverageScore!!,
-        reviewCount = searched.reviewCount!!,
-        checkIn = checkIn,
-        checkOut = checkOut,
-        rooms = rooms,
-        images = searched.images,
-        facilities = searched.facilities,
-        createdAt = searched.createdAt,
-    )
+
+    companion object {
+        operator fun invoke(
+            searched: SearchedLodgingCompany,
+            rooms: List<RoomResponseDto>,
+            checkIn: String,
+            checkOut: String
+        ) = with(searched) {
+            LodgingCompanyAndRoomResponseDto(
+                id = id!!,
+                categoryId = categoryId,
+                type = type,
+                status = status,
+                name = name,
+                thumbnail = thumbnail,
+                businessNumber = businessNumber,
+                tellNumber = tellNumber,
+                address = address,
+                searchTag = searchTag,
+                reviewAverageScore = reviewAverageScore!!,
+                reviewCount = reviewCount!!,
+                checkIn = checkIn,
+                checkOut = checkOut,
+                rooms = rooms,
+                images = images,
+                facilities = facilities,
+                createdAt = createdAt,
+            )
+        }
+    }
 
 }
 
@@ -242,19 +269,25 @@ data class LodgingCompanyListingResponseDto(
     @field:Schema(description = "등록일", example = "2022-08-08T21:51:00.797659")
     val createdAt: LocalDateTime,
 ) {
-    constructor(searched: SearchedLodgingCompanyListing) : this(
-        id = searched.id!!,
-        categoryId = searched.categoryId!!,
-        type = searched.type,
-        status = searched.status,
-        name = searched.name!!,
-        thumbnail = searched.thumbnail!!,
-        address = searched.address!!,
-        price = searched.price!!,
-        searchTag = searched.searchTag!!,
-        reviewAverageScore = searched.reviewAverageScore!!,
-        reviewCount = searched.reviewCount!!,
-        createdAt = searched.createdAt!!,
-    )
+
+    companion object {
+        operator fun invoke(searched: SearchedLodgingCompanyListing) = with(searched) {
+            LodgingCompanyListingResponseDto(
+                id = id!!,
+                categoryId = categoryId!!,
+                type = type,
+                status = status,
+                name = name!!,
+                thumbnail = thumbnail!!,
+                address = address!!,
+                price = price!!,
+                searchTag = searchTag!!,
+                reviewAverageScore = reviewAverageScore!!,
+                reviewCount = reviewCount!!,
+                createdAt = createdAt!!,
+            )
+        }
+    }
+
 }
 
