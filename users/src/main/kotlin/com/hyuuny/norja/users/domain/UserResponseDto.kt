@@ -1,5 +1,7 @@
 package com.hyuuny.norja.users.domain
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonFormat.Shape
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import io.swagger.v3.oas.annotations.media.Schema
@@ -34,18 +36,28 @@ data class UserResponseDto(
     @field:Schema(description = "메시지 수신 동의 여부", example = "true")
     val agreedReceiveMessage: Boolean = true,
 
+    @field:JsonFormat(
+        shape = Shape.STRING,
+        pattern = "yyyy-MM-dd'T'HH:mm:ss",
+        timezone = "Asia/Seoul"
+    )
     @field:Schema(description = "등록일", example = "2022-08-11T21:51:00.797659")
     val createdAt: LocalDateTime? = null,
 ) {
-    constructor(entity: User) : this(
-        id = entity.id!!,
-        username = entity.username,
-        status = entity.status,
-        nickname = entity.nickname,
-        phoneNumber = entity.phoneNumber,
-        agreedTermsOfService = entity.agreedTermsOfService,
-        agreedPrivacyPolicy = entity.agreedPrivacyPolicy,
-        agreedReceiveMessage = entity.agreedReceiveMessage,
-        createdAt = entity.createdAt,
-    )
+    companion object {
+        operator fun invoke(user: User) = with(user) {
+            UserResponseDto(
+                id = id!!,
+                username = username,
+                status = status,
+                nickname = nickname,
+                phoneNumber = phoneNumber,
+                agreedTermsOfService = agreedTermsOfService,
+                agreedPrivacyPolicy = agreedPrivacyPolicy,
+                agreedReceiveMessage = agreedReceiveMessage,
+                createdAt = createdAt,
+            )
+        }
+    }
+
 }
