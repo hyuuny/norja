@@ -6,5 +6,5 @@ data class CredentialsCommand(
 )
 
 data class Token(
-    val accessToke: String,
+    val accessToken: String,
 )
