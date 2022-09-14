@@ -1,6 +1,6 @@
 package com.hyuuny.norja.redis
 
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.KeyGenerator
 import org.springframework.context.annotation.Bean
@@ -39,7 +39,7 @@ class RedisCacheConfig {
     fun customKeyGenerator(): CustomKeyGenerator = CustomKeyGenerator()
 
     class CustomKeyGenerator : KeyGenerator {
-        private val log = LoggerFactory.getLogger(javaClass)
+        private val log = KotlinLogging.logger {}
 
         override fun generate(target: Any, method: Method, vararg params: Any): Any {
             // class name. method name. parameter value

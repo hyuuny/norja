@@ -1,6 +1,6 @@
 package com.hyuuny.norja.redis
 
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.data.redis.connection.RedisConnection
 import org.springframework.data.redis.core.RedisCallback
 import org.springframework.data.redis.core.RedisTemplate
@@ -13,7 +13,7 @@ class RedisRepository(
     private var redisTemplate: RedisTemplate<String, Any>,
 ) {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = KotlinLogging.logger {}
 
     operator fun set(key: String, o: Any, minutes: Long) {
         redisTemplate.valueSerializer = Jackson2JsonRedisSerializer(o.javaClass)

@@ -1,6 +1,6 @@
 package com.hyuuny.norja.web.interceptor
 
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.web.servlet.HandlerInterceptor
 import java.util.UUID.randomUUID
 import javax.servlet.http.HttpServletRequest
@@ -10,7 +10,7 @@ const val LOG_ID = "logId"
 
 class LogInterceptor : HandlerInterceptor {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = KotlinLogging.logger {}
 
     override fun preHandle(
         request: HttpServletRequest,

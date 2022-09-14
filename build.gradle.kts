@@ -72,6 +72,9 @@ subprojects {
         // DB
         runtimeOnly("com.h2database:h2")
         runtimeOnly("mysql:mysql-connector-java")
+
+        // Kotlin logging
+        implementation("io.github.microutils:kotlin-logging:1.12.5")
     }
 
     dependencyManagement {
