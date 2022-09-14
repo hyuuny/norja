@@ -68,13 +68,11 @@ data class LodgingCompanyResponseDto(
                 tellNumber = tellNumber,
                 address = address,
                 searchTag = searchTag,
-                images = images!!.stream()
-                    .map { ImageResponseDto(it) }
-                    .sorted((Comparator.comparing(ImageResponseDto::priority)))
+                images = images!!.map { ImageResponseDto(it) }
+                    .sortedBy(ImageResponseDto::priority)
                     .toList(),
-                facilities = facilities!!.stream()
-                    .map { FacilitiesResponseDto(it) }
-                    .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
+                facilities = facilities!!.map { FacilitiesResponseDto(it) }
+                    .sortedBy(FacilitiesResponseDto::priority)
                     .toList()
             )
         }

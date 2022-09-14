@@ -66,13 +66,11 @@ data class RoomResponseDto(
                 maximumPersonnel = maximumPersonnel,
                 price = price,
                 content = content,
-                roomImages = roomImages!!.stream()
-                    .map { RoomImageResponseDto(it) }
-                    .sorted((Comparator.comparing(RoomImageResponseDto::priority)))
+                roomImages = roomImages!!.map { RoomImageResponseDto(it) }
+                    .sortedBy(RoomImageResponseDto::priority)
                     .toList(),
-                roomFacilities = roomFacilities!!.stream()
-                    .map { RoomFacilitiesResponseDto(it) }
-                    .sorted((Comparator.comparing(RoomFacilitiesResponseDto::priority)))
+                roomFacilities = roomFacilities!!.map { RoomFacilitiesResponseDto(it) }
+                    .sortedBy(RoomFacilitiesResponseDto::priority)
                     .toList(),
             )
         }

@@ -30,9 +30,8 @@ class RoomReaderImpl(
         val loadedRoom =
             roomRepository.loadRoomsByLodgingCompanyId(lodgingCompanyId, checkIn, checkOut)
 
-        return loadedRoom.stream()
-            .map(::toResponse)
-            .sorted(Comparator.comparing(RoomResponseDto::price))
+        return loadedRoom.map(::toResponse)
+            .sortedBy(RoomResponseDto::price)
             .toList()
     }
 

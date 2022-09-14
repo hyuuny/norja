@@ -36,15 +36,13 @@ data class SearchedLodgingCompany(
         get() = this.lodgingCompany!!.searchTag
 
     val images: List<ImageResponseDto>
-        get() = this.lodgingCompany!!.images!!.stream()
-            .map { ImageResponseDto(it) }
-            .sorted((Comparator.comparing(ImageResponseDto::priority)))
+        get() = this.lodgingCompany!!.images!!.map { ImageResponseDto(it) }
+            .sortedBy(ImageResponseDto::priority)
             .toList()
 
     val facilities: List<FacilitiesResponseDto>
-        get() = this.lodgingCompany!!.facilities!!.stream()
-            .map { FacilitiesResponseDto(it) }
-            .sorted((Comparator.comparing(FacilitiesResponseDto::priority)))
+        get() = this.lodgingCompany!!.facilities!!.map { FacilitiesResponseDto(it) }
+            .sortedBy(FacilitiesResponseDto::priority)
             .toList()
 
     val createdAt

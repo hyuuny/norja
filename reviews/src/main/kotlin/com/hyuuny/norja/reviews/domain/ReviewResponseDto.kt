@@ -91,9 +91,8 @@ data class ReviewResponseDto(
                 convenienceScore = convenienceScore,
                 satisfactionScore = satisfactionScore,
                 best = best,
-                reviewPhotos = reviewPhotos!!.stream()
-                    .map { ReviewPhotoResponseDto(it) }
-                    .sorted((Comparator.comparing(ReviewPhotoResponseDto::priority)))
+                reviewPhotos = reviewPhotos!!.map { ReviewPhotoResponseDto(it) }
+                    .sortedBy(ReviewPhotoResponseDto::priority)
                     .toList(),
                 createdAt = createdAt,
             )
@@ -194,9 +193,8 @@ data class ReviewListingResponseDto(
                 wholeScore = wholeScore,
                 content = content,
                 best = best,
-                reviewPhotos = reviewPhotos!!.stream()
-                    .map { ReviewPhotoListingResponseDto(it) }
-                    .sorted((Comparator.comparing(ReviewPhotoListingResponseDto::priority)))
+                reviewPhotos = reviewPhotos!!.map { ReviewPhotoListingResponseDto(it) }
+                    .sortedBy(ReviewPhotoListingResponseDto::priority)
                     .toList(),
                 createdAt = createdAt,
             )

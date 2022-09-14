@@ -6,7 +6,7 @@ import com.hyuuny.norja.lodgingcompanies.domain.SearchedLodgingCompanyListing
 data class SearchedLodgingCompanies(
     val lodgingCompanyListings: List<SearchedLodgingCompanyListing>,
 ) {
-    fun toPage(): List<LodgingCompanyListingResponseDto> = this.lodgingCompanyListings.stream()
+    fun toPage(): List<LodgingCompanyListingResponseDto> = this.lodgingCompanyListings
         .map { LodgingCompanyListingResponseDto(it) }
         .toList()
 }

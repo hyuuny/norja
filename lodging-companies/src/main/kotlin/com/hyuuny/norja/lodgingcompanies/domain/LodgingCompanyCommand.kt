@@ -28,11 +28,11 @@ data class LodgingCompanyCreateCommand(
                 searchTag = this.searchTag,
             )
 
-            this.images.stream()
+            this.images
                 .map(ImageCreateCommand::toEntity)
                 .forEach(newLodging::addImages)
 
-            this.facilities.stream()
+            this.facilities
                 .map(FacilitiesCreateCommand::toEntity)
                 .forEach(newLodging::addFacilities)
 
@@ -80,12 +80,12 @@ data class LodgingCompanyUpdateCommand(
         entity.changeSearchTag(this.searchTag)
 
         entity.imagesClear()
-        images.stream()
+        this.images
             .map(ImageCreateCommand::toEntity)
             .forEach(entity::addImages)
 
         entity.facilitiesClear()
-        facilities.stream()
+        this.facilities
             .map(FacilitiesCreateCommand::toEntity)
             .forEach(entity::addFacilities)
     }
