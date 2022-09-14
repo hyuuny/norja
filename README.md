@@ -1,6 +1,6 @@
 # norja
 
-> 새롭게 학습한 코틀린으로 이전부터 만들어보고 싶던 숙박 예약 시스템 API를 구현해보았습니다.
+> 코틀린을 학습하면서 이전부터 만들어보고 싶던 숙박 예약 시스템 API를 구현해보았습니다.
 
 <br>
 
@@ -55,25 +55,13 @@ docker compose up -d
 
 ## 구조
 
-![](../../Desktop/185549390-4ed1dad0-9b47-4798-81ac-de808a68a8c3.png)
-
-### [LodgingCompany(숙박업체)](#-###-lodgingcompany)
-
-### [Room(객실)](#-###-room)
-
-### [Reservation(예약)](#-###-reservation)
-
-### [Review(후기)](#-####-review)
-
-### [Category(카테고리))](#-###-category)
-
-### [User(회원))](#-###-user)
+![185549390-4ed1dad0-9b47-4798-81ac-de808a68a8c3](https://user-images.githubusercontent.com/69466533/190064783-cb3ebdeb-b66a-4935-a975-b00bffbc94b0.png)
 
 <br>
 
 ## 기능
 
-### LodgingCompany
+### LodgingCompany (숙박 업체)
 
 - 관리자
     - 조회 및 검색
@@ -88,7 +76,7 @@ docker compose up -d
     - 조회 및 검색
     - 상세 조회
 
-### Room
+### Room (객실)
 
 - 관리자
     - 등록
@@ -100,7 +88,7 @@ docker compose up -d
 - 사용자
     - 상세 조회
 
-### Reservation
+### Reservation (예약)
 
 - 관리자
     - 조회 및 검색
@@ -113,7 +101,7 @@ docker compose up -d
     - 상세 조회
     - 예약 취소
 
-### Review
+### Review (후기)
 
 - 관리자
     - 조회 및 검색
@@ -129,7 +117,7 @@ docker compose up -d
     - 상세 조회
     - 삭제
 
-### Category
+### Category (카테고리)
 
 - 관리자
     - 부모/자녀 카테고리 등록
@@ -145,7 +133,7 @@ docker compose up -d
     - 자녀 카테고리 조회
     - 상세 조회
 
-### User
+### User (회원)
 
 - 관리자
     - 로그인
