@@ -2,8 +2,6 @@ package com.hyuuny.norja.reservations.domain
 
 import java.time.LocalDate
 
-class ReservationCommand
-
 data class ReservationCreateCommand(
     val userId: Long,
     val roomId: Long,

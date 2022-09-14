@@ -2,8 +2,6 @@ package com.hyuuny.norja.lodgingcompanies.domain
 
 import com.hyuuny.norja.address.domain.Address
 
-class LodgingCompanyCommand
-
 data class LodgingCompanyCreateCommand(
     val categoryId: Long,
     val type: Type,
