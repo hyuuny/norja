@@ -137,4 +137,5 @@ $ docker compose up -d
 
 ## 구조
 
-![](../../Desktop/스크린샷 2022-09-19 오전 11.29.23.png)
+<img width="100%" alt="스크린샷 2022-09-19 오전 11 29 23" src="https://user-images.githubusercontent.com/69466533/190941191-fbf1f4fd-7e2e-4ec3-b96c-d1814666b49d.png">
+
