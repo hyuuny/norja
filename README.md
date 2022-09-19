@@ -6,42 +6,124 @@
 
 ## 사용 기술
 
+언어
 - `Kotlin`
-- `Spring Boot 2.6.6`
-- `MySQL 5.7`
-- `H2`
-- `JPA 1.6.21`
-- `Querydsl 5.0.0`
-- `Spring Security`
-- `jjwt 0.9.1`
-- `Redis`
-- `docker-compose`
-- `OpenAPI 3.0`
-- `kotlin-logging:1.12.5`
-- `Gradle`
+
+프레임워크
+- `Spring Boot`, `Spring Data`, `Spring Security`
+
+데이터베이스
+- `MySQL 5.7`, `H2`
+
+서드파티
+- `Redis`, `OpenAPI`, `JWT`
 
 <br>
 
-## 실행
+## 요구사항
+
+### 숙박업체
+- 숙박업체 목록을 조회할 수 있어야 한다.
+  - 분류별로 조회할 수 있어야 한다.(호텔, 모텔, 호캉스 등)
+  - 주소로 조회할 수 있어야 한다.
+  - 목록에 후기 개수 및 평균을 조회할 수 있어야 한다.
+  - 기간으로 남은 객실의 수를 알 수 있어야 한다.
+- 숙박업체를 등록할 수 있어야 한다.
+- 숙박업체를 조회할 수 있어야 한다.
+  - 잘못된 숙박업체를 조회 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 숙박업체를 수정할 수 있어야한다.
+  - 잘못된 숙박업체를 수정 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 숙박업체의 휴무를 설정할 수 있어야 한다.
+- 숙박업체를 삭제할 수 있어야 한다.
+
+<br>
+
+### 객실
+- 객실을 등록할 수 있어야 한다.
+- 객실을 조회할 수 있어야 한다.
+  - 잘못된 객실을 조회 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 객실을 수정할 수 있어야 한다.
+  - 잘못된 객실을 수정 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 객실을 삭제할 수 있어야 한다.
+
+<br>
+
+### 예약
+- 예약 목록을 조회할 수 있어야 한다.
+  - 특정 고객으로 조회할 수 있어야 한다.
+  - 기간으로 조회할 수 있어야 한다.
+  - 상태로 조회할 수 있어야 한다.
+- 예약을 조회할 수 있어야 한다.
+- 예약을 등록 할 수 있어야 한다.
+  - 기간 내 남은 객실이 없다면, 예외 메세지를 반환해야 한다.
+  - 잘못된 예약내역을 조회 요청 햤을 때, 예외 메세지를 반환해야 한다.
+- 예약을 취소할 수 있어야 한다.
+  - 잘못된 예약내역을 취소 요청 했을 때, 예외 메세지를 반환해야 한다.
+
+
+<br>
+
+### 후기
+- 후기 목록을 조회할 수 있어야 한다.
+  - 숙박 업체에 등록된 후기를 조회할 수 있어야 한다.
+  - 객실에 등록된 후기를 조회할 수 있어야 한다.
+  - 특정 고객이 등록한 후기를 조회할 수 있어야 한다.
+  - 타입으로 조회할 수 있어야 한다.
+  - 전체 평점을 기준으로 조회할 수 있어야 한다.
+  - 베스트 여부로 조회할 수 있어야 한다.
+- 후기를 등록할 수 있어야 한다.
+- 후기를 조회할 수 있어야 한다.
+  - 잘못된 후기를 조회 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 후기를 삭제할 수 있어야 한다.
+- 후기를 베스트 설정/해제 설정할 수 있어야 한다.
+- 숙박업체에 등록된 후기 평균 점수를 조회할 수 있어야 한다.
+
+<br>
+
+### 카테고리
+
+- 카테고리 목록을 조회할 수 있어야 한다.
+- 부모/자녀카테고리를 등록할 수 있어야 한다.
+- 부모/자녀 카테고리를 조회할 수 있어야 한다.
+  - 잘못된 카테고리를 조회 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 카테고리를 수정할 수 있어야 한다.
+- 카테고리를 삭제할 수 있어야 한다.
+
+<br>
+
+### 회원
+- 회원 목록을 조회할 수 있어야 한다.
+  - 특정 고객을 조회할 수 있어야 한다.
+  - 상태롤 조회할 수 있어야 한다.
+- 로그인할 수 있어야 한다.
+- 회원가입 할 수 있어야 한다.
+- 고객을 조회할 수 있어야 한다.
+  - 잘못된 고객을 조회 요청 했을 때, 예외 메세지를 반환해야 한다.
+- 비밀번호를 변경할 수 있어야 한다.
+- 동의 여부를 변경할 수 있어야 한다.
+- 회원 정보를 변경할 수 있어야 한다.
+- 회원 탈퇴를 할 수 있어야 한다.
+
+## 퀵 스타트
 
 - docker-compose 컨테이너 생성
 
-```angular2html
-docker compose up -d
+```shell
+$ docker compose up -d
 ```
 
 <br>
 
 - 관리자 Swagger 접속
-    1. NorjaAdminApplication 실행
-    2. `localhost:8081/swagger-ui.html` 접속
+    - NorjaAdminApplication 실행
+    - `localhost:8081/swagger-ui.html` 접속
 
 <br>
 
 - 사용자 Swagger 접속
-    1. NorjaApplication 실행
-    2. `localhost:8081/swagger-ui.html` 접속
-    3. 회원가입 -> 로그인 후, `accessToken` 값 상단의 `Authorize`에 입력
+    - NorjaApplication 실행
+    - `localhost:8081/swagger-ui.html` 접속
+    - 회원가입 -> 로그인 후, `accessToken` 값 상단의 `Authorize`에 입력
 
 ```json
 {
@@ -55,152 +137,4 @@ docker compose up -d
 
 ## 구조
 
-![185549390-4ed1dad0-9b47-4798-81ac-de808a68a8c3](https://user-images.githubusercontent.com/69466533/190064783-cb3ebdeb-b66a-4935-a975-b00bffbc94b0.png)
-
-<br>
-
-## 기능
-
-### LodgingCompany (숙박 업체)
-
-- 관리자
-
-| <div style="width:200px"> **Method** |  <div style="width:300px">     **URI**  | <div style="width:290px"> **Description** |
-|:------------------------------------:|:---------------------------------------:|:-----------------------------------------:|
-|                 GET                  |        /api/v1/lodging-companies        |               숙박업체 조회 및 검색                |
-|                 POST                 |        /api/v1/lodging-companies        |                  숙박업체 등록                  |
-|                 GET                  |     /api/v1/lodging-companies/{id}      |                숙박업체 상세 조회                 |
-|                 PUT                  |     /api/v1/lodging-companies/{id}      |                  숙박업체 수정                  |
-|                 PUT                  | /api/v1/lodging-companies/vacation/{id} |                  숙박업체 휴무                  |
-|                DELETE                |     /api/v1/lodging-companies/{id}      |                  숙박업체 삭제                  |
-
-<br>
-
-- 사용자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 GET                  |       /api/v1/lodging-companies       |               숙박업체 조회 및 검색                |
-|                 GET                  |    /api/v1/lodging-companies/{id}     |                숙박업체 상세 조회                 |
-
-<br>
-
-### Room (객실)
-
-- 관리자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 POST                 |             /api/v1/rooms             |                   객실 등록                   |
-|                 GET                  |          /api/v1/rooms/{id}           |                 객실 상세 조회                  |
-|                 PUT                  |          /api/v1/rooms/{id}           |                   객실 수정                   |
-|                DELETE                |          /api/v1/rooms/{id}           |                   객실 삭제                   |
-
-<br>
-
-
-- 사용자
-
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 GET                  |          /api/v1/rooms/{id}           |                 객실 상세 조회                  |
-
-<br>
-
-### Reservation (예약)
-
-- 관리자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 GET                  |         /api/v1/reservations          |                예약 조회 및 검색                 |
-|                 GET                  |       /api/v1/reservations/{id}       |                 예약 상세 조히                  |
-
-<br>
-
-- 사용자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI**  | <div style="width:290px"> **Description** |
-|:------------------------------------:|:--------------------------------------:|:-----------------------------------------:|
-|                 GET                  |          /api/v1/reservations          |                예약 조회 및 검색                 |
-|                 POST                 |          /api/v1/reservations          |                   예약 등록                   |
-|                 GET                  |       /api/v1/reservations/{id}        |                 예약 상세 조회                  |
-|                DELETE                | /api/v1/reservations/cancellation/{id} |                   예약 취소                   |
-
-<br>
-
-### Review (후기)
-
-- 관리자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 GET                  |            /api/v1/reviews            |                후기 조회 및 검색                 |
-|                 GET                  |         /api/v1/reviews/{id}          |                 후기 상세 조회                  |
-|                DELETE                |         /api/v1/reviews/{id}          |                   후기 삭제                   |
-|                 POST                 |         /api/v1/reviews/best          |               베스트 후기 선정/해제                |
-
-<br>
-
-- 사용자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 GET                  |            /api/v1/reviews            |                후기 조회 및 검색                 |
-|                 GET                  | /api/v1/reviews/lodging-company/{id}  |             숙박업체 후기 평균 점수 조회              |
-|                 POST                 |            /api/v1/reviews            |                   후기 등록                   |
-|                 GET                  |         /api/v1/reviews/{id}          |                 후기 상세 조회                  |
-|                DELETE                |         /api/v1/reviews/{id}          |                   후기 삭제                   |
-
-<br>
-
-### Category (카테고리)
-
-- 관리자
-
-| <div style="width:200px"> **Method** |     <div style="width:300px">     **URI**      | <div style="width:290px"> **Description** |
-|:------------------------------------:|:----------------------------------------------:|:-----------------------------------------:|
-|                 POST                 |               /api/v1/categories               |                  카테고리 등록                  |
-|                 POST                 |  /api/v1/categories/{parentCategoryId}/child   |                자녀 카테고리 등록                 |
-|                 GET                  |               /api/v1/categories               |                카테고리 전체 조회                 |
-|                 GET                  | /api/v1/categories/{parentCategoryId}/children |                자녀 카테고리 조회                 |
-|                 GET                  |            /api/v1/categories/{id}             |                카테고리 상세 조회                 |
-|                 PUT                  |            /api/v1/categories/{id}             |                  카테고리 수정                  |
-|                DELETE                |            /api/v1/categories/{id}             |                  카테고리 삭제                  |
-
-<br>
-
-- 사용자
-
-| <div style="width:200px"> **Method** |     <div style="width:300px">     **URI**      | <div style="width:290px"> **Description** |
-|:------------------------------------:|:----------------------------------------------:|:-----------------------------------------:|
-|                 GET                  |               /api/v1/categories               |                카테고리 전체 조회                 |
-|                 GET                  | /api/v1/categories/{parentCategoryId}/children |                자녀 카테고리 조회                 |
-|                 GET                  |            /api/v1/categories/{id}             |                카테고리 상세 조회                 |
-
-<br>
-
-### User (회원)
-
-- 관리자
-
-| <div style="width:200px"> **Method** | <div style="width:300px">     **URI** | <div style="width:290px"> **Description** |
-|:------------------------------------:|:-------------------------------------:|:-----------------------------------------:|
-|                 POST                 |             /api/v1/auth              |                    로그인                    |
-|                 GET                  |             /api/v1/users             |                회원 조회 및 검색                 |
-|                 GET                  |          /api/v1/users/{id}           |                 회원 상세 조회                  |
-
-<br>
-
-- 사용자
-
-| <div style="width:200px"> **Method** |  <div style="width:300px">     **URI**  | <div style="width:290px"> **Description** |
-|:------------------------------------:|:---------------------------------------:|:-----------------------------------------:|
-|                 POST                 |              /api/v1/auth               |                    로그인                    |
-|                 POST                 |          /api/v1/users/sign-up          |                   회원가입                    |
-|                 GET                  |           /api/v1/users/{id}            |                 회원 상세 조회                  |
-|                 POST                 |   /api/v1/users/{id}/change-password    |                  비밀번호 변경                  |
-|                 POST                 | /api/v1/users/{id}/change-agreed |                 동의 여부 변경                  |
-|                 PUT                  |           /api/v1/users/{id}            |                 회원 정보 변경                  |
-|                DELETE                |           /api/v1/users/{id}            |                   회원 탈퇴                   |
+![](../../Desktop/스크린샷 2022-09-19 오전 11.29.23.png)
